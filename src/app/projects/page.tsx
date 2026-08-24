@@ -43,7 +43,7 @@ export default function ProjectsArchive() {
                 onClick={() => setFilter(f.id)}
                 className="inline-flex items-center gap-1.5 text-[13px] font-medium rounded-full px-3.5 py-2 transition-colors"
                 style={{
-                  color: filter === f.id ? "#07050B" : "#F3F0F7",
+                  color: filter === f.id ? "#0A090C" : "#F3F0F7",
                   background: filter === f.id ? "#F3F0F7" : "rgba(243,240,247,0.06)",
                   border: "1px solid rgba(243,240,247,0.12)",
                 }}

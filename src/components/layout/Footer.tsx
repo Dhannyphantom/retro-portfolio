@@ -1,4 +1,12 @@
+import Link from "next/link";
+import { Github, Linkedin, Mail } from "lucide-react";
+
 const LINKS = ["Home", "About", "Projects", "Services", "Contact"];
+const SOCIALS = [
+  { icon: Github, label: "GitHub", href: "#" },
+  { icon: Linkedin, label: "LinkedIn", href: "#" },
+  { icon: Mail, label: "Email", href: "mailto:hello@example.com" },
+];
 
 export default function Footer() {
   return (
@@ -12,15 +20,15 @@ export default function Footer() {
         </div>
         <div className="flex flex-wrap gap-1">
           {LINKS.map((l) => (
-            <a key={l} href={l === "Home" ? "/" : `/${l.toLowerCase()}`} className="text-mute text-[13px] no-underline px-2.5 py-1 hover:text-violet transition-colors">
+            <Link key={l} href={l === "Home" ? "/" : `/${l.toLowerCase()}`} className="text-mute text-[13px] no-underline px-2.5 py-1 hover:text-violet transition-colors">
               {l}
-            </a>
+            </Link>
           ))}
         </div>
         <div className="flex gap-2.5">
-          {["GitHub", "LinkedIn", "Email"].map((s) => (
-            <a key={s} href="#" aria-label={s} className="icon-hover w-9 h-9 rounded border border-white/[0.12] flex items-center justify-center text-paper text-xs">
-              {s[0]}
+          {SOCIALS.map((s) => (
+            <a key={s.label} href={s.href} aria-label={s.label} className="icon-hover w-9 h-9 rounded border border-white/[0.12] flex items-center justify-center text-paper">
+              <s.icon size={16} />
             </a>
           ))}
         </div>

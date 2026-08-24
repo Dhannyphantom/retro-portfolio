@@ -10,6 +10,7 @@ import RateCard from "../src/models/RateCard";
 import Testimonial from "../src/models/Testimonial";
 import FAQ from "../src/models/FAQ";
 import SiteSettings from "../src/models/SiteSettings";
+import TechStack from "../src/models/TechStack";
 
 async function seed() {
   await connectDB();
@@ -124,6 +125,19 @@ async function seed() {
     { question: "What technologies do you use?", answer: "React Native, Next.js, Node.js and MongoDB, with TypeScript throughout.", order: 1 },
     { question: "Do you work with startups?", answer: "Yes — early-stage products are a lot of what I build.", order: 2 },
     { question: "Do you work remotely?", answer: "Yes, fully remote, async-friendly across time zones.", order: 3 },
+  ]);
+
+  await TechStack.deleteMany({});
+  await TechStack.insertMany([
+    { name: "React", iconUrl: "https://cdn.simpleicons.org/react", showInHero: true, showInMarquee: true, order: 1 },
+    { name: "Next.js", iconUrl: "https://cdn.simpleicons.org/nextdotjs/F3F0F7", showInHero: true, showInMarquee: true, order: 2 },
+    { name: "Node.js", iconUrl: "https://cdn.simpleicons.org/nodedotjs", showInHero: true, showInMarquee: true, order: 3 },
+    { name: "TypeScript", iconUrl: "https://cdn.simpleicons.org/typescript", showInHero: false, showInMarquee: true, order: 4 },
+    { name: "MongoDB", iconUrl: "https://cdn.simpleicons.org/mongodb", showInHero: false, showInMarquee: true, order: 5 },
+    { name: "Tailwind CSS", iconUrl: "https://cdn.simpleicons.org/tailwindcss", showInHero: false, showInMarquee: true, order: 6 },
+    { name: "Redux Toolkit", iconUrl: "https://cdn.simpleicons.org/redux", showInHero: false, showInMarquee: true, order: 7 },
+    { name: "Express", iconUrl: "https://cdn.simpleicons.org/express/F3F0F7", showInHero: false, showInMarquee: true, order: 8 },
+    { name: "GSAP", iconUrl: "https://cdn.simpleicons.org/greensock", showInHero: false, showInMarquee: true, order: 9 },
   ]);
 
   console.log("Seed complete.");

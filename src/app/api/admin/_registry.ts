@@ -8,6 +8,7 @@ import Message from "@/models/Message";
 import Booking from "@/models/Booking";
 import Skill from "@/models/Skill";
 import BlogPost from "@/models/BlogPost";
+import TechStack from "@/models/TechStack";
 
 // Maps a URL segment (/api/admin/<collection>) to its Mongoose model.
 // Add a new collection to the admin dashboard by adding one line here —
@@ -23,4 +24,5 @@ export const REGISTRY: Record<string, any> = {
   bookings: Booking,
   skills: Skill,
   blogposts: BlogPost,
+  techstack: TechStack,
 };

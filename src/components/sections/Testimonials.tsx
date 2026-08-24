@@ -1,4 +1,5 @@
-import { Star } from "lucide-react";
+import { Star, PenLine } from "lucide-react";
+import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
 import SafeImage from "@/components/ui/SafeImage";
 import type { TestimonialItem } from "@/types";
@@ -17,8 +18,7 @@ export default function Testimonials({ items = FALLBACK }: { items?: Testimonial
           <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>WHAT PEOPLE SAY</span>
           <h2 className="font-display font-semibold text-[clamp(28px,3.6vw,40px)] mt-2 tracking-tight">Testimonials</h2>
         </div>
-      </Reveal>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      </Reveal>      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {items.map((t, i) => (
           <Reveal key={t.clientName} delay={i * 90}>
             <div className="hover-card rounded-xl p-6 bg-ink2 h-full" style={{ border: "1px solid rgba(243,240,247,0.09)" }}>
@@ -37,6 +37,13 @@ export default function Testimonials({ items = FALLBACK }: { items?: Testimonial
           </Reveal>
         ))}
       </div>
+      <Reveal delay={items.length * 90}>
+        <div className="text-center mt-8">
+          <Link href="/testimonials/new" className="inline-flex items-center gap-2 text-[13.5px] text-mute hover:text-violet transition-colors">
+            <PenLine size={14} /> Worked with me? Leave a review
+          </Link>
+        </div>
+      </Reveal>
     </section>
   );
 }

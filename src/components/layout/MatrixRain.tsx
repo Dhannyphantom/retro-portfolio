@@ -32,7 +32,7 @@ export default function MatrixRain() {
 
     if (reduceMotion) {
       // Draw a single faint static frame instead of looping.
-      ctx.fillStyle = "#07050B";
+      ctx.fillStyle = "#0A090C";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.font = `${fontSize}px var(--font-mono, monospace)`;
       ctx.fillStyle = "rgba(180,92,255,0.238)";

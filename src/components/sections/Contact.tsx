@@ -40,8 +40,7 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative max-w-[1120px] mx-auto px-7 pb-[90px]">
-      <div className="hover-card relative overflow-hidden rounded-2xl p-8 sm:p-11 grid grid-cols-1 md:grid-cols-2 gap-12" style={{ border: "1px solid rgba(243,240,247,0.09)", background: "linear-gradient(135deg, #110C18, #07050B)" }}>
-        <div className="absolute -top-20 -right-20 w-[260px] h-[260px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, #8B2FE0 0%, transparent 70%)", opacity: 0.1 }} />
+      <div className="hover-card relative overflow-hidden rounded-2xl p-8 sm:p-11 grid grid-cols-1 md:grid-cols-2 gap-12" style={{ border: "1px solid rgba(255,255,255,0.08)", background: "linear-gradient(135deg, #131116, #08070A)" }}>
         <Reveal from="left">
           <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>CONTACTS</span>
           <h2 className="font-display font-semibold text-[clamp(26px,3.2vw,36px)] mt-2.5 mb-4 tracking-tight">

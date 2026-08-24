@@ -6,6 +6,7 @@ import RateCard from "@/models/RateCard";
 import Testimonial from "@/models/Testimonial";
 import FAQModel from "@/models/FAQ";
 import SiteSettings from "@/models/SiteSettings";
+import TechStack from "@/models/TechStack";
 
 import Hero from "@/components/sections/Hero";
 import Marquee from "@/components/sections/Marquee";
@@ -35,10 +36,11 @@ async function getData(): Promise<{
   testimonials: any[];
   faqs: any[];
   settings: any;
+  techstack: any[];
 }> {
   try {
     await connectDB();
-    const [projects, experience, services, rateCards, testimonials, faqs, settings] = await Promise.all([
+    const [projects, experience, services, rateCards, testimonials, faqs, settings, techstack] = await Promise.all([
       Project.find().sort({ order: 1 }).lean(),
       Experience.find().sort({ order: 1 }).lean(),
       Service.find().sort({ order: 1 }).lean(),
@@ -46,21 +48,29 @@ async function getData(): Promise<{
       Testimonial.find({ approved: true }).sort({ order: 1 }).lean(),
       FAQModel.find().sort({ order: 1 }).lean(),
       SiteSettings.findOne({ key: "main" }).lean(),
+      TechStack.find().sort({ order: 1 }).lean(),
     ]);
-    return { projects, experience, services, rateCards, testimonials, faqs, settings };
+    return { projects, experience, services, rateCards, testimonials, faqs, settings, techstack };
   } catch (err) {
     console.warn("DB not reachable yet — rendering with fallback demo content.", err);
-    return { projects: [], experience: [], services: [], rateCards: [], testimonials: [], faqs: [], settings: null };
+    return { projects: [], experience: [], services: [], rateCards: [], testimonials: [], faqs: [], settings: null, techstack: [] };
   }
 }
 
 export default async function HomePage() {
-  const { projects, experience, services, rateCards, testimonials, faqs, settings } = await getData();
+  const { projects, experience, services, rateCards, testimonials, faqs, settings, techstack } = await getData();
+
+  const heroBadges = techstack.filter((t: any) => t.showInHero);
+  const marqueeItems = techstack.filter((t: any) => t.showInMarquee);
 
   return (
     <>
-      <Hero name={settings?.name?.split(" ")[0] || "Daniel"} headline={settings?.heroHeadline || "Software Developer"} />
-      <Marquee />
+      <Hero
+        name={settings?.name?.split(" ")[0] || "Daniel"}
+        headline={settings?.heroHeadline || "Software Developer"}
+        techBadges={heroBadges.length ? heroBadges : undefined}
+      />
+      <Marquee items={marqueeItems.length ? marqueeItems : undefined} />
       <About bio={settings?.bio} />
       <DevStats />
       <ExperienceSection items={experience.length ? (experience as any) : undefined} />

@@ -104,7 +104,7 @@ export default function ResourceManager({
 
       {showForm && editing && (
         <div className="fixed inset-0 z-[300] flex items-center justify-center p-5" style={{ background: "rgba(7,5,11,0.8)", backdropFilter: "blur(6px)" }}>
-          <div className="w-full max-w-[560px] max-h-[85vh] overflow-y-auto rounded-2xl p-6" style={{ background: "#110C18", border: "1px solid rgba(180,92,255,0.136)" }}>
+          <div className="w-full max-w-[560px] max-h-[85vh] overflow-y-auto rounded-2xl p-6" style={{ background: "#131115", border: "1px solid rgba(180,92,255,0.136)" }}>
             <div className="flex justify-between items-center mb-5">
               <h3 className="font-display text-lg">{editing._id ? "Edit" : "New"} {collection.slice(0, -1) || collection}</h3>
               <button onClick={() => setShowForm(false)}><X size={18} /></button>

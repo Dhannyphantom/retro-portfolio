@@ -121,7 +121,7 @@ export default function HirePage() {
                       type="button" key={s} onClick={() => toggleService(s)}
                       className="text-[13px] rounded-full px-3.5 py-2"
                       style={{
-                        color: form.servicesNeeded.includes(s) ? "#07050B" : "#F3F0F7",
+                        color: form.servicesNeeded.includes(s) ? "#0A090C" : "#F3F0F7",
                         background: form.servicesNeeded.includes(s) ? "#F3F0F7" : "rgba(243,240,247,0.06)",
                         border: "1px solid rgba(243,240,247,0.12)",
                       }}
