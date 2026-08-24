@@ -4,7 +4,7 @@ import "./globals.css";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/layout/CustomCursor";
-import CodeTypingBG from "@/components/layout/CodeTypingBG";
+import MatrixRain from "@/components/layout/MatrixRain";
 import AmbientBackground from "@/components/layout/AmbientBackground";
 
 const display = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-display" });
@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body className="font-body bg-ink text-paper min-h-screen relative overflow-x-hidden">
         <AmbientBackground />
-        <CodeTypingBG />
+        <MatrixRain />
         <CustomCursor />
         <Nav />
         <main className="relative z-10">{children}</main>

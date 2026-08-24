@@ -15,7 +15,7 @@ export default function RateCards({ items = FALLBACK }: { items?: RateCardItem[]
     <section className="max-w-[1120px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-11">
-          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.62)" }}>LET&apos;S TALK BUSINESS</span>
+          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>LET&apos;S TALK BUSINESS</span>
           <h2 className="font-display font-semibold text-[clamp(28px,3.6vw,40px)] mt-2 tracking-tight">Rate cards</h2>
         </div>
       </Reveal>

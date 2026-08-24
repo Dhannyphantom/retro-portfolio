@@ -61,7 +61,7 @@ export default function HirePage() {
     return (
       <div className="max-w-[600px] mx-auto px-7 pt-28 pb-32 text-center">
         <Reveal>
-          <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 text-violet" style={{ background: "rgba(180,92,255,0.1)", border: "1px solid rgba(180,92,255,0.3)" }}>
+          <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 text-violet" style={{ background: "rgba(180,92,255,0.068)", border: "1px solid rgba(180,92,255,0.204)" }}>
             <Check size={22} />
           </div>
           <h1 className="font-display font-bold text-3xl mb-3">Request received</h1>
@@ -75,7 +75,7 @@ export default function HirePage() {
   return (
     <div className="max-w-[640px] mx-auto px-7 pt-16 pb-28">
       <Reveal>
-        <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.62)" }}>PROJECT BRIEF</span>
+        <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>PROJECT BRIEF</span>
         <h1 className="font-display font-bold text-[clamp(28px,4vw,40px)] tracking-tight mt-2 mb-8">Let&apos;s scope your project</h1>
 
         <div className="flex gap-2 mb-10">

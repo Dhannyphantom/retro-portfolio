@@ -6,7 +6,7 @@ export default function Philosophy() {
   return (
     <section className="max-w-[900px] mx-auto px-7 py-16 text-center">
       <Reveal>
-        <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.62)" }}>PHILOSOPHY</span>
+        <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>PHILOSOPHY</span>
       </Reveal>
       <div className="mt-[22px] flex flex-col gap-1">
         {LINES.map((line, i) => (

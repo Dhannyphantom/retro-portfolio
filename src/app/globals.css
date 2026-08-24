@@ -17,17 +17,49 @@ body {
 
 ::selection { background: #8B2FE0; color: #F3F0F7; }
 
+/* --------------------------------------------------------------------
+   Keyframes declared as plain CSS (not left to Tailwind's JIT utility
+   scanner) so they're always present, whether they're triggered by a
+   Tailwind `animate-*` class or by a hand-written class below. Some of
+   these are duplicated in tailwind.config.ts for the `animate-*`
+   utilities used directly in components — that's intentional and
+   harmless; both definitions are identical.
+-------------------------------------------------------------------- */
+@keyframes spin2 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes spinReverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+@keyframes drift { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30px,-20px) scale(1.06); } }
+@keyframes breathe { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.6; } }
+@keyframes ambientGlow { 0%, 100% { box-shadow: 0 0 5px 0px rgba(180,92,255,0.054); } 50% { box-shadow: 0 0 14px 2px rgba(180,92,255,0.102); } }
+@keyframes borderRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes floatSmall { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes rippleFade { from { transform: scale(0); opacity: 0.35; } to { transform: scale(5); opacity: 0; } }
+
+/* ambient background blobs + hero avatar ring */
+.animate-drift { animation: drift 14s ease-in-out infinite; }
+.animate-breathe { animation: breathe 4s ease-in-out infinite; }
+.animate-ambientGlow { animation: ambientGlow 3.6s ease-in-out infinite; }
+.animate-spin2 { animation: spin2 20s linear infinite; }
+.animate-spinReverse { animation: spinReverse 20s linear infinite; }
+.animate-floatSmall { animation: floatSmall 5s ease-in-out infinite; }
+.animate-blink { animation: blink 1s steps(1) infinite; }
+
 /* diagonal rotating border used on project cards / tags / services */
 .diag-wrap { animation: ambientGlow 3.8s ease-in-out infinite; position: relative; overflow: hidden; }
 .diag-wrap-hover { animation-play-state: paused; }
 .diag-wrap-hover:hover { animation-play-state: running; }
 .diag-border-spin {
   position: absolute; inset: -60%;
-  background: conic-gradient(from 0deg, transparent 0%, rgba(180,92,255,0.42) 6%, transparent 14%, transparent 50%, rgba(139,47,224,0.42) 56%, transparent 64%, transparent 100%);
+  background: conic-gradient(from 0deg, transparent 0%, rgba(180,92,255,0.204) 6%, transparent 14%, transparent 50%, rgba(139,47,224,0.204) 56%, transparent 64%, transparent 100%);
   animation: borderRotate 8s linear infinite;
 }
 .paused-until-hover { animation-play-state: paused; }
 .diag-wrap-hover:hover .paused-until-hover { animation-play-state: running; }
+
+/* marquee */
+.marquee-track { animation: marquee 26s linear infinite; }
+.marquee-track:hover { animation-play-state: paused; }
 
 /* nav underline */
 .nav-link { position: relative; }
@@ -39,16 +71,16 @@ body {
 
 /* card hover lift */
 .hover-card { transition: transform 0.4s cubic-bezier(.16,1,.3,1), border-color 0.4s ease, box-shadow 0.4s ease; }
-.hover-card:hover { transform: translateY(-6px); border-color: rgba(180,92,255,0.26); box-shadow: 0 16px 28px -16px rgba(139,47,224,0.24); }
+.hover-card:hover { transform: translateY(-6px); border-color: rgba(180,92,255,0.136); box-shadow: 0 16px 28px -16px rgba(139,47,224,0.122); }
 
 .icon-hover { transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), border-color 0.3s ease, background 0.3s ease; }
-.icon-hover:hover { transform: scale(1.1) rotate(-4deg); border-color: rgba(180,92,255,0.4); background: rgba(139,47,224,0.1); }
+.icon-hover:hover { transform: scale(1.1) rotate(-4deg); border-color: rgba(180,92,255,0.218); background: rgba(139,47,224,0.054); }
 
 /* button shine / fill */
 .shine-wrap { position: relative; overflow: hidden; }
 .shine-wrap::after {
   content: ""; position: absolute; top: 0; left: -130%; width: 55%; height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.22), transparent);
   transform: skewX(-20deg); transition: left 0.7s ease; pointer-events: none;
 }
 .shine-wrap:hover::after { left: 140%; }
@@ -66,13 +98,8 @@ body {
   border-radius: 50%; background: rgba(243,240,247,0.5); pointer-events: none;
   animation: rippleFade 0.6s ease-out forwards;
 }
-@keyframes rippleFade { from { transform: scale(0); opacity: 0.35; } to { transform: scale(5); opacity: 0; } }
 
 .blink-cursor { animation: blink 1s steps(1) infinite; }
-@keyframes blink { 50% { opacity: 0; } }
-
-.marquee-track { animation: marquee 26s linear infinite; }
-.marquee-track:hover { animation-play-state: paused; }
 
 @media (max-width: 700px) { .hide-sm { display: none; } }
 

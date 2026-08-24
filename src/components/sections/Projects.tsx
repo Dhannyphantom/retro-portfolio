@@ -31,7 +31,7 @@ function ProjectImage({ src }: { src?: string }) {
         <SafeImage src={src} className="w-full h-[280px] object-cover block" iconSize={34} />
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: `radial-gradient(280px circle at ${spot.x}% ${spot.y}%, rgba(180,92,255,0.15), transparent 65%)` }}
+          style={{ background: `radial-gradient(280px circle at ${spot.x}% ${spot.y}%, rgba(180,92,255,0.102), transparent 65%)` }}
         />
       </div>
     </DiagonalCard>
@@ -47,7 +47,7 @@ function ProjectRow({ p, i }: { p: ProjectItem; i: number }) {
         <div className="flex flex-wrap gap-2 mb-4">
           {p.technologies.map((t) => (
             <DiagonalCard key={t} always radius={6} padding={1} className="inline-block">
-              <span className="block text-[11.5px] font-mono px-2.5 py-1.5" style={{ color: "rgba(180,92,255,0.62)", background: "rgba(139,47,224,0.04)" }}>{t}</span>
+              <span className="block text-[11.5px] font-mono px-2.5 py-1.5" style={{ color: "rgba(180,92,255,0.422)", background: "rgba(139,47,224,0.027)" }}>{t}</span>
             </DiagonalCard>
           ))}
         </div>
@@ -76,7 +76,7 @@ export default function Projects({ items, limit }: { items: ProjectItem[]; limit
     <section id="work" className="relative max-w-[1120px] mx-auto px-7 pt-12 pb-[60px]">
       <Reveal>
         <div className="text-center mb-2.5">
-          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.62)" }}>SELECTED WORK</span>
+          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>SELECTED WORK</span>
           <h2 className="font-display font-semibold text-[clamp(28px,3.6vw,40px)] mt-2 tracking-tight">Projects</h2>
         </div>
       </Reveal>

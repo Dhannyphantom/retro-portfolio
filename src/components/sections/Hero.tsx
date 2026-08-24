@@ -16,7 +16,7 @@ function OrbitBadge({ label, radius, size, dur, delay, angle }: { label: string;
       <div className="absolute" style={{ top: -size / 2, left: "50%", marginLeft: -size / 2, transform: `rotate(${angle}deg) translate(0, ${radius}px) rotate(-${angle}deg)` }}>
         <div
           className="animate-spinReverse flex items-center justify-center rounded font-mono text-[10.5px] text-violet"
-          style={{ animationDuration: `${dur}s`, animationDelay: `${delay}s`, width: size, height: size, background: "rgba(17,12,24,0.92)", border: "1px solid rgba(180,92,255,0.32)" }}
+          style={{ animationDuration: `${dur}s`, animationDelay: `${delay}s`, width: size, height: size, background: "rgba(17,12,24,0.92)", border: "1px solid rgba(180,92,255,0.218)" }}
         >
           {label}
         </div>
@@ -66,10 +66,10 @@ export default function Hero({ name = "Daniel", headline = "Software Developer" 
           <OrbitBadge label="Next" radius={158} size={38} dur={20} delay={-6.6} angle={155} />
           <OrbitBadge label="Node" radius={158} size={38} dur={20} delay={-13.3} angle={275} />
 
-          <div className="absolute top-[4%] left-[2%] w-1.5 h-1.5 rounded-full bg-violet animate-floatSmall" style={{ boxShadow: "0 0 7px 1px rgba(180,92,255,0.4)" }} />
-          <div className="absolute bottom-[6%] right-0 w-[5px] h-[5px] rounded-full bg-purple animate-floatSmall [animation-delay:1.4s]" style={{ boxShadow: "0 0 7px 1px rgba(139,47,224,0.4)" }} />
+          <div className="absolute top-[4%] left-[2%] w-1.5 h-1.5 rounded-full bg-violet animate-floatSmall" style={{ boxShadow: "0 0 7px 1px rgba(180,92,255,0.272)" }} />
+          <div className="absolute bottom-[6%] right-0 w-[5px] h-[5px] rounded-full bg-purple animate-floatSmall [animation-delay:1.4s]" style={{ boxShadow: "0 0 7px 1px rgba(139,47,224,0.272)" }} />
 
-          <div className="absolute inset-[10%] rounded-full border-2 border-purple animate-breathe" style={{ boxShadow: "0 0 36px 6px rgba(139,47,224,0.18)" }} />
+          <div className="absolute inset-[10%] rounded-full border-2 border-purple animate-breathe" style={{ boxShadow: "0 0 36px 6px rgba(139,47,224,0.122)" }} />
           <div className="absolute inset-[18%] rounded-full overflow-hidden border border-white/10 animate-ambientGlow">
             <SafeImage src={PROFILE_IMG} alt={name} className="w-full h-full object-cover" iconSize={46} />
           </div>

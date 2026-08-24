@@ -43,7 +43,7 @@ export default function CustomCursor() {
           width: hovering ? 64 : 34,
           height: hovering ? 64 : 34,
           border: `1px solid ${hovering ? "#B45CFF" : "rgba(243,240,247,0.26)"}`,
-          background: hovering ? "rgba(139,47,224,0.07)" : "transparent",
+          background: hovering ? "rgba(139,47,224,0.048)" : "transparent",
         }}
       />
     </div>

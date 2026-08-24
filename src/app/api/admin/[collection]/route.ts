@@ -6,11 +6,12 @@ import { REGISTRY } from "../_registry";
 // Generic admin list + create endpoint, shared by every manageable collection.
 // GET  /api/admin/projects        -> list all (admin only)
 // POST /api/admin/projects        -> create one (admin only)
-export async function GET(_req: NextRequest, { params }: { params: { collection: string } }) {
+export async function GET(_req: NextRequest, { params }: { params: Promise<{ collection: string }> }) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const Model = REGISTRY[params.collection];
+  const { collection } = await params;
+  const Model = REGISTRY[collection];
   if (!Model) return NextResponse.json({ error: "Unknown collection" }, { status: 404 });
 
   await connectDB();
@@ -18,11 +19,12 @@ export async function GET(_req: NextRequest, { params }: { params: { collection:
   return NextResponse.json({ items });
 }
 
-export async function POST(req: NextRequest, { params }: { params: { collection: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ collection: string }> }) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const Model = REGISTRY[params.collection];
+  const { collection } = await params;
+  const Model = REGISTRY[collection];
   if (!Model) return NextResponse.json({ error: "Unknown collection" }, { status: 404 });
 
   try {

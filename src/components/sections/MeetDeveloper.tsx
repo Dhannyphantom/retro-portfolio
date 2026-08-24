@@ -25,7 +25,7 @@ export default function MeetDeveloper() {
     <section className="max-w-[1120px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-11">
-          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.62)" }}>MEET THE DEVELOPER</span>
+          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>MEET THE DEVELOPER</span>
           <h2 className="font-display font-semibold text-[clamp(28px,3.6vw,40px)] mt-2 tracking-tight">More than the code</h2>
         </div>
       </Reveal>
@@ -63,7 +63,7 @@ export default function MeetDeveloper() {
               <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 40%, rgba(7,5,11,0.88) 100%)" }} />
               <div
                 className="animate-ambientGlow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50px] h-[50px] rounded-full flex items-center justify-center backdrop-blur-sm transition-transform duration-300 group-hover:scale-[1.15]"
-                style={{ background: "rgba(139,47,224,0.2)", border: "1px solid rgba(180,92,255,0.4)" }}
+                style={{ background: "rgba(139,47,224,0.136)", border: "1px solid rgba(180,92,255,0.272)" }}
               >
                 <Play size={17} className="text-paper fill-paper ml-0.5" />
               </div>
@@ -81,7 +81,7 @@ export default function MeetDeveloper() {
           style={{ background: "rgba(7,5,11,0.8)", backdropFilter: "blur(6px)" }}
           onClick={() => setActive(null)}
         >
-          <div onClick={(e) => e.stopPropagation()} className="w-full max-w-[720px] rounded-2xl overflow-hidden bg-ink2" style={{ border: "1px solid rgba(180,92,255,0.2)" }}>
+          <div onClick={(e) => e.stopPropagation()} className="w-full max-w-[720px] rounded-2xl overflow-hidden bg-ink2" style={{ border: "1px solid rgba(180,92,255,0.136)" }}>
             <video src={active.src} controls autoPlay className="w-full block bg-black max-h-[70vh]" />
             <div className="flex justify-between items-center gap-3 p-5">
               <div>

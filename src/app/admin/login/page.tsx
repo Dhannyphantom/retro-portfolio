@@ -30,7 +30,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <form onSubmit={submit} className="w-full max-w-[360px] rounded-2xl p-8" style={{ border: "1px solid rgba(180,92,255,0.2)", background: "#110C18" }}>
+    <form onSubmit={submit} className="w-full max-w-[360px] rounded-2xl p-8" style={{ border: "1px solid rgba(180,92,255,0.136)", background: "#110C18" }}>
       <h1 className="font-display font-bold text-2xl mb-1">Admin login</h1>
       <p className="text-mute text-sm mb-6">Sign in to manage the portfolio.</p>
       <label className="block mb-4">

@@ -17,7 +17,7 @@ export default function Services({ items = FALLBACK }: { items?: ServiceItem[] }
     <section id="services" className="max-w-[1120px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-11">
-          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.62)" }}>WHAT I DO</span>
+          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>WHAT I DO</span>
           <h2 className="font-display font-semibold text-[clamp(28px,3.6vw,40px)] mt-2 tracking-tight">Services</h2>
         </div>
       </Reveal>
@@ -28,7 +28,7 @@ export default function Services({ items = FALLBACK }: { items?: ServiceItem[] }
             <Reveal key={s.title} delay={i * 70}>
               <DiagonalCard always radius={12} padding={2} hoverLift className="h-full">
                 <div className="p-6">
-                  <div className="icon-hover w-[42px] h-[42px] rounded flex items-center justify-center text-violet mb-[18px]" style={{ border: "1px solid rgba(180,92,255,0.18)", background: "rgba(139,47,224,0.05)" }}>
+                  <div className="icon-hover w-[42px] h-[42px] rounded flex items-center justify-center text-violet mb-[18px]" style={{ border: "1px solid rgba(180,92,255,0.122)", background: "rgba(139,47,224,0.034)" }}>
                     <Icon size={18} />
                   </div>
                   <h4 className="font-display font-semibold text-[17px] mb-2">{s.title}</h4>

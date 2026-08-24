@@ -35,7 +35,7 @@ export default function FAQ({ items = FALLBACK }: { items?: FAQItem[] }) {
     <section className="max-w-[780px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-10">
-          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.62)" }}>FAQ</span>
+          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>FAQ</span>
           <h2 className="font-display font-semibold text-[clamp(26px,3.2vw,36px)] mt-2 tracking-tight">Common questions</h2>
         </div>
       </Reveal>

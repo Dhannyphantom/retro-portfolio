@@ -33,7 +33,7 @@ export default function Sidebar() {
               key={l.href}
               href={l.href}
               className="flex items-center gap-2.5 text-sm rounded px-3 py-2.5 transition-colors"
-              style={{ color: active ? "#F3F0F7" : "#A79FB8", background: active ? "rgba(139,47,224,0.12)" : "transparent" }}
+              style={{ color: active ? "#F3F0F7" : "#A79FB8", background: active ? "rgba(139,47,224,0.082)" : "transparent" }}
             >
               <l.icon size={16} /> {l.label}
             </Link>

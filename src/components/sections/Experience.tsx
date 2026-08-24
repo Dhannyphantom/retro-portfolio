@@ -12,17 +12,17 @@ export default function Experience({ items = FALLBACK }: { items?: ExperienceIte
     <section id="experience" className="max-w-[1120px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-11">
-          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.62)" }}>THE JOURNEY</span>
+          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>THE JOURNEY</span>
           <h2 className="font-display font-semibold text-[clamp(28px,3.6vw,40px)] mt-2 tracking-tight">Experience</h2>
         </div>
       </Reveal>
       <div className="relative max-w-[760px] mx-auto">
-        <div className="absolute left-[7px] top-2 bottom-2 w-0.5" style={{ background: "linear-gradient(180deg, rgba(180,92,255,0.32), rgba(139,47,224,0.03))" }} />
+        <div className="absolute left-[7px] top-2 bottom-2 w-0.5" style={{ background: "linear-gradient(180deg, rgba(180,92,255,0.218), rgba(139,47,224,0.02))" }} />
         {items.map((e, i) => (
           <Reveal key={e.role + e.organization} delay={i * 100} className={`relative pl-10 ${i === items.length - 1 ? "" : "mb-9"}`}>
             <div
               className="absolute left-0 top-1 w-4 h-4 rounded-full bg-ink"
-              style={{ border: "2px solid #B45CFF", boxShadow: i === 0 ? "0 0 8px 1px rgba(180,92,255,0.32)" : "none" }}
+              style={{ border: "2px solid #B45CFF", boxShadow: i === 0 ? "0 0 8px 1px rgba(180,92,255,0.218)" : "none" }}
             />
             <div className="flex justify-between items-baseline flex-wrap gap-2 mb-2">
               <h4 className="font-display font-semibold text-lg">

@@ -19,7 +19,7 @@ export default async function CVPage() {
 
   return (
     <div className="max-w-[700px] mx-auto px-7 pt-24 pb-32 text-center">
-      <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.62)" }}>RESUME</span>
+      <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>RESUME</span>
       <h1 className="font-display font-bold text-[clamp(28px,4vw,42px)] tracking-tight mt-3 mb-5">
         {settings?.name || "Daniel Olojo"}
       </h1>

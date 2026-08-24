@@ -33,7 +33,7 @@ export default function ProjectsArchive() {
       <Reveal>
         <div className="flex justify-between items-end flex-wrap gap-5 mb-9">
           <div>
-            <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.62)" }}>ARCHIVE</span>
+            <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>ARCHIVE</span>
             <h1 className="font-display font-semibold text-[clamp(28px,3.6vw,42px)] mt-2 tracking-tight">All projects</h1>
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -69,7 +69,7 @@ export default function ProjectsArchive() {
                   <div>
                     <SafeImage src={p.thumbnail} className="w-full h-[170px] object-cover" iconSize={28} />
                     <div className="p-5">
-                      <span className="text-[11px] font-mono px-2 py-1 rounded" style={{ color: "rgba(180,92,255,0.62)", background: "rgba(139,47,224,0.05)" }}>{p.category}</span>
+                      <span className="text-[11px] font-mono px-2 py-1 rounded" style={{ color: "rgba(180,92,255,0.422)", background: "rgba(139,47,224,0.034)" }}>{p.category}</span>
                       <h3 className="font-display font-semibold text-lg mt-3 mb-1.5">{p.title}</h3>
                       <p className="text-mute text-[13px] leading-relaxed">{p.description}</p>
                       <div className="flex items-center gap-1 text-violet text-[13px] mt-4">

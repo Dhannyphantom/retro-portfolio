@@ -43,7 +43,7 @@ export default function Contact() {
       <div className="hover-card relative overflow-hidden rounded-2xl p-8 sm:p-11 grid grid-cols-1 md:grid-cols-2 gap-12" style={{ border: "1px solid rgba(243,240,247,0.09)", background: "linear-gradient(135deg, #110C18, #07050B)" }}>
         <div className="absolute -top-20 -right-20 w-[260px] h-[260px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, #8B2FE0 0%, transparent 70%)", opacity: 0.1 }} />
         <Reveal from="left">
-          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.62)" }}>CONTACTS</span>
+          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>CONTACTS</span>
           <h2 className="font-display font-semibold text-[clamp(26px,3.2vw,36px)] mt-2.5 mb-4 tracking-tight">
             Have a project?<br />Let&apos;s talk.
           </h2>
@@ -62,7 +62,7 @@ export default function Contact() {
         <Reveal from="right" delay={80}>
           {sent ? (
             <div className="flex flex-col justify-center h-full items-start">
-              <div className="w-[46px] h-[46px] rounded flex items-center justify-center mb-4 text-violet" style={{ background: "rgba(180,92,255,0.1)", border: "1px solid rgba(180,92,255,0.26)" }}>✓</div>
+              <div className="w-[46px] h-[46px] rounded flex items-center justify-center mb-4 text-violet" style={{ background: "rgba(180,92,255,0.068)", border: "1px solid rgba(180,92,255,0.177)" }}>✓</div>
               <h3 className="font-display text-xl mb-2">Message sent</h3>
               <p className="text-mute text-sm mb-[18px]">Thanks — I&apos;ll reply soon.</p>
               <button onClick={() => setSent(false)} className="text-violet text-[13.5px]">Send another message</button>

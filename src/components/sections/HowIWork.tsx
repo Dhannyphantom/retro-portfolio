@@ -16,7 +16,7 @@ export default function HowIWork() {
     <section className="max-w-[1120px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-12">
-          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.62)" }}>FROM IDEA TO PRODUCT</span>
+          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>FROM IDEA TO PRODUCT</span>
           <h2 className="font-display font-semibold text-[clamp(28px,3.6vw,40px)] mt-2 tracking-tight">How I work</h2>
         </div>
       </Reveal>
@@ -33,7 +33,7 @@ export default function HowIWork() {
               <div className="font-display font-semibold text-sm">{w.title}</div>
               <div className="text-[11.5px] text-mute mt-1">{w.desc}</div>
             </div>
-            {i < STEPS.length - 1 && <div className="hidden sm:block w-7 h-px mx-1 mb-10" style={{ background: "rgba(180,92,255,0.22)" }} />}
+            {i < STEPS.length - 1 && <div className="hidden sm:block w-7 h-px mx-1 mb-10" style={{ background: "rgba(180,92,255,0.15)" }} />}
           </Reveal>
         ))}
       </div>

@@ -6,7 +6,7 @@ export default function BigCTA() {
   return (
     <section className="max-w-[1120px] mx-auto px-7 pt-10 pb-[90px]">
       <Reveal>
-        <div className="relative overflow-hidden text-center rounded-[20px] p-[70px_30px]" style={{ border: "1px solid rgba(180,92,255,0.16)", background: "linear-gradient(160deg, #110C18, #07050B)" }}>
+        <div className="relative overflow-hidden text-center rounded-[20px] p-[70px_30px]" style={{ border: "1px solid rgba(180,92,255,0.109)", background: "linear-gradient(160deg, #110C18, #07050B)" }}>
           <div
             className="absolute -top-[30%] left-1/2 -translate-x-1/2 w-[500px] h-[300px] blur-[10px]"
             style={{ background: "radial-gradient(ellipse, #8B2FE0 0%, transparent 70%)", opacity: 0.12 }}

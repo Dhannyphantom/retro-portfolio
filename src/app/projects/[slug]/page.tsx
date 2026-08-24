@@ -32,10 +32,11 @@ async function getNeighbors(slug: string) {
   }
 }
 
-export default async function ProjectCaseStudy({ params }: { params: { slug: string } }) {
-  const project = await getProject(params.slug);
+export default async function ProjectCaseStudy({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const project = await getProject(slug);
   if (!project) notFound();
-  const { prev, next } = await getNeighbors(params.slug);
+  const { prev, next } = await getNeighbors(slug);
 
   return (
     <div className="max-w-[900px] mx-auto px-7 pt-14 pb-24">
@@ -43,12 +44,12 @@ export default async function ProjectCaseStudy({ params }: { params: { slug: str
         <Link href="/projects" className="inline-flex items-center gap-1.5 text-mute text-sm mb-8 hover:text-paper transition-colors">
           <ArrowLeft size={15} /> Back to projects
         </Link>
-        <span className="text-[11px] font-mono px-2 py-1 rounded" style={{ color: "rgba(180,92,255,0.62)", background: "rgba(139,47,224,0.05)" }}>{project.category}</span>
+        <span className="text-[11px] font-mono px-2 py-1 rounded" style={{ color: "rgba(180,92,255,0.422)", background: "rgba(139,47,224,0.034)" }}>{project.category}</span>
         <h1 className="font-display font-bold text-[clamp(30px,4.4vw,48px)] tracking-tight mt-3 mb-4">{project.title}</h1>
         <p className="text-mute text-lg leading-relaxed mb-8">{project.description}</p>
 
         {project.thumbnail && (
-          <div className="rounded-2xl overflow-hidden mb-10" style={{ border: "1px solid rgba(180,92,255,0.2)" }}>
+          <div className="rounded-2xl overflow-hidden mb-10" style={{ border: "1px solid rgba(180,92,255,0.136)" }}>
             <SafeImage src={project.thumbnail} className="w-full h-[380px] object-cover" iconSize={40} />
           </div>
         )}
@@ -104,7 +105,7 @@ export default async function ProjectCaseStudy({ params }: { params: { slug: str
 
         <div className="flex flex-wrap gap-2 mb-14">
           {project.technologies.map((t) => (
-            <span key={t} className="text-[12px] font-mono px-2.5 py-1.5 rounded" style={{ color: "rgba(180,92,255,0.62)", background: "rgba(139,47,224,0.05)", border: "1px solid rgba(180,92,255,0.18)" }}>{t}</span>
+            <span key={t} className="text-[12px] font-mono px-2.5 py-1.5 rounded" style={{ color: "rgba(180,92,255,0.422)", background: "rgba(139,47,224,0.034)", border: "1px solid rgba(180,92,255,0.122)" }}>{t}</span>
           ))}
         </div>
 
