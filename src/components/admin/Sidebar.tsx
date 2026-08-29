@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, FolderKanban, MessageSquare, Star, CalendarCheck, Settings, LogOut, Cpu } from "lucide-react";
+import { LayoutDashboard, FolderKanban, MessageSquare, Star, CalendarCheck, User, LogOut, Cpu } from "lucide-react";
 
 const LINKS = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
@@ -10,7 +10,7 @@ const LINKS = [
   { href: "/admin/messages", label: "Messages", icon: MessageSquare },
   { href: "/admin/testimonials", label: "Testimonials", icon: Star },
   { href: "/admin/bookings", label: "Bookings", icon: CalendarCheck },
-  { href: "/admin/settings", label: "Settings", icon: Settings },
+  { href: "/admin/profile", label: "Profile", icon: User },
 ];
 
 export default function Sidebar() {

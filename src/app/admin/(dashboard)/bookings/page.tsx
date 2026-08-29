@@ -13,5 +13,5 @@ const FIELDS = [
 ];
 
 export default function AdminBookings() {
-  return <ResourceManager collection="bookings" fields={FIELDS} titleKey="referenceId" />;
+  return <ResourceManager collection="bookings" fields={FIELDS} titleKey="referenceId" viewHref={(item) => `/admin/bookings/${item._id}`} />;
 }

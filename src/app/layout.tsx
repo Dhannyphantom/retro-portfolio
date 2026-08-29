@@ -5,31 +5,37 @@ import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/layout/CustomCursor";
 import MatrixRain from "@/components/layout/MatrixRain";
+import { getSiteSettings } from "@/lib/settings";
 
 const display = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-display" });
 const body = Inter({ subsets: ["latin"], variable: "--font-body" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
-export const metadata: Metadata = {
-  title: "Daniel Olojo — Software Developer",
-  description: "Software developer building mobile, web and backend products that hold up under real use.",
-  openGraph: {
-    title: "Daniel Olojo — Software Developer",
-    description: "Mobile, web and backend products that hold up under real use.",
-    type: "website",
-  },
-  twitter: { card: "summary_large_image" },
-};
+// Dynamic — reads from the same Profile data managed at /admin/profile, so
+// editing your name/title/bio there updates the browser tab title and social
+// share previews too, not just the visible page content.
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const title = `${settings.name} — ${settings.title}`;
+  return {
+    title,
+    description: settings.bio,
+    openGraph: { title, description: settings.bio, type: "website" },
+    twitter: { card: "summary_large_image" },
+  };
+}
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body className="font-body bg-ink text-paper min-h-screen relative overflow-x-hidden">
         <MatrixRain />
         <CustomCursor />
-        <Nav />
+        <Nav name={settings.name} />
         <main className="relative z-10">{children}</main>
-        <Footer />
+        <Footer name={settings.name} bio={settings.bio} email={settings.email} socials={settings.socials} />
       </body>
     </html>
   );

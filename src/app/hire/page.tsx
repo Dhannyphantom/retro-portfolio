@@ -20,6 +20,7 @@ export default function HirePage() {
   const [form, setForm] = useState(EMPTY);
   const [submitting, setSubmitting] = useState(false);
   const [refId, setRefId] = useState("");
+  const [setupLink, setSetupLink] = useState("");
   const [error, setError] = useState("");
 
   const set = (k: keyof typeof EMPTY, v: string | string[]) => setForm((f) => ({ ...f, [k]: v }));
@@ -50,6 +51,9 @@ export default function HirePage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed");
       setRefId(data.referenceId);
+      if (data.needsPasswordSetup && data.setupToken) {
+        setSetupLink(`/account/setup?token=${encodeURIComponent(data.setupToken)}`);
+      }
     } catch {
       setError("Couldn't submit that just now — please try again.");
     } finally {
@@ -66,7 +70,19 @@ export default function HirePage() {
           </div>
           <h1 className="font-display font-bold text-3xl mb-3">Request received</h1>
           <p className="text-mute mb-2">Thanks — I&apos;ll review this and get back to you within a day or two.</p>
-          <p className="font-mono text-sm text-violet">Reference: {refId}</p>
+          <p className="font-mono text-sm text-violet mb-8">Reference: {refId}</p>
+
+          {setupLink && (
+            <div className="rounded-xl p-6 text-left" style={{ border: "1px solid rgba(180,92,255,0.204)", background: "rgba(139,47,224,0.05)" }}>
+              <h3 className="font-display font-semibold text-lg mb-2">Set up your project dashboard</h3>
+              <p className="text-mute text-sm mb-4">
+                Track messages, milestones, and payments for this project in one place. Set a password to get in.
+              </p>
+              <a href={setupLink} className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded bg-gradient-to-r from-purple to-purple-2">
+                Set up dashboard access <ArrowRight size={14} />
+              </a>
+            </div>
+          )}
         </Reveal>
       </div>
     );

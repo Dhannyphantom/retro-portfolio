@@ -30,7 +30,7 @@ export default async function CVPage() {
         <CTAButton variant="primary" href={url}><Download size={15} /> Download CV</CTAButton>
       ) : (
         <p className="text-mute text-sm">
-          No CV has been uploaded yet — add one from <code>/admin/settings</code>.
+          No CV has been uploaded yet — add one from <code>/admin/profile</code>.
         </p>
       )}
     </div>

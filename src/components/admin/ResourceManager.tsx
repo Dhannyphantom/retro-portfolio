@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Plus, Pencil, Trash2, X } from "lucide-react";
+import Link from "next/link";
+import { Plus, Pencil, Trash2, X, ExternalLink } from "lucide-react";
 
 export type FieldConfig = {
   key: string;
@@ -11,27 +12,43 @@ export type FieldConfig = {
 // A single reusable table + form UI that drives every simple admin collection
 // (projects, experience, services, rate cards, testimonials, faqs, skills...)
 // through the generic /api/admin/[collection] endpoints. `titleKey` picks
-// which field to show as each row's headline in the table.
+// which field to show as each row's headline in the table. `viewHref`, if
+// given, adds a link per row (used by bookings to open the detail/thread page
+// instead of the generic edit modal for that row).
 export default function ResourceManager({
   collection,
   fields,
   titleKey,
+  viewHref,
 }: {
   collection: string;
   fields: FieldConfig[];
   titleKey: string;
+  viewHref?: (item: any) => string;
 }) {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
   const [editing, setEditing] = useState<any | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState("");
 
   const load = () => {
     setLoading(true);
+    setLoadError("");
     fetch(`/api/admin/${collection}`)
-      .then((r) => r.json())
-      .then((d) => setItems(d.items || []))
+      .then(async (r) => {
+        const d = await r.json().catch(() => ({}));
+        if (!r.ok) {
+          throw new Error(
+            r.status === 401
+              ? "Your admin session has expired — log out and back in, then try again."
+              : d.error || `Request failed (${r.status})`
+          );
+        }
+        setItems(d.items || []);
+      })
+      .catch((err) => setLoadError(err.message || "Couldn't load this data."))
       .finally(() => setLoading(false));
   };
 
@@ -67,7 +84,12 @@ export default function ResourceManager({
 
   const remove = async (id: string) => {
     if (!confirm("Delete this item? This cannot be undone.")) return;
-    await fetch(`/api/admin/${collection}/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/admin/${collection}/${id}`, { method: "DELETE" });
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}));
+      alert(d.error || "Couldn't delete that item.");
+      return;
+    }
     load();
   };
 
@@ -82,6 +104,12 @@ export default function ResourceManager({
 
       {loading ? (
         <p className="text-mute text-sm">Loading…</p>
+      ) : loadError ? (
+        <div className="rounded-lg px-4 py-3.5 text-sm" style={{ border: "1px solid rgba(226,75,74,0.35)", background: "rgba(226,75,74,0.08)", color: "#F3F0F7" }}>
+          <p className="font-medium mb-1">Couldn&apos;t load {collection}</p>
+          <p className="text-mute text-[13px]">{loadError}</p>
+          <button onClick={load} className="mt-3 text-[13px] text-violet">Try again</button>
+        </div>
       ) : items.length === 0 ? (
         <p className="text-mute text-sm">Nothing here yet — click New to add the first one.</p>
       ) : (
@@ -90,6 +118,11 @@ export default function ResourceManager({
             <div key={item._id} className="flex items-center justify-between px-4 py-3.5 border-b border-white/[0.06] last:border-b-0">
               <span className="text-sm truncate pr-4">{item[titleKey] || "(untitled)"}</span>
               <div className="flex gap-2 flex-shrink-0">
+                {viewHref && (
+                  <Link href={viewHref(item)} className="icon-hover w-8 h-8 rounded flex items-center justify-center" style={{ border: "1px solid rgba(243,240,247,0.12)" }}>
+                    <ExternalLink size={14} />
+                  </Link>
+                )}
                 <button onClick={() => openEdit(item)} className="icon-hover w-8 h-8 rounded flex items-center justify-center" style={{ border: "1px solid rgba(243,240,247,0.12)" }}>
                   <Pencil size={14} />
                 </button>
