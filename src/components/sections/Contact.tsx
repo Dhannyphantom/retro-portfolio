@@ -1,6 +1,7 @@
 "use client";
 import { useState, FormEvent } from "react";
-import { Github, Linkedin, Mail, ArrowUpRight, MapPin, Clock } from "lucide-react";
+import Link from "next/link";
+import { Github, Linkedin, Mail, ArrowUpRight, MapPin, Clock, LogIn } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import CTAButton from "@/components/ui/CTAButton";
 
@@ -49,13 +50,16 @@ export default function Contact() {
           <p className="text-mute text-[15px] leading-relaxed mb-5 max-w-[380px]">Tell me what you&apos;re building and I&apos;ll get back within a day or two.</p>
           <div className="flex items-center gap-2 text-mute text-[13px] mb-2"><MapPin size={14} /> Remote — open worldwide</div>
           <div className="flex items-center gap-2 text-mute text-[13px] mb-[22px]"><Clock size={14} /> Usually replies within 1–2 days</div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 mb-5">
             {[Github, Linkedin, Mail].map((Icon, idx) => (
               <a key={idx} href="#" className="icon-hover w-[42px] h-[42px] rounded flex items-center justify-center" style={{ border: "1px solid rgba(243,240,247,0.12)" }}>
                 <Icon size={17} />
               </a>
             ))}
           </div>
+          <Link href="/account/login" className="inline-flex items-center gap-1.5 text-[13px] text-violet">
+            <LogIn size={14} /> Already a client? Log in to your project dashboard
+          </Link>
         </Reveal>
 
         <Reveal from="right" delay={80}>

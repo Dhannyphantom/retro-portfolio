@@ -5,7 +5,9 @@ import { getUserSession } from "@/lib/userAuth";
 import { connectDB } from "@/lib/mongodb";
 import Booking from "@/models/Booking";
 import ThreadPanel from "@/components/account/ThreadPanel";
+import ProjectReview from "@/components/account/ProjectReview";
 import SafeImage from "@/components/ui/SafeImage";
+import { formatMoney } from "@/lib/currency";
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -37,15 +39,15 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
         <div className="rounded-xl p-5" style={{ border: "1px solid rgba(243,240,247,0.09)", background: "#131115" }}>
           <div className="text-mute text-[12.5px] mb-1.5">Total budget</div>
-          <div className="font-display font-bold text-2xl">{b.totalBudget ? `$${b.totalBudget.toLocaleString()}` : "Not yet agreed"}</div>
+          <div className="font-display font-bold text-2xl">{b.totalBudget ? formatMoney(b.totalBudget, b.currency) : "Not yet agreed"}</div>
         </div>
         <div className="rounded-xl p-5" style={{ border: "1px solid rgba(243,240,247,0.09)", background: "#131115" }}>
           <div className="text-mute text-[12.5px] mb-1.5">Paid so far</div>
-          <div className="font-display font-bold text-2xl">${(b.amountPaid || 0).toLocaleString()}</div>
+          <div className="font-display font-bold text-2xl">{formatMoney(b.amountPaid || 0, b.currency)}</div>
         </div>
         <div className="rounded-xl p-5" style={{ border: "1px solid rgba(243,240,247,0.09)", background: "#131115" }}>
           <div className="text-mute text-[12.5px] mb-1.5">Outstanding</div>
-          <div className="font-display font-bold text-2xl">${outstanding.toLocaleString()}</div>
+          <div className="font-display font-bold text-2xl">{formatMoney(outstanding, b.currency)}</div>
         </div>
       </div>
 
@@ -94,11 +96,10 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         )}
       </div>
 
-      <div>
-        <h2 className="font-display font-semibold text-lg mb-4">Conversation</h2>
-        <p className="text-mute text-[13px] mb-4">Discuss scope, budget and timeline here — when we agree on terms, I&apos;ll send a proposal you can approve, which updates everything above automatically.</p>
-        <ThreadPanel bookingId={b._id.toString()} viewerRole="client" />
-      </div>
+      <ProjectReview bookingId={b._id.toString()} />
+
+      <p className="text-mute text-[13px] mb-2">Use the chat icon on the right to discuss scope, budget and timeline — when we agree on terms, I&apos;ll send a proposal you can approve, which updates everything above automatically.</p>
+      <ThreadPanel bookingId={b._id.toString()} viewerRole="client" />
     </div>
   );
 }

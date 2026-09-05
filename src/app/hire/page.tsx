@@ -3,27 +3,38 @@ import { useState, FormEvent } from "react";
 import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import CTAButton from "@/components/ui/CTAButton";
+import FileUpload from "@/components/ui/FileUpload";
 
 const STEPS = ["About you", "Your project", "Budget & timeline", "Requirements", "Review"];
 
 const EMPTY = {
   name: "", email: "", company: "", phone: "",
   projectType: "", description: "",
-  budget: "", timeline: "",
-  servicesNeeded: [] as string[], preferredContact: "", preferredStartDate: "", notes: "",
+  budget: "", timeline: "", preferredStartDate: "",
+  documentUrl: "", documentName: "",
+  servicesNeeded: [] as string[], preferredContact: "", notes: "",
 };
 
 const SERVICE_OPTIONS = ["Mobile app", "Web app", "Backend / API", "MVP", "Performance work", "Ongoing maintenance"];
+const BUDGET_OPTIONS = ["Under $1,000", "$1,000 – $3,000", "$3,000 – $7,000", "$7,000 – $15,000", "$15,000+", "Not sure yet"];
+const TIMELINE_OPTIONS = ["ASAP", "2–4 weeks", "1–2 months", "3–6 months", "Flexible / no rush"];
+const CONTACT_OPTIONS = ["Email", "Phone call", "WhatsApp", "Video call"];
+
+type Errors = Partial<Record<keyof typeof EMPTY, string>>;
 
 export default function HirePage() {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState(EMPTY);
+  const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
   const [refId, setRefId] = useState("");
   const [setupLink, setSetupLink] = useState("");
   const [error, setError] = useState("");
 
-  const set = (k: keyof typeof EMPTY, v: string | string[]) => setForm((f) => ({ ...f, [k]: v }));
+  const set = (k: keyof typeof EMPTY, v: string | string[]) => {
+    setForm((f) => ({ ...f, [k]: v }));
+    if (errors[k]) setErrors((e) => ({ ...e, [k]: undefined }));
+  };
 
   const toggleService = (s: string) => {
     setForm((f) => ({
@@ -32,10 +43,23 @@ export default function HirePage() {
     }));
   };
 
-  const canNext = () => {
-    if (step === 0) return form.name.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
-    if (step === 1) return form.projectType.trim() && form.description.trim();
-    return true;
+  const validateStep = (): Errors => {
+    const next: Errors = {};
+    if (step === 0) {
+      if (!form.name.trim()) next.name = "Enter your name.";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = "Enter a valid email.";
+    }
+    if (step === 1) {
+      if (!form.projectType.trim()) next.projectType = "Tell me what kind of project this is.";
+      if (!form.description.trim()) next.description = "Add a short description.";
+    }
+    return next;
+  };
+
+  const goNext = () => {
+    const next = validateStep();
+    setErrors(next);
+    if (Object.keys(next).length === 0) setStep((s) => s + 1);
   };
 
   const submit = async (e: FormEvent) => {
@@ -106,25 +130,45 @@ export default function HirePage() {
         <form onSubmit={submit} className="flex flex-col gap-4">
           {step === 0 && (
             <>
-              <Field label="Your name"><input value={form.name} onChange={(e) => set("name", e.target.value)} className={inputClass} /></Field>
-              <Field label="Email"><input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} className={inputClass} /></Field>
-              <Field label="Company (optional)"><input value={form.company} onChange={(e) => set("company", e.target.value)} className={inputClass} /></Field>
-              <Field label="Phone (optional)"><input value={form.phone} onChange={(e) => set("phone", e.target.value)} className={inputClass} /></Field>
+              <Field label="Your name" error={errors.name}><input value={form.name} onChange={(e) => set("name", e.target.value)} className={inputClass(!!errors.name)} /></Field>
+              <Field label="Email" error={errors.email}><input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} className={inputClass(!!errors.email)} /></Field>
+              <Field label="Company (optional)"><input value={form.company} onChange={(e) => set("company", e.target.value)} className={inputClass(false)} /></Field>
+              <Field label="Phone (optional)"><input value={form.phone} onChange={(e) => set("phone", e.target.value)} className={inputClass(false)} /></Field>
             </>
           )}
 
           {step === 1 && (
             <>
-              <Field label="Project type"><input value={form.projectType} onChange={(e) => set("projectType", e.target.value)} placeholder="e.g. Mobile app, MVP, redesign" className={inputClass} /></Field>
-              <Field label="Describe the project"><textarea rows={5} value={form.description} onChange={(e) => set("description", e.target.value)} className={`${inputClass} resize-none`} /></Field>
+              <Field label="Project type" error={errors.projectType}>
+                <input value={form.projectType} onChange={(e) => set("projectType", e.target.value)} placeholder="e.g. Mobile app, MVP, redesign" className={inputClass(!!errors.projectType)} />
+              </Field>
+              <Field label="Describe the project" error={errors.description}>
+                <textarea rows={5} value={form.description} onChange={(e) => set("description", e.target.value)} className={`${inputClass(!!errors.description)} resize-none`} />
+              </Field>
+              <FileUpload
+                folder="booking-documents"
+                onUploaded={(url, filename) => { set("documentUrl", url); set("documentName", filename); }}
+              />
             </>
           )}
 
           {step === 2 && (
             <>
-              <Field label="Budget range"><input value={form.budget} onChange={(e) => set("budget", e.target.value)} placeholder="e.g. $1,000 – $3,000" className={inputClass} /></Field>
-              <Field label="Desired timeline"><input value={form.timeline} onChange={(e) => set("timeline", e.target.value)} placeholder="e.g. 4–6 weeks" className={inputClass} /></Field>
-              <Field label="Preferred start date (optional)"><input value={form.preferredStartDate} onChange={(e) => set("preferredStartDate", e.target.value)} className={inputClass} /></Field>
+              <Field label="Budget range">
+                <select value={form.budget} onChange={(e) => set("budget", e.target.value)} className={inputClass(false)}>
+                  <option value="">Select a range…</option>
+                  {BUDGET_OPTIONS.map((b) => <option key={b} value={b}>{b}</option>)}
+                </select>
+              </Field>
+              <Field label="Desired timeline">
+                <select value={form.timeline} onChange={(e) => set("timeline", e.target.value)} className={inputClass(false)}>
+                  <option value="">Select a timeline…</option>
+                  {TIMELINE_OPTIONS.map((t) => <option key={t} value={t}>{t}</option>)}
+                </select>
+              </Field>
+              <Field label="Preferred start date (optional)">
+                <input type="date" value={form.preferredStartDate} onChange={(e) => set("preferredStartDate", e.target.value)} className={inputClass(false)} />
+              </Field>
             </>
           )}
 
@@ -147,8 +191,13 @@ export default function HirePage() {
                   ))}
                 </div>
               </Field>
-              <Field label="Preferred contact method"><input value={form.preferredContact} onChange={(e) => set("preferredContact", e.target.value)} placeholder="Email, call, WhatsApp..." className={inputClass} /></Field>
-              <Field label="Anything else? (optional)"><textarea rows={3} value={form.notes} onChange={(e) => set("notes", e.target.value)} className={`${inputClass} resize-none`} /></Field>
+              <Field label="Preferred contact method">
+                <select value={form.preferredContact} onChange={(e) => set("preferredContact", e.target.value)} className={inputClass(false)}>
+                  <option value="">Select…</option>
+                  {CONTACT_OPTIONS.map((c) => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </Field>
+              <Field label="Anything else? (optional)"><textarea rows={3} value={form.notes} onChange={(e) => set("notes", e.target.value)} className={`${inputClass(false)} resize-none`} /></Field>
             </>
           )}
 
@@ -159,6 +208,8 @@ export default function HirePage() {
               <p><strong className="text-paper">Project:</strong> {form.projectType}</p>
               <p><strong className="text-paper">Budget:</strong> {form.budget || "—"}</p>
               <p><strong className="text-paper">Timeline:</strong> {form.timeline || "—"}</p>
+              <p><strong className="text-paper">Start date:</strong> {form.preferredStartDate || "—"}</p>
+              <p><strong className="text-paper">Document:</strong> {form.documentName || "—"}</p>
               <p><strong className="text-paper">Services:</strong> {form.servicesNeeded.join(", ") || "—"}</p>
             </div>
           )}
@@ -173,7 +224,7 @@ export default function HirePage() {
             ) : <span />}
 
             {step < STEPS.length - 1 ? (
-              <CTAButton variant="primary" onClick={() => canNext() && setStep((s) => s + 1)}>
+              <CTAButton variant="primary" onClick={goNext}>
                 Continue <ArrowRight size={15} />
               </CTAButton>
             ) : (
@@ -188,13 +239,15 @@ export default function HirePage() {
   );
 }
 
-const inputClass = "w-full rounded px-3.5 py-3 text-[14.5px] outline-none bg-white/[0.04] border border-white/[0.12]";
+const inputClass = (hasError: boolean) =>
+  `w-full rounded px-3.5 py-3 text-[14.5px] outline-none bg-white/[0.04] border ${hasError ? "" : "border-white/[0.12]"}`;
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, children, error }: { label: string; children: React.ReactNode; error?: string }) {
   return (
     <label className="block">
       <span className="block text-[13px] text-mute mb-1.5">{label}</span>
-      {children}
+      <div style={error ? { borderRadius: 4, boxShadow: "0 0 0 1px #E24B4A" } : undefined}>{children}</div>
+      {error && <p className="text-[12px] mt-1.5" style={{ color: "#E24B4A" }}>{error}</p>}
     </label>
   );
 }

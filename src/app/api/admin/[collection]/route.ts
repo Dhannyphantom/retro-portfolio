@@ -24,6 +24,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ col
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { collection } = await params;
+  if (collection === "bookings") {
+    return NextResponse.json({ error: "Bookings are created by clients through /hire, not manually." }, { status: 403 });
+  }
+
   const Model = REGISTRY[collection];
   if (!Model) return NextResponse.json({ error: "Unknown collection" }, { status: 404 });
 

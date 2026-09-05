@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
+import { CURRENCIES } from "@/lib/currency";
 
-export default function BudgetEditor({ bookingId, totalBudget, amountPaid }: { bookingId: string; totalBudget?: number; amountPaid?: number }) {
+export default function BudgetEditor({ bookingId, totalBudget, amountPaid, currency }: { bookingId: string; totalBudget?: number; amountPaid?: number; currency?: string }) {
   const [total, setTotal] = useState(totalBudget || 0);
   const [paid, setPaid] = useState(amountPaid || 0);
+  const [curr, setCurr] = useState(currency || "USD");
   const [saved, setSaved] = useState(false);
 
   const save = async () => {
@@ -11,7 +13,7 @@ export default function BudgetEditor({ bookingId, totalBudget, amountPaid }: { b
     await fetch(`/api/admin/bookings/${bookingId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ totalBudget: Number(total), amountPaid: Number(paid) }),
+      body: JSON.stringify({ totalBudget: Number(total), amountPaid: Number(paid), currency: curr }),
     });
     setSaved(true);
   };
@@ -21,13 +23,19 @@ export default function BudgetEditor({ bookingId, totalBudget, amountPaid }: { b
   return (
     <div className="rounded-xl p-5" style={{ border: "1px solid rgba(243,240,247,0.09)", background: "#131115" }}>
       <h2 className="font-display font-semibold text-lg mb-4">Budget & payments</h2>
+      <label className="block mb-3">
+        <span className="block text-[12.5px] text-mute mb-1.5">Currency</span>
+        <select value={curr} onChange={(e) => setCurr(e.target.value)} className={input}>
+          {CURRENCIES.map((c) => <option key={c.code} value={c.code}>{c.label}</option>)}
+        </select>
+      </label>
       <div className="grid grid-cols-2 gap-3 mb-3">
         <label className="block">
-          <span className="block text-[12.5px] text-mute mb-1.5">Total budget (USD)</span>
+          <span className="block text-[12.5px] text-mute mb-1.5">Total budget</span>
           <input type="number" value={total} onChange={(e) => setTotal(Number(e.target.value))} className={input} />
         </label>
         <label className="block">
-          <span className="block text-[12.5px] text-mute mb-1.5">Amount paid (USD)</span>
+          <span className="block text-[12.5px] text-mute mb-1.5">Amount paid</span>
           <input type="number" value={paid} onChange={(e) => setPaid(Number(e.target.value))} className={input} />
         </label>
       </div>
@@ -36,7 +44,7 @@ export default function BudgetEditor({ bookingId, totalBudget, amountPaid }: { b
       <p className="text-mute text-[12px] mt-3">
         Note: setting a total budget here is a manual override — the normal flow is sending a
         proposal in the conversation, which the client approves and which fills this in
-        automatically.
+        automatically (in USD; adjust currency here afterward if needed).
       </p>
     </div>
   );

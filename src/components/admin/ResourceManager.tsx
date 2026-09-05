@@ -20,11 +20,17 @@ export default function ResourceManager({
   fields,
   titleKey,
   viewHref,
+  hideCreate,
+  hideEdit,
+  title,
 }: {
   collection: string;
   fields: FieldConfig[];
   titleKey: string;
   viewHref?: (item: any) => string;
+  hideCreate?: boolean;
+  hideEdit?: boolean;
+  title?: string;
 }) {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -96,10 +102,12 @@ export default function ResourceManager({
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
-        <h1 className="font-display font-semibold text-2xl capitalize">{collection}</h1>
-        <button onClick={openNew} className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded bg-gradient-to-r from-purple to-purple-2">
-          <Plus size={15} /> New
-        </button>
+        <h1 className="font-display font-semibold text-2xl capitalize">{title || collection}</h1>
+        {!hideCreate && (
+          <button onClick={openNew} className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded bg-gradient-to-r from-purple to-purple-2">
+            <Plus size={15} /> New
+          </button>
+        )}
       </div>
 
       {loading ? (
@@ -123,9 +131,11 @@ export default function ResourceManager({
                     <ExternalLink size={14} />
                   </Link>
                 )}
-                <button onClick={() => openEdit(item)} className="icon-hover w-8 h-8 rounded flex items-center justify-center" style={{ border: "1px solid rgba(243,240,247,0.12)" }}>
-                  <Pencil size={14} />
-                </button>
+                {!hideEdit && (
+                  <button onClick={() => openEdit(item)} className="icon-hover w-8 h-8 rounded flex items-center justify-center" style={{ border: "1px solid rgba(243,240,247,0.12)" }}>
+                    <Pencil size={14} />
+                  </button>
+                )}
                 <button onClick={() => remove(item._id)} className="icon-hover w-8 h-8 rounded flex items-center justify-center text-red-400" style={{ border: "1px solid rgba(243,240,247,0.12)" }}>
                   <Trash2 size={14} />
                 </button>

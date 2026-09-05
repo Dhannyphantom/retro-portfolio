@@ -106,6 +106,30 @@ body {
 
 .blink-cursor { animation: blink 1s steps(1) infinite; }
 
+/* Native <select> dropdown lists ignore most CSS and fall back to the OS/
+   browser's light theme by default, which is how "options" end up unreadable
+   on a dark site. `color-scheme: dark` tells the browser to render native
+   form UI (including the popup option list) in its dark variant, and the
+   explicit background/color below cover the browsers that need it spelled
+   out directly rather than inferred from color-scheme alone. */
+select {
+  color-scheme: dark;
+  background-color: #131115;
+  color: #F3F0F7;
+}
+select option {
+  background-color: #131115;
+  color: #F3F0F7;
+}
+input[type="date"] {
+  color-scheme: dark;
+}
+
+.notif-dot {
+  position: absolute; top: -3px; right: -3px; width: 9px; height: 9px; border-radius: 50%;
+  background: #B45CFF; border: 2px solid #07050B; animation: ambientGlow 1.8s ease-in-out infinite;
+}
+
 @media (max-width: 700px) { .hide-sm { display: none; } }
 
 @media (prefers-reduced-motion: reduce) {

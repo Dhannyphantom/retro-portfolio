@@ -7,6 +7,7 @@ import SplitText from "@/components/ui/SplitText";
 import SafeImage from "@/components/ui/SafeImage";
 
 const PROFILE_IMG = "https://images.unsplash.com/photo-1506863530036-1efeddceb993?auto=format&fit=crop&w=600&q=80";
+const VIEWPORT = { once: false, amount: 0.4 };
 
 export type TechBadge = { name: string; iconUrl: string };
 const DEFAULT_BADGES: TechBadge[] = [
@@ -21,7 +22,8 @@ function OrbitBadge({ badge, radius, size, dur, delay, angle, appear }: { badge:
       className="absolute top-1/2 left-1/2 pointer-events-none z-20"
       style={{ width: radius * 2, height: radius * 2, marginLeft: -radius, marginTop: -radius }}
       initial={{ opacity: 0, scale: 0.4 }}
-      animate={{ opacity: 1, scale: 1 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={VIEWPORT}
       transition={{ duration: 0.6, delay: appear, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className="absolute animate-spin2" style={{ inset: 0, animationDuration: `${dur}s`, animationDelay: `${delay}s` }}>
@@ -63,7 +65,7 @@ export default function Hero({ name = "Daniel", headline = "Software Developer",
       <div>
         <motion.p
           className="font-display text-[22px] text-violet mb-1.5"
-          initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={VIEWPORT} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
           Hello.
         </motion.p>
@@ -72,13 +74,13 @@ export default function Hero({ name = "Daniel", headline = "Software Developer",
         </h1>
         <motion.h2
           className="font-display font-bold text-[clamp(30px,4vw,44px)] leading-[1.12] tracking-tight mb-9 bg-gradient-to-r from-violet to-purple bg-clip-text text-transparent"
-          initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={VIEWPORT} transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
           {headline}
         </motion.h2>
         <motion.div
           className="flex gap-3.5 flex-wrap"
-          initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={VIEWPORT} transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
           <CTAButton href="/hire" variant="primary">Get a project</CTAButton>
           <CTAButton href="/cv" variant="outline">
@@ -101,7 +103,7 @@ export default function Hero({ name = "Daniel", headline = "Software Developer",
           <motion.div
             className="absolute inset-[3%] rounded-full overflow-hidden"
             style={{ background: "#0C0B0F", boxShadow: "inset 10px 10px 26px rgba(0,0,0,0.55), inset -8px -8px 22px rgba(255,255,255,0.025)" }}
-            initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, scale: 0.85 }} whileInView={{ opacity: 1, scale: 1 }} viewport={VIEWPORT} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
               className="absolute rounded-full animate-heroGlow"
@@ -123,11 +125,11 @@ export default function Hero({ name = "Daniel", headline = "Software Developer",
           <motion.div
             className="absolute inset-[13%] rounded-full border-2 border-purple animate-breathe z-10"
             style={{ boxShadow: "0 0 46px 10px rgba(139,47,224,0.32)" }}
-            initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, scale: 0.7 }} whileInView={{ opacity: 1, scale: 1 }} viewport={VIEWPORT} transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           />
           <motion.div
             className="absolute inset-[20%] rounded-full overflow-hidden border border-white/10 animate-ambientGlow z-10"
-            initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, scale: 0.7 }} whileInView={{ opacity: 1, scale: 1 }} viewport={VIEWPORT} transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <SafeImage src={PROFILE_IMG} alt={name} className="w-full h-full object-cover" iconSize={46} />
           </motion.div>

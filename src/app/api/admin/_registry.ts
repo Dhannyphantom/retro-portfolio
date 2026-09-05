@@ -4,11 +4,15 @@ import Service from "@/models/Service";
 import RateCard from "@/models/RateCard";
 import Testimonial from "@/models/Testimonial";
 import FAQ from "@/models/FAQ";
-import Message from "@/models/Message";
 import Booking from "@/models/Booking";
 import Skill from "@/models/Skill";
 import BlogPost from "@/models/BlogPost";
 import TechStack from "@/models/TechStack";
+import Stat from "@/models/Stat";
+import WorkflowStep from "@/models/WorkflowStep";
+import PhilosophyLine from "@/models/PhilosophyLine";
+import Photo from "@/models/Photo";
+import ProjectVideo from "@/models/ProjectVideo";
 
 // Maps a URL segment (/api/admin/<collection>) to its Mongoose model.
 // Add a new collection to the admin dashboard by adding one line here —
@@ -20,9 +24,13 @@ export const REGISTRY: Record<string, any> = {
   ratecards: RateCard,
   testimonials: Testimonial,
   faqs: FAQ,
-  messages: Message,
   bookings: Booking,
   skills: Skill,
   blogposts: BlogPost,
   techstack: TechStack,
+  stats: Stat,
+  workflowsteps: WorkflowStep,
+  philosophylines: PhilosophyLine,
+  photos: Photo,
+  projectvideos: ProjectVideo,
 };

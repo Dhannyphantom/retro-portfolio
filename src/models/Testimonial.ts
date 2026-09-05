@@ -9,6 +9,7 @@ const TestimonialSchema = new Schema(
     quote: { type: String, required: true },
     rating: { type: Number, min: 1, max: 5, default: 5 },
     project: { type: String },
+    bookingId: { type: Schema.Types.ObjectId, ref: "Booking" }, // set when submitted from a client's project dashboard
     featured: { type: Boolean, default: false },
     approved: { type: Boolean, default: true },
     order: { type: Number, default: 0 },

@@ -19,6 +19,7 @@ const SiteSettingsSchema = new Schema(
     cvEnabled: { type: Boolean, default: true },
     heroHeadline: { type: String, default: "Software Developer" },
     heroSubtext: { type: String, default: "" },
+    meetDeveloperBio: { type: String, default: "" },
   },
   { timestamps: true }
 );

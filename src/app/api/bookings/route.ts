@@ -3,9 +3,11 @@ import { z } from "zod";
 import { connectDB } from "@/lib/mongodb";
 import Booking from "@/models/Booking";
 import User from "@/models/User";
+import SiteSettings from "@/models/SiteSettings";
 import { generateRef } from "@/lib/utils";
 import { getSession } from "@/lib/auth";
 import { createSetupToken } from "@/lib/userAuth";
+import { sendEmail, bookingConfirmationEmail, adminNewBookingEmail } from "@/lib/email";
 
 const schema = z.object({
   name: z.string().min(1),
@@ -20,6 +22,8 @@ const schema = z.object({
   preferredContact: z.string().optional(),
   preferredStartDate: z.string().optional(),
   notes: z.string().optional(),
+  documentUrl: z.string().optional(),
+  documentName: z.string().optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -47,15 +51,28 @@ export async function POST(req: NextRequest) {
 
     const needsPasswordSetup = isNewAccount || !user.passwordHash;
     const setupToken = needsPasswordSetup ? await createSetupToken(email) : null;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
+    const setupUrl = setupToken ? `${siteUrl}/account/setup?token=${encodeURIComponent(setupToken)}` : null;
+
+    // Best-effort — a failed/unconfigured email should never block the booking itself.
+    sendEmail({
+      to: [{ email, name: parsed.data.name }],
+      subject: `We've got your project brief (${referenceId})`,
+      html: bookingConfirmationEmail({ name: parsed.data.name, referenceId, setupUrl }),
+    }).catch(() => {});
+
+    const settings = await SiteSettings.findOne({ key: "main" }).lean();
+    const adminEmail = (settings as any)?.email || process.env.ADMIN_EMAIL;
+    if (adminEmail) {
+      sendEmail({
+        to: [{ email: adminEmail }],
+        subject: `New booking: ${parsed.data.projectType} (${referenceId})`,
+        html: adminNewBookingEmail({ name: parsed.data.name, email, referenceId, projectType: parsed.data.projectType }),
+      }).catch(() => {});
+    }
 
     return NextResponse.json(
-      {
-        ok: true,
-        referenceId: doc.referenceId,
-        needsPasswordSetup,
-        setupToken,
-        email,
-      },
+      { ok: true, referenceId: doc.referenceId, needsPasswordSetup, setupToken, email },
       { status: 201 }
     );
   } catch (err) {

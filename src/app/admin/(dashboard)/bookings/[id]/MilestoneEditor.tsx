@@ -1,12 +1,14 @@
 "use client";
 import { useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Upload, Loader2 } from "lucide-react";
 
 type Milestone = { title: string; description?: string; dueDate?: string; status: string; media: string[] };
 
 export default function MilestoneEditor({ bookingId, milestones }: { bookingId: string; milestones: Milestone[] }) {
   const [items, setItems] = useState<Milestone[]>(milestones.length ? milestones : []);
   const [saved, setSaved] = useState(false);
+  const [uploadingIdx, setUploadingIdx] = useState<number | null>(null);
+  const [uploadError, setUploadError] = useState("");
 
   const update = (i: number, patch: Partial<Milestone>) => {
     const next = [...items];
@@ -17,6 +19,24 @@ export default function MilestoneEditor({ bookingId, milestones }: { bookingId: 
   const addMedia = (i: number, url: string) => {
     if (!url.trim()) return;
     update(i, { media: [...(items[i].media || []), url.trim()] });
+  };
+
+  const uploadMedia = async (i: number, file: File) => {
+    setUploadingIdx(i);
+    setUploadError("");
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("folder", "milestone-media");
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Upload failed");
+      addMedia(i, data.url);
+    } catch (err: any) {
+      setUploadError(err.message || "Couldn't upload that file.");
+    } finally {
+      setUploadingIdx(null);
+    }
   };
 
   const save = async () => {
@@ -55,17 +75,17 @@ export default function MilestoneEditor({ bookingId, milestones }: { bookingId: 
                 <span key={mi} className="text-[11px] px-2 py-1 rounded truncate max-w-[140px]" style={{ background: "rgba(243,240,247,0.06)" }}>{url}</span>
               ))}
             </div>
-            <input
-              placeholder="Paste image/video URL and press Enter"
-              className={input}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  addMedia(i, (e.target as HTMLInputElement).value);
-                  (e.target as HTMLInputElement).value = "";
-                }
-              }}
-            />
+            <label className="inline-flex items-center gap-1.5 text-[12.5px] text-violet cursor-pointer">
+              {uploadingIdx === i ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+              {uploadingIdx === i ? "Uploading…" : "Upload image or video"}
+              <input
+                type="file"
+                accept="image/*,video/*"
+                className="hidden"
+                onChange={(e) => e.target.files?.[0] && uploadMedia(i, e.target.files[0])}
+              />
+            </label>
+            {uploadError && <p className="text-[11.5px] mt-1" style={{ color: "#E24B4A" }}>{uploadError}</p>}
           </div>
         ))}
       </div>

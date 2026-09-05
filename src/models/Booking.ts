@@ -30,6 +30,8 @@ const BookingSchema = new Schema(
     servicesNeeded: [{ type: String }],
     preferredContact: { type: String },
     preferredStartDate: { type: String },
+    documentUrl: { type: String },
+    documentName: { type: String },
     notes: { type: String },
     status: {
       type: String,
@@ -41,8 +43,11 @@ const BookingSchema = new Schema(
     // see /api/threads/[bookingId]/approve.
     totalBudget: { type: Number, default: 0 },
     amountPaid: { type: Number, default: 0 },
+    currency: { type: String, default: "USD" },
     approvedTimeline: { type: String },
     milestones: [MilestoneSchema],
+    lastViewedByAdminAt: { type: Date },
+    lastViewedByClientAt: { type: Date },
   },
   { timestamps: true }
 );

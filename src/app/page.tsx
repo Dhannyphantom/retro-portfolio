@@ -7,6 +7,11 @@ import Testimonial from "@/models/Testimonial";
 import FAQModel from "@/models/FAQ";
 import SiteSettings from "@/models/SiteSettings";
 import TechStack from "@/models/TechStack";
+import Stat from "@/models/Stat";
+import WorkflowStep from "@/models/WorkflowStep";
+import PhilosophyLine from "@/models/PhilosophyLine";
+import Photo from "@/models/Photo";
+import ProjectVideo from "@/models/ProjectVideo";
 
 import Hero from "@/components/sections/Hero";
 import Marquee from "@/components/sections/Marquee";
@@ -27,20 +32,16 @@ import Contact from "@/components/sections/Contact";
 // Every fetch degrades gracefully: if MONGODB_URI isn't set yet (fresh clone,
 // no DB configured), each section quietly falls back to its own demo data
 // instead of crashing the page. Once you add MONGODB_URI and run `npm run seed`,
-// everything here starts reading from the database automatically.
-async function getData(): Promise<{
-  projects: any[];
-  experience: any[];
-  services: any[];
-  rateCards: any[];
-  testimonials: any[];
-  faqs: any[];
-  settings: any;
-  techstack: any[];
-}> {
+// every section on this page — literally every piece of content, not just
+// projects/testimonials — starts reading from the database and becomes
+// editable at /admin/content.
+async function getData() {
   try {
     await connectDB();
-    const [projects, experience, services, rateCards, testimonials, faqs, settings, techstack] = await Promise.all([
+    const [
+      projects, experience, services, rateCards, testimonials, faqs, settings,
+      techstack, stats, workflowSteps, philosophyLines, photos, videos,
+    ] = await Promise.all([
       Project.find().sort({ order: 1 }).lean(),
       Experience.find().sort({ order: 1 }).lean(),
       Service.find().sort({ order: 1 }).lean(),
@@ -49,16 +50,28 @@ async function getData(): Promise<{
       FAQModel.find().sort({ order: 1 }).lean(),
       SiteSettings.findOne({ key: "main" }).lean(),
       TechStack.find().sort({ order: 1 }).lean(),
+      Stat.find().sort({ order: 1 }).lean(),
+      WorkflowStep.find().sort({ order: 1 }).lean(),
+      PhilosophyLine.find().sort({ order: 1 }).lean(),
+      Photo.find().sort({ order: 1 }).lean(),
+      ProjectVideo.find().sort({ order: 1 }).lean(),
     ]);
-    return { projects, experience, services, rateCards, testimonials, faqs, settings, techstack };
+    return { projects, experience, services, rateCards, testimonials, faqs, settings, techstack, stats, workflowSteps, philosophyLines, photos, videos };
   } catch (err) {
     console.warn("DB not reachable yet — rendering with fallback demo content.", err);
-    return { projects: [], experience: [], services: [], rateCards: [], testimonials: [], faqs: [], settings: null, techstack: [] };
+    return {
+      projects: [] as any[], experience: [] as any[], services: [] as any[], rateCards: [] as any[],
+      testimonials: [] as any[], faqs: [] as any[], settings: null as any, techstack: [] as any[],
+      stats: [] as any[], workflowSteps: [] as any[], philosophyLines: [] as any[], photos: [] as any[], videos: [] as any[],
+    };
   }
 }
 
 export default async function HomePage() {
-  const { projects, experience, services, rateCards, testimonials, faqs, settings, techstack } = await getData();
+  const {
+    projects, experience, services, rateCards, testimonials, faqs, settings,
+    techstack, stats, workflowSteps, philosophyLines, photos, videos,
+  } = await getData();
 
   const heroBadges = techstack.filter((t: any) => t.showInHero);
   const marqueeItems = techstack.filter((t: any) => t.showInMarquee);
@@ -72,15 +85,19 @@ export default async function HomePage() {
       />
       <Marquee items={marqueeItems.length ? marqueeItems : undefined} />
       <About bio={settings?.bio} />
-      <DevStats />
+      <DevStats items={stats.length ? (stats as any) : undefined} />
       <ExperienceSection items={experience.length ? (experience as any) : undefined} />
       <ProjectsSection items={projects.length ? (projects as any) : FALLBACK_PROJECTS} limit={6} />
       <ServicesSection items={services.length ? (services as any) : undefined} />
-      <HowIWork />
+      <HowIWork items={workflowSteps.length ? (workflowSteps as any) : undefined} />
       <RateCardsSection items={rateCards.length ? (rateCards as any) : undefined} />
       <TestimonialsSection items={testimonials.length ? (testimonials as any) : undefined} />
-      <MeetDeveloper />
-      <Philosophy />
+      <MeetDeveloper
+        photos={photos.length ? (photos as any) : undefined}
+        videos={videos.length ? (videos as any) : undefined}
+        bio={settings?.meetDeveloperBio || undefined}
+      />
+      <Philosophy lines={philosophyLines.length ? philosophyLines.map((p: any) => p.text) : undefined} />
       <FAQSection items={faqs.length ? (faqs as any) : undefined} />
       <BigCTA />
       <Contact />

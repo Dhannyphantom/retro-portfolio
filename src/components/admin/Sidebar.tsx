@@ -1,26 +1,35 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, FolderKanban, MessageSquare, Star, CalendarCheck, User, LogOut, Cpu } from "lucide-react";
+import { LayoutDashboard, FolderKanban, MessageSquare, Star, CalendarCheck, User, LogOut, Cpu, FileEdit } from "lucide-react";
+import { useNotifications } from "@/lib/hooks/useNotifications";
 
 const LINKS = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
+  { href: "/admin/content", label: "Content", icon: FileEdit },
   { href: "/admin/techstack", label: "Tech stack", icon: Cpu },
-  { href: "/admin/messages", label: "Messages", icon: MessageSquare },
+  { href: "/admin/messages", label: "Messages", icon: MessageSquare, notifKey: "messages" as const },
   { href: "/admin/testimonials", label: "Testimonials", icon: Star },
-  { href: "/admin/bookings", label: "Bookings", icon: CalendarCheck },
+  { href: "/admin/bookings", label: "Bookings", icon: CalendarCheck, notifKey: "bookings" as const },
   { href: "/admin/profile", label: "Profile", icon: User },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const notifs = useNotifications();
 
   const logout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/admin/login");
     router.refresh();
+  };
+
+  const countFor = (key?: "messages" | "bookings") => {
+    if (!key || !notifs) return 0;
+    if (key === "messages") return Number(notifs.messages || 0);
+    return Number(notifs.bookings || 0) + Number(notifs.threads || 0);
   };
 
   return (
@@ -29,14 +38,20 @@ export default function Sidebar() {
       <nav className="flex flex-col gap-1">
         {LINKS.map((l) => {
           const active = pathname === l.href;
+          const count = countFor((l as any).notifKey);
           return (
             <Link
               key={l.href}
               href={l.href}
-              className="flex items-center gap-2.5 text-sm rounded px-3 py-2.5 transition-colors"
+              className="relative flex items-center gap-2.5 text-sm rounded px-3 py-2.5 transition-colors"
               style={{ color: active ? "#F3F0F7" : "#A79FB8", background: active ? "rgba(139,47,224,0.082)" : "transparent" }}
             >
-              <l.icon size={16} /> {l.label}
+              <span className="relative">
+                <l.icon size={16} />
+                {count > 0 && <span className="notif-dot" />}
+              </span>
+              {l.label}
+              {count > 0 && <span className="ml-auto text-[11px] font-mono text-violet">{count}</span>}
             </Link>
           );
         })}

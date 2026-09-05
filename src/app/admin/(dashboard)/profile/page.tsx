@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import FileUpload from "@/components/ui/FileUpload";
 
 export default function AdminProfile() {
   const [form, setForm] = useState<any>(null);
@@ -33,12 +34,19 @@ export default function AdminProfile() {
         <Field label="Name"><input className={input} value={form.name || ""} onChange={(e) => set("name", e.target.value)} /></Field>
         <Field label="Title"><input className={input} value={form.title || ""} onChange={(e) => set("title", e.target.value)} /></Field>
         <Field label="Bio"><textarea rows={4} className={`${input} resize-none`} value={form.bio || ""} onChange={(e) => set("bio", e.target.value)} /></Field>
+        <Field label="&quot;Meet the developer&quot; intro"><textarea rows={4} className={`${input} resize-none`} value={form.meetDeveloperBio || ""} onChange={(e) => set("meetDeveloperBio", e.target.value)} /></Field>
         <Field label="Hero headline"><input className={input} value={form.heroHeadline || ""} onChange={(e) => set("heroHeadline", e.target.value)} /></Field>
         <Field label="Email"><input className={input} value={form.email || ""} onChange={(e) => set("email", e.target.value)} /></Field>
         <Field label="Location"><input className={input} value={form.location || ""} onChange={(e) => set("location", e.target.value)} /></Field>
         <Field label="GitHub URL"><input className={input} value={form.socials?.github || ""} onChange={(e) => setSocial("github", e.target.value)} /></Field>
         <Field label="LinkedIn URL"><input className={input} value={form.socials?.linkedin || ""} onChange={(e) => setSocial("linkedin", e.target.value)} /></Field>
-        <Field label="CV file URL"><input className={input} value={form.cvUrl || ""} onChange={(e) => set("cvUrl", e.target.value)} placeholder="Upload your CV somewhere (e.g. Cloudinary) and paste the link" /></Field>
+        <FileUpload
+          folder="cv"
+          accept=".pdf,.doc,.docx"
+          label="CV file"
+          onUploaded={(url) => set("cvUrl", url)}
+        />
+        {form.cvUrl && <p className="text-[12px] text-mute -mt-2">Current: <a href={form.cvUrl} target="_blank" rel="noreferrer" className="text-violet">view uploaded CV</a></p>}
         <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" checked={!!form.cvEnabled} onChange={(e) => set("cvEnabled", e.target.checked)} /> CV download enabled
         </label>

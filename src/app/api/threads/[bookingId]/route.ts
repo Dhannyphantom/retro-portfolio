@@ -34,6 +34,13 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ boo
   if (!booking) return NextResponse.json({ error: "Not found" }, { status: 404 });
   if (!role) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  // Mark the other party's messages as read, and stamp this viewer's
+  // last-visit time on the booking — both power the notification dots on
+  // the dashboards.
+  const otherRole = role === "admin" ? "client" : "admin";
+  await ProjectMessage.updateMany({ bookingId, senderRole: otherRole, readAt: { $exists: false } }, { $set: { readAt: new Date() } });
+  await Booking.findByIdAndUpdate(bookingId, { [role === "admin" ? "lastViewedByAdminAt" : "lastViewedByClientAt"]: new Date() });
+
   const messages = await ProjectMessage.find({ bookingId }).sort({ createdAt: 1 }).lean();
   return NextResponse.json({ booking, messages, viewerRole: role });
 }

@@ -12,6 +12,7 @@ export type SiteSettingsData = {
   cvUrl?: string;
   cvEnabled?: boolean;
   heroHeadline: string;
+  meetDeveloperBio?: string;
 };
 
 const DEFAULTS: SiteSettingsData = {

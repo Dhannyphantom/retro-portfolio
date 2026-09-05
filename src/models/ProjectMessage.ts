@@ -27,6 +27,9 @@ const ProjectMessageSchema = new Schema(
     body: { type: String, required: true },
     proposal: { type: ProposalSchema },
     proposalStatus: { type: String, enum: ["pending", "approved", "declined"] }, // only set when `proposal` is present
+    // Delivered is implicit (set the instant it's created); `readAt` is set
+    // when the *other* party's thread view loads this message.
+    readAt: { type: Date },
   },
   { timestamps: true }
 );
