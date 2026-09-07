@@ -65,7 +65,7 @@ export default function AdminMessageDetail({ params }: { params: Promise<{ id: s
 
       <div className="flex justify-between items-start gap-4 mb-2">
         <div>
-          <h1 className="font-display font-semibold text-xl">{msg.name}</h1>
+          <h1 className="font-display text-[14px] leading-relaxed">{msg.name}</h1>
           <p className="text-mute text-sm">{msg.email} · {new Date(msg.createdAt).toLocaleString()}</p>
         </div>
         <select value={msg.status} onChange={(e) => setStatus(e.target.value)} className="text-sm rounded px-3 py-2 bg-white/[0.04] border border-white/[0.12]">
@@ -76,12 +76,12 @@ export default function AdminMessageDetail({ params }: { params: Promise<{ id: s
       </div>
 
       {/* read-only — the original message is never editable here */}
-      <div className="rounded-xl p-4 my-5 text-sm leading-relaxed whitespace-pre-wrap" style={{ border: "1px solid rgba(243,240,247,0.09)", background: "#131115" }}>
+      <div className="rounded-xl p-4 my-5 text-sm leading-relaxed whitespace-pre-wrap" style={{ border: "1px solid rgba(217,214,232,0.09)", background: "#120A1F" }}>
         {msg.message}
       </div>
 
       {msg.replies.map((r, i) => (
-        <div key={i} className="rounded-xl p-4 mb-3 ml-8 text-sm leading-relaxed whitespace-pre-wrap" style={{ background: "linear-gradient(120deg, #8B2FE0, #4C1D95)" }}>
+        <div key={i} className="rounded-xl p-4 mb-3 ml-8 text-sm leading-relaxed whitespace-pre-wrap" style={{ background: "linear-gradient(120deg, #39FF14, #1FAE0C)" }}>
           {r.body}
           <div className="text-[11px] opacity-70 mt-2">{new Date(r.sentAt).toLocaleString()} {r.emailedOk ? "· emailed" : "· not emailed"}</div>
         </div>
@@ -95,7 +95,7 @@ export default function AdminMessageDetail({ params }: { params: Promise<{ id: s
           placeholder="Write a reply — this will be emailed to them."
           className="w-full rounded px-3.5 py-3 text-sm bg-white/[0.04] border border-white/[0.12] resize-none mb-3"
         />
-        {error && <p className="text-[12.5px] mb-3" style={{ color: "#E24B4A" }}>{error}</p>}
+        {error && <p className="text-[12.5px] mb-3" style={{ color: "#FF3B3B" }}>{error}</p>}
         <button type="submit" disabled={sending} className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded bg-gradient-to-r from-purple to-purple-2 disabled:opacity-50">
           <Send size={14} /> {sending ? "Sending..." : "Send reply"}
         </button>

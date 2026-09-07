@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Inter, JetBrains_Mono } from "next/font/google";
+import { Press_Start_2P, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/layout/CustomCursor";
 import MatrixRain from "@/components/layout/MatrixRain";
+import BootScreen from "@/components/layout/BootScreen";
 import { getSiteSettings } from "@/lib/settings";
 
-const display = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-display" });
-const body = Inter({ subsets: ["latin"], variable: "--font-body" });
+// Retro CRT-terminal type system: a pixel font for headers/labels (used
+// sparingly — it's chunky, not for body copy) and JetBrains Mono for
+// everything else, matching an actual monospaced terminal.
+const display = Press_Start_2P({ subsets: ["latin"], weight: "400", variable: "--font-display" });
+const body = JetBrains_Mono({ subsets: ["latin"], variable: "--font-body" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 // Dynamic — reads from the same Profile data managed at /admin/profile, so
@@ -31,6 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body className="font-body bg-ink text-paper min-h-screen relative overflow-x-hidden">
+        <BootScreen name={settings.name} />
         <MatrixRain />
         <CustomCursor />
         <Nav name={settings.name} />

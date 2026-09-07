@@ -23,17 +23,17 @@ export default function AdminMessages() {
 
   return (
     <div>
-      <h1 className="font-display font-semibold text-2xl mb-1">Messages</h1>
+      <h1 className="font-display text-[16px] mb-3 leading-relaxed">Messages</h1>
       <p className="text-mute text-sm mb-6">Contact form submissions — view, reply, and archive. No need to send yourself a message.</p>
 
       {loading ? (
         <p className="text-mute text-sm">Loading…</p>
       ) : error ? (
-        <p className="text-[13px]" style={{ color: "#E24B4A" }}>{error}</p>
+        <p className="text-[13px]" style={{ color: "#FF3B3B" }}>{error}</p>
       ) : items.length === 0 ? (
         <p className="text-mute text-sm">No messages yet.</p>
       ) : (
-        <div className="rounded-xl overflow-hidden" style={{ border: "1px solid rgba(243,240,247,0.09)" }}>
+        <div className="rounded-xl overflow-hidden" style={{ border: "1px solid rgba(217,214,232,0.09)" }}>
           {items.map((m) => (
             <Link
               key={m._id}

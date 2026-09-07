@@ -108,7 +108,7 @@ export default function AdminContent() {
 
   return (
     <div>
-      <h1 className="font-display font-semibold text-2xl mb-1">Content</h1>
+      <h1 className="font-display text-[16px] mb-3 leading-relaxed">Content</h1>
       <p className="text-mute text-sm mb-6">
         Every homepage section — experience, services, rate cards, stats, workflow, philosophy,
         FAQs, and the &quot;meet the developer&quot; photos/videos — lives here, editable without
@@ -122,8 +122,8 @@ export default function AdminContent() {
             onClick={() => setActive(t.key)}
             className="text-[12.5px] px-3 py-1.5 rounded-full"
             style={{
-              color: active === t.key ? "#0A090C" : "#A79FB8",
-              background: active === t.key ? "#F3F0F7" : "rgba(243,240,247,0.05)",
+              color: active === t.key ? "#0A0118" : "#8A86A8",
+              background: active === t.key ? "#D9D6E8" : "rgba(217,214,232,0.05)",
             }}
           >
             {t.label}

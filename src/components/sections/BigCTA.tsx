@@ -6,11 +6,11 @@ export default function BigCTA() {
   return (
     <section className="max-w-[1120px] mx-auto px-7 pt-10 pb-[90px]">
       <Reveal>
-        <div className="relative overflow-hidden text-center rounded-[20px] p-[70px_30px]" style={{ border: "1px solid rgba(255,255,255,0.08)", background: "linear-gradient(160deg, #131116, #08070A)" }}>
-          <h2 className="relative font-display font-bold text-[clamp(28px,4.4vw,46px)] tracking-tight mb-3">
+        <div className="relative overflow-hidden text-center rounded-[20px] p-[70px_30px]" style={{ border: "1px solid rgba(255,255,255,0.08)", background: "linear-gradient(160deg, #120A1F, #0A0118)" }}>
+          <h2 className="relative font-display font-bold text-[clamp(16px,2.6vw,22px)] tracking-tight mb-4 leading-relaxed">
             <SplitText text="Have an idea worth building?" by="word" step={50} />
           </h2>
-          <p className="relative font-display font-semibold text-[clamp(20px,3vw,28px)] bg-gradient-to-r from-violet to-purple bg-clip-text text-transparent mb-8">
+          <p className="relative font-display font-semibold text-[clamp(13px,1.8vw,16px)] text-violet mb-8 leading-relaxed">
             Let&apos;s turn it into software.
           </p>
           <div className="relative flex gap-3.5 justify-center flex-wrap">

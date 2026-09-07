@@ -21,32 +21,32 @@ export default function Footer({
   ];
 
   return (
-    <footer className="relative z-10 border-t border-white/[0.07] px-7 pt-10 pb-6">
+    <footer className="relative z-10 border-t border-retroBorder px-7 pt-10 pb-6">
       <div className="max-w-[1120px] mx-auto flex flex-wrap justify-between gap-8 mb-8">
         <div className="max-w-[260px]">
-          <div className="font-display font-bold text-lg mb-2.5">{name}</div>
-          <p className="text-mute text-[13px] leading-relaxed">{bio}</p>
+          <div className="font-mono text-[13px] text-violet mb-2.5">~/{name.toLowerCase().replace(/\s+/g, "-")}</div>
+          <p className="text-mute text-[12.5px] leading-relaxed font-mono">{bio}</p>
         </div>
-        <div className="flex flex-wrap gap-1 items-center">
+        <div className="flex flex-wrap gap-1 items-center font-mono text-[12px]">
           {LINKS.map((l) => (
-            <Link key={l} href={l === "Home" ? "/" : `/${l.toLowerCase()}`} className="text-mute text-[13px] no-underline px-2.5 py-1 hover:text-violet transition-colors">
-              {l}
+            <Link key={l} href={l === "Home" ? "/" : `/${l.toLowerCase()}`} className="text-mute no-underline px-2.5 py-1 hover:text-violet transition-colors">
+              [{l.toUpperCase()}]
             </Link>
           ))}
-          <Link href="/account/login" className="text-mute text-[13px] no-underline px-2.5 py-1 hover:text-violet transition-colors">
-            Client login
+          <Link href="/account/login" className="text-mute no-underline px-2.5 py-1 hover:text-violet transition-colors">
+            [CLIENT LOGIN]
           </Link>
         </div>
         <div className="flex gap-2.5">
           {SOCIALS.map((s) => (
-            <a key={s.label} href={s.href} aria-label={s.label} className="icon-hover w-9 h-9 rounded border border-white/[0.12] flex items-center justify-center text-paper">
+            <a key={s.label} href={s.href} aria-label={s.label} className="icon-hover w-9 h-9 border border-retroBorder flex items-center justify-center text-paper">
               <s.icon size={16} />
             </a>
           ))}
         </div>
       </div>
-      <div className="max-w-[1120px] mx-auto border-t border-white/[0.07] pt-5 text-center text-mute text-[12.5px]">
-        © {new Date().getFullYear()} {name}. Designed with intent.
+      <div className="max-w-[1120px] mx-auto border-t border-retroBorder pt-5 text-center text-mute text-[11.5px] font-mono">
+        © {new Date().getFullYear()} {name}. All rights reserved.
       </div>
     </footer>
   );

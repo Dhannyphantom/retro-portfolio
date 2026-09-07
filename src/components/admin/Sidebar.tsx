@@ -44,7 +44,7 @@ export default function Sidebar() {
               key={l.href}
               href={l.href}
               className="relative flex items-center gap-2.5 text-sm rounded px-3 py-2.5 transition-colors"
-              style={{ color: active ? "#F3F0F7" : "#A79FB8", background: active ? "rgba(139,47,224,0.082)" : "transparent" }}
+              style={{ color: active ? "#D9D6E8" : "#8A86A8", background: active ? "rgba(57,255,20,0.082)" : "transparent" }}
             >
               <span className="relative">
                 <l.icon size={16} />

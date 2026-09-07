@@ -32,10 +32,10 @@ export default function MatrixRain() {
 
     if (reduceMotion) {
       // Draw a single faint static frame instead of looping.
-      ctx.fillStyle = "#0A090C";
+      ctx.fillStyle = "#0A0118";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.font = `${fontSize}px var(--font-mono, monospace)`;
-      ctx.fillStyle = "rgba(180,92,255,0.238)";
+      ctx.fillStyle = "rgba(0,229,255,0.238)";
       drops.forEach((d, i) => {
         const ch = CHARS[Math.floor(Math.random() * CHARS.length)];
         ctx.fillText(ch, i * fontSize, (d < 0 ? 4 : d) * fontSize);
@@ -53,7 +53,7 @@ export default function MatrixRain() {
       last = ts;
 
       // translucent fill creates the fading-trail effect
-      ctx.fillStyle = "rgba(7,5,11,0.09)";
+      ctx.fillStyle = "rgba(10,1,24,0.09)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = `${fontSize}px var(--font-mono, monospace)`;
@@ -61,7 +61,7 @@ export default function MatrixRain() {
         const ch = CHARS[Math.floor(Math.random() * CHARS.length)];
         const y = drops[i] * fontSize;
         // leading character brighter, rest of trail dimmer
-        ctx.fillStyle = "rgba(196,150,255,0.85)";
+        ctx.fillStyle = "rgba(120,255,90,0.85)";
         ctx.fillText(ch, i * fontSize, y);
 
         if (y > canvas.height && Math.random() > 0.975) {

@@ -15,8 +15,8 @@ export default function RateCards({ items = FALLBACK }: { items?: RateCardItem[]
     <section className="max-w-[1120px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-11">
-          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>LET&apos;S TALK BUSINESS</span>
-          <h2 className="font-display font-semibold text-[clamp(28px,3.6vw,40px)] mt-2 tracking-tight">Rate cards</h2>
+          <span className="font-mono text-xs tracking-widest text-violet">$ LET&apos;S TALK BUSINESS</span>
+          <h2 className="font-display font-semibold text-[clamp(16px,2.2vw,22px)] mt-3 tracking-tight leading-relaxed">Rate cards</h2>
         </div>
       </Reveal>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -24,27 +24,27 @@ export default function RateCards({ items = FALLBACK }: { items?: RateCardItem[]
           <Reveal key={r.name} delay={i * 90}>
             <div className="relative h-full">
               {r.recommended && (
-                <span className="absolute -top-3 left-6 z-10 text-[10.5px] font-mono px-2.5 py-1 rounded text-paper bg-gradient-to-r from-violet to-purple tracking-wide whitespace-nowrap">
+                <span className="absolute -top-3 left-6 z-10 text-[10.5px] font-mono px-2.5 py-1 text-ink bg-amber tracking-wide whitespace-nowrap">
                   RECOMMENDED
                 </span>
               )}
               <DiagonalCard
                 always={!!r.recommended}
-                radius={14}
-                padding={r.recommended ? 2 : 1}
+                padding={0}
                 className="h-full"
-                style={r.recommended ? { background: "linear-gradient(160deg, rgba(76,29,149,0.09), transparent)" } : {}}
+                title={r.name.toUpperCase().replace(/\s+/g, "_") + ".SYS"}
+                style={r.recommended ? { background: "linear-gradient(160deg, rgba(31,142,10,0.09), transparent)" } : {}}
               >
                 <div className="p-7 pt-8 flex flex-col h-full relative">
                   <div className="text-mute text-[13px] mb-1.5">{r.name}</div>
                   <div className="flex items-baseline gap-1.5 mb-2">
-                    <span className="font-display font-bold text-[30px]">{r.price}</span>
+                    <span className="font-display font-bold text-[22px]">{r.price}</span>
                     <span className="text-mute text-xs">{r.unit}</span>
                   </div>
                   <p className="text-mute text-[13px] mb-5">{r.description}</p>
                   <div className="flex flex-col gap-2.5 mb-6 flex-1">
                     {(r.features || []).map((f) => (
-                      <div key={f} className="flex items-center gap-2 text-[13px]" style={{ color: "rgba(243,240,247,0.8)" }}>
+                      <div key={f} className="flex items-center gap-2 text-[13px]" style={{ color: "rgba(217,214,232,0.8)" }}>
                         <Check size={14} className="text-violet" /> {f}
                       </div>
                     ))}

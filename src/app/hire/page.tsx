@@ -89,16 +89,16 @@ export default function HirePage() {
     return (
       <div className="max-w-[600px] mx-auto px-7 pt-28 pb-32 text-center">
         <Reveal>
-          <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 text-violet" style={{ background: "rgba(180,92,255,0.068)", border: "1px solid rgba(180,92,255,0.204)" }}>
+          <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 text-violet" style={{ background: "rgba(0,229,255,0.068)", border: "1px solid rgba(0,229,255,0.204)" }}>
             <Check size={22} />
           </div>
-          <h1 className="font-display font-bold text-3xl mb-3">Request received</h1>
+          <h1 className="font-display text-[17px] leading-relaxed mb-3">Request received</h1>
           <p className="text-mute mb-2">Thanks — I&apos;ll review this and get back to you within a day or two.</p>
           <p className="font-mono text-sm text-violet mb-8">Reference: {refId}</p>
 
           {setupLink && (
-            <div className="rounded-xl p-6 text-left" style={{ border: "1px solid rgba(180,92,255,0.204)", background: "rgba(139,47,224,0.05)" }}>
-              <h3 className="font-display font-semibold text-lg mb-2">Set up your project dashboard</h3>
+            <div className="rounded-xl p-6 text-left" style={{ border: "1px solid rgba(0,229,255,0.204)", background: "rgba(57,255,20,0.05)" }}>
+              <h3 className="font-display text-[13px] mb-3 leading-relaxed">Set up your project dashboard</h3>
               <p className="text-mute text-sm mb-4">
                 Track messages, milestones, and payments for this project in one place. Set a password to get in.
               </p>
@@ -115,13 +115,13 @@ export default function HirePage() {
   return (
     <div className="max-w-[640px] mx-auto px-7 pt-16 pb-28">
       <Reveal>
-        <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>PROJECT BRIEF</span>
-        <h1 className="font-display font-bold text-[clamp(28px,4vw,40px)] tracking-tight mt-2 mb-8">Let&apos;s scope your project</h1>
+        <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(0,229,255,0.422)" }}>PROJECT BRIEF</span>
+        <h1 className="font-display text-[clamp(15px,2.2vw,19px)] tracking-tight mt-3 mb-8 leading-relaxed">Let&apos;s scope your project</h1>
 
         <div className="flex gap-2 mb-10">
           {STEPS.map((s, i) => (
             <div key={s} className="flex-1">
-              <div className="h-1 rounded-full mb-2" style={{ background: i <= step ? "linear-gradient(90deg, #B45CFF, #8B2FE0)" : "rgba(243,240,247,0.1)" }} />
+              <div className="h-1 rounded-full mb-2" style={{ background: i <= step ? "linear-gradient(90deg, #00E5FF, #39FF14)" : "rgba(217,214,232,0.1)" }} />
               <span className="text-[11px] text-mute hidden sm:block">{s}</span>
             </div>
           ))}
@@ -181,9 +181,9 @@ export default function HirePage() {
                       type="button" key={s} onClick={() => toggleService(s)}
                       className="text-[13px] rounded-full px-3.5 py-2"
                       style={{
-                        color: form.servicesNeeded.includes(s) ? "#0A090C" : "#F3F0F7",
-                        background: form.servicesNeeded.includes(s) ? "#F3F0F7" : "rgba(243,240,247,0.06)",
-                        border: "1px solid rgba(243,240,247,0.12)",
+                        color: form.servicesNeeded.includes(s) ? "#0A0118" : "#D9D6E8",
+                        background: form.servicesNeeded.includes(s) ? "#D9D6E8" : "rgba(217,214,232,0.06)",
+                        border: "1px solid rgba(217,214,232,0.12)",
                       }}
                     >
                       {s}
@@ -202,7 +202,7 @@ export default function HirePage() {
           )}
 
           {step === 4 && (
-            <div className="text-sm text-mute space-y-2 rounded-xl p-5" style={{ border: "1px solid rgba(243,240,247,0.1)" }}>
+            <div className="text-sm text-mute space-y-2 rounded-xl p-5" style={{ border: "1px solid rgba(217,214,232,0.1)" }}>
               <p><strong className="text-paper">Name:</strong> {form.name}</p>
               <p><strong className="text-paper">Email:</strong> {form.email}</p>
               <p><strong className="text-paper">Project:</strong> {form.projectType}</p>
@@ -214,7 +214,7 @@ export default function HirePage() {
             </div>
           )}
 
-          {error && <p className="text-[12.5px]" style={{ color: "#E24B4A" }}>{error}</p>}
+          {error && <p className="text-[12.5px]" style={{ color: "#FF3B3B" }}>{error}</p>}
 
           <div className="flex justify-between mt-4">
             {step > 0 ? (
@@ -246,8 +246,8 @@ function Field({ label, children, error }: { label: string; children: React.Reac
   return (
     <label className="block">
       <span className="block text-[13px] text-mute mb-1.5">{label}</span>
-      <div style={error ? { borderRadius: 4, boxShadow: "0 0 0 1px #E24B4A" } : undefined}>{children}</div>
-      {error && <p className="text-[12px] mt-1.5" style={{ color: "#E24B4A" }}>{error}</p>}
+      <div style={error ? { borderRadius: 4, boxShadow: "0 0 0 1px #FF3B3B" } : undefined}>{children}</div>
+      {error && <p className="text-[12px] mt-1.5" style={{ color: "#FF3B3B" }}>{error}</p>}
     </label>
   );
 }

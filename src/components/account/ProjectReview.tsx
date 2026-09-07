@@ -43,7 +43,7 @@ export default function ProjectReview({ bookingId }: { bookingId: string }) {
   if (existing === undefined) return null;
 
   return (
-    <div className="rounded-xl p-5 mb-10" style={{ border: "1px solid rgba(243,240,247,0.09)", background: "#131115" }}>
+    <div className="rounded-xl p-5 mb-10" style={{ border: "1px solid rgba(217,214,232,0.09)", background: "#120A1F" }}>
       <h2 className="font-display font-semibold text-lg mb-1">Review & rating</h2>
       {existing ? (
         <>
@@ -72,7 +72,7 @@ export default function ProjectReview({ bookingId }: { bookingId: string }) {
             placeholder="Share your experience…"
             className="w-full rounded px-3.5 py-2.5 text-[13.5px] bg-white/[0.04] border border-white/[0.12] resize-none mb-3"
           />
-          {error && <p className="text-[12.5px] mb-3" style={{ color: "#E24B4A" }}>{error}</p>}
+          {error && <p className="text-[12.5px] mb-3" style={{ color: "#FF3B3B" }}>{error}</p>}
           <button type="submit" disabled={submitting} className="inline-flex items-center gap-1.5 text-[13px] px-4 py-2.5 rounded bg-gradient-to-r from-purple to-purple-2 disabled:opacity-50">
             <Check size={14} /> {submitting ? "Submitting..." : "Submit review"}
           </button>

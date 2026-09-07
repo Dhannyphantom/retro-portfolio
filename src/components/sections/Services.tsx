@@ -17,8 +17,8 @@ export default function Services({ items = FALLBACK }: { items?: ServiceItem[] }
     <section id="services" className="max-w-[1120px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-11">
-          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>WHAT I DO</span>
-          <h2 className="font-display font-semibold text-[clamp(28px,3.6vw,40px)] mt-2 tracking-tight">Services</h2>
+          <span className="font-mono text-xs tracking-widest text-violet">$ WHAT I DO</span>
+          <h2 className="font-display font-semibold text-[clamp(16px,2.2vw,22px)] mt-3 tracking-tight leading-relaxed">Services</h2>
         </div>
       </Reveal>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -26,13 +26,13 @@ export default function Services({ items = FALLBACK }: { items?: ServiceItem[] }
           const Icon = (Icons as any)[s.icon || "Code2"] || Icons.Code2;
           return (
             <Reveal key={s.title} delay={i * 70}>
-              <DiagonalCard always radius={12} padding={2} hoverLift className="h-full">
+              <DiagonalCard always padding={0} hoverLift className="h-full" title={`SERVICE_0${i + 1}.SYS`}>
                 <div className="p-6">
-                  <div className="icon-hover w-[42px] h-[42px] rounded flex items-center justify-center text-violet mb-[18px]" style={{ border: "1px solid rgba(180,92,255,0.122)", background: "rgba(139,47,224,0.034)" }}>
+                  <div className="icon-hover w-[42px] h-[42px] flex items-center justify-center text-violet mb-[18px]" style={{ border: "1px solid rgba(0,229,255,0.122)", background: "rgba(57,255,20,0.034)" }}>
                     <Icon size={18} />
                   </div>
-                  <h4 className="font-display font-semibold text-[17px] mb-2">{s.title}</h4>
-                  <p className="text-mute text-[13.5px] leading-relaxed">{s.description}</p>
+                  <h4 className="font-display text-[13px] mb-3 leading-relaxed">{s.title}</h4>
+                  <p className="text-mute text-[13px] leading-relaxed font-mono">{s.description}</p>
                 </div>
               </DiagonalCard>
             </Reveal>

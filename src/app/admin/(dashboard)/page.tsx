@@ -30,12 +30,12 @@ export default async function AdminOverview() {
 
   return (
     <div>
-      <h1 className="font-display font-semibold text-2xl mb-1">Overview</h1>
+      <h1 className="font-display text-[16px] mb-3 leading-relaxed">Overview</h1>
       <p className="text-mute text-sm mb-8">A quick snapshot of what needs attention.</p>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {cards.map((c) => (
-          <a key={c.label} href={c.href} className="hover-card rounded-xl p-5 bg-ink2 block" style={{ border: "1px solid rgba(243,240,247,0.09)" }}>
-            <div className="font-display font-bold text-3xl">{c.value}</div>
+          <a key={c.label} href={c.href} className="hover-card rounded-xl p-5 bg-ink2 block" style={{ border: "1px solid rgba(217,214,232,0.09)" }}>
+            <div className="font-display text-[17px] leading-relaxed">{c.value}</div>
             <div className="text-mute text-[13px] mt-1.5">{c.label}</div>
           </a>
         ))}

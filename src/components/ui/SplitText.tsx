@@ -1,6 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
 
+// Retro typewriter-style character reveal — plain opacity, no 3D rotation
+// or blur (those read as modern glassmorphism, not terminal type-in).
 export default function SplitText({
   text,
   by = "char",
@@ -19,10 +21,10 @@ export default function SplitText({
         <motion.span
           key={i}
           className="inline-block"
-          initial={{ opacity: 0, y: 16, rotateX: 45, filter: "blur(3px)" }}
-          whileInView={{ opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: false, amount: 0.6 }}
-          transition={{ duration: 0.5, delay: (i * step) / 1000, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.05, delay: (i * step) / 1000 }}
         >
           {p === " " ? "\u00A0" : p}
           {by === "word" && i < parts.length - 1 ? "\u00A0" : ""}

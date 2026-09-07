@@ -9,9 +9,9 @@ type Props = {
 };
 
 const variants = {
-  up: { hidden: { opacity: 0, y: 28, filter: "blur(2px)" }, show: { opacity: 1, y: 0, filter: "blur(0px)" } },
-  left: { hidden: { opacity: 0, x: -46, filter: "blur(2px)" }, show: { opacity: 1, x: 0, filter: "blur(0px)" } },
-  right: { hidden: { opacity: 0, x: 46, filter: "blur(2px)" }, show: { opacity: 1, x: 0, filter: "blur(0px)" } },
+  up: { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } },
+  left: { hidden: { opacity: 0, x: -36 }, show: { opacity: 1, x: 0 } },
+  right: { hidden: { opacity: 0, x: 36 }, show: { opacity: 1, x: 0 } },
 };
 
 // Re-animates every time it re-enters the viewport (amount tuned so it triggers a bit early).
@@ -23,7 +23,7 @@ export default function Reveal({ children, delay = 0, from = "up", className = "
       whileInView="show"
       viewport={{ once: false, amount: 0.16 }}
       variants={variants[from]}
-      transition={{ duration: 0.7, delay: delay / 1000, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.25, delay: delay / 1000, ease: "easeOut" }}
     >
       {children}
     </motion.div>

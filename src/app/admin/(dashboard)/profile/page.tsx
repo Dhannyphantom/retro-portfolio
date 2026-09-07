@@ -27,7 +27,7 @@ export default function AdminProfile() {
 
   return (
     <div className="max-w-[560px]">
-      <h1 className="font-display font-semibold text-2xl mb-1">Profile</h1>
+      <h1 className="font-display text-[16px] mb-3 leading-relaxed">Profile</h1>
       <p className="text-mute text-sm mb-7">This reflects everywhere on the site — nav, footer, hero, page metadata.</p>
 
       <div className="flex flex-col gap-4">

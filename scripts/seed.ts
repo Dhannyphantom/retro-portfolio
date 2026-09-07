@@ -11,6 +11,11 @@ import Testimonial from "../src/models/Testimonial";
 import FAQ from "../src/models/FAQ";
 import SiteSettings from "../src/models/SiteSettings";
 import TechStack from "../src/models/TechStack";
+import Stat from "../src/models/Stat";
+import WorkflowStep from "../src/models/WorkflowStep";
+import PhilosophyLine from "../src/models/PhilosophyLine";
+import Photo from "../src/models/Photo";
+import ProjectVideo from "../src/models/ProjectVideo";
 
 async function seed() {
   await connectDB();
@@ -29,6 +34,7 @@ async function seed() {
       socials: { github: "https://github.com", linkedin: "https://linkedin.com", twitter: "" },
       heroHeadline: "Software Developer",
       heroSubtext: "Mobile • Web • Backend",
+      meetDeveloperBio: "Outside the editor, I care a lot about how things look and feel — visual design and presentation are as much a part of the process for me as the code underneath. A few short clips below give a closer look at how a build actually comes together.",
     },
     { upsert: true }
   );
@@ -129,19 +135,65 @@ async function seed() {
 
   await TechStack.deleteMany({});
   await TechStack.insertMany([
-    { name: "React", iconUrl: "https://cdn.simpleicons.org/react", showInHero: true, showInMarquee: true, order: 1 },
-    { name: "Next.js", iconUrl: "https://cdn.simpleicons.org/nextdotjs/F3F0F7", showInHero: true, showInMarquee: true, order: 2 },
-    { name: "Node.js", iconUrl: "https://cdn.simpleicons.org/nodedotjs", showInHero: true, showInMarquee: true, order: 3 },
-    { name: "TypeScript", iconUrl: "https://cdn.simpleicons.org/typescript", showInHero: false, showInMarquee: true, order: 4 },
-    { name: "MongoDB", iconUrl: "https://cdn.simpleicons.org/mongodb", showInHero: false, showInMarquee: true, order: 5 },
-    { name: "Tailwind CSS", iconUrl: "https://cdn.simpleicons.org/tailwindcss", showInHero: false, showInMarquee: true, order: 6 },
-    { name: "Redux Toolkit", iconUrl: "https://cdn.simpleicons.org/redux", showInHero: false, showInMarquee: true, order: 7 },
-    { name: "Express", iconUrl: "https://cdn.simpleicons.org/express/F3F0F7", showInHero: false, showInMarquee: true, order: 8 },
-    { name: "GSAP", iconUrl: "https://cdn.simpleicons.org/greensock", showInHero: false, showInMarquee: true, order: 9 },
+    { name: "React", iconUrl: "https://cdn.simpleicons.org/react/39FF14", showInHero: true, showInMarquee: true, order: 1 },
+    { name: "Next.js", iconUrl: "https://cdn.simpleicons.org/nextdotjs/39FF14", showInHero: true, showInMarquee: true, order: 2 },
+    { name: "Node.js", iconUrl: "https://cdn.simpleicons.org/nodedotjs/39FF14", showInHero: true, showInMarquee: true, order: 3 },
+    { name: "TypeScript", iconUrl: "https://cdn.simpleicons.org/typescript/39FF14", showInHero: false, showInMarquee: true, order: 4 },
+    { name: "MongoDB", iconUrl: "https://cdn.simpleicons.org/mongodb/39FF14", showInHero: false, showInMarquee: true, order: 5 },
+    { name: "Tailwind CSS", iconUrl: "https://cdn.simpleicons.org/tailwindcss/39FF14", showInHero: false, showInMarquee: true, order: 6 },
+    { name: "Redux Toolkit", iconUrl: "https://cdn.simpleicons.org/redux/39FF14", showInHero: false, showInMarquee: true, order: 7 },
+    { name: "Express", iconUrl: "https://cdn.simpleicons.org/express/39FF14", showInHero: false, showInMarquee: true, order: 8 },
+    { name: "GSAP", iconUrl: "https://cdn.simpleicons.org/greensock/39FF14", showInHero: false, showInMarquee: true, order: 9 },
   ]);
+
+  await seedNewCollections();
 
   console.log("Seed complete.");
   process.exit(0);
+}
+
+async function seedNewCollections() {
+  await Stat.deleteMany({});
+  await Stat.insertMany([
+    { icon: "Award", value: 3, suffix: "+", label: "Years building software", order: 1 },
+    { icon: "Code2", value: 6, suffix: "+", label: "Products shipped", order: 2 },
+    { icon: "Users", value: 8, suffix: "+", label: "Clients & collaborators", order: 3 },
+    { icon: "Cpu", value: 12, suffix: "+", label: "Technologies used in production", order: 4 },
+  ]);
+
+  await WorkflowStep.deleteMany({});
+  await WorkflowStep.insertMany([
+    { icon: "Search", title: "Discover", description: "Understand the problem before touching code.", order: 1 },
+    { icon: "PenTool", title: "Plan", description: "Map scope, architecture and milestones.", order: 2 },
+    { icon: "Code2", title: "Design", description: "Structure the data, screens and flows.", order: 3 },
+    { icon: "Hammer", title: "Build", description: "Ship in small, reviewable increments.", order: 4 },
+    { icon: "TestTube2", title: "Test", description: "Catch issues before your users do.", order: 5 },
+    { icon: "Rocket", title: "Launch", description: "Ship it — deploy, monitor, stabilize.", order: 6 },
+    { icon: "TrendingUp", title: "Scale", description: "Grow the system as real usage arrives.", order: 7 },
+  ]);
+
+  await PhilosophyLine.deleteMany({});
+  await PhilosophyLine.insertMany([
+    { text: "Build things that matter.", order: 1 },
+    { text: "Keep it simple.", order: 2 },
+    { text: "Engineer for scale.", order: 3 },
+    { text: "Performance is a feature.", order: 4 },
+    { text: "Great software feels invisible.", order: 5 },
+  ]);
+
+  await Photo.deleteMany({});
+  await Photo.insertMany([
+    { src: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=500&q=80", caption: "At the desk", order: 1 },
+    { src: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=500&q=80", caption: "Mid-build", order: 2 },
+    { src: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=500&q=80", caption: "Sketching architecture", order: 3 },
+  ]);
+
+  await ProjectVideo.deleteMany({});
+  await ProjectVideo.insertMany([
+    { title: "A day in my workflow", duration: "1:24", thumb: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=700&q=80", src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4", order: 1 },
+    { title: "Why I build for education", duration: "0:52", thumb: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=700&q=80", src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4", order: 2 },
+    { title: "Quick studio tour", duration: "2:10", thumb: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=700&q=80", src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4", order: 3 },
+  ]);
 }
 
 seed().catch((err) => {

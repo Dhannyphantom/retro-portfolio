@@ -31,25 +31,29 @@ function Counter({ to, suffix, shown }: { to: number; suffix: string; shown: boo
   return <span>{n}{suffix}</span>;
 }
 
+// A bordered "report table" instead of individual floating cards — shared
+// borders between cells, like an old spreadsheet or terminal status readout.
 export default function DevStats({ items = FALLBACK }: { items?: StatItem[] }) {
   const ref = useRef(null);
   const shown = useInView(ref, { once: false, amount: 0.4 });
   return (
-    <section ref={ref} className="max-w-[1120px] mx-auto px-7 py-12 grid grid-cols-2 md:grid-cols-4 gap-5">
-      {items.map((s, i) => {
-        const Icon = (Icons as any)[s.icon || "Award"] || Icons.Award;
-        return (
-          <Reveal key={s.label} delay={i * 90}>
-            <div className="hover-card rounded-xl p-6 bg-ink2" style={{ border: "1px solid rgba(243,240,247,0.09)" }}>
-              <Icon size={20} className="text-violet mb-3.5" />
-              <div className="font-display font-bold text-[32px] bg-gradient-to-r from-violet to-purple bg-clip-text text-transparent">
-                <Counter to={s.value} suffix={s.suffix || ""} shown={shown} />
+    <section ref={ref} className="max-w-[1120px] mx-auto px-7 py-12">
+      <div className="grid grid-cols-2 md:grid-cols-4 border-t border-l border-retroBorder">
+        {items.map((s, i) => {
+          const Icon = (Icons as any)[s.icon || "Award"] || Icons.Award;
+          return (
+            <Reveal key={s.label} delay={i * 90} className="border-r border-b border-retroBorder">
+              <div className="p-6 h-full bg-ink2 hover-card">
+                <Icon size={18} className="text-violet mb-3.5" />
+                <div className="font-display text-[20px] text-amber">
+                  <Counter to={s.value} suffix={s.suffix || ""} shown={shown} />
+                </div>
+                <div className="text-mute text-[12px] mt-2.5 font-mono">{s.label}</div>
               </div>
-              <div className="text-mute text-[13px] mt-1.5">{s.label}</div>
-            </div>
-          </Reveal>
-        );
-      })}
+            </Reveal>
+          );
+        })}
+      </div>
     </section>
   );
 }

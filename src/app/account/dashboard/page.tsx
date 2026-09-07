@@ -22,8 +22,8 @@ export default async function AccountDashboard() {
     <div className="max-w-[900px] mx-auto px-7 pt-16 pb-24">
       <div className="flex justify-between items-start mb-10">
         <div>
-          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.42)" }}>YOUR PROJECTS</span>
-          <h1 className="font-display font-bold text-[clamp(28px,3.6vw,38px)] tracking-tight mt-2">Welcome back{user?.name ? `, ${user.name.split(" ")[0]}` : ""}</h1>
+          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(0,229,255,0.42)" }}>YOUR PROJECTS</span>
+          <h1 className="font-display text-[clamp(15px,2.2vw,19px)] tracking-tight mt-3 leading-relaxed">Welcome back{user?.name ? `, ${user.name.split(" ")[0]}` : ""}</h1>
         </div>
         <LogoutButton />
       </div>
@@ -37,7 +37,7 @@ export default async function AccountDashboard() {
               key={b._id}
               href={`/account/projects/${b._id}`}
               className="hover-card flex items-center justify-between rounded-xl p-5"
-              style={{ border: "1px solid rgba(243,240,247,0.09)", background: "#131115" }}
+              style={{ border: "1px solid rgba(217,214,232,0.09)", background: "#120A1F" }}
             >
               <div>
                 <div className="font-display font-semibold text-lg mb-1">{b.projectType || "Project"}</div>

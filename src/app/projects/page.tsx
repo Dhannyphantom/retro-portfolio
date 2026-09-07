@@ -33,8 +33,8 @@ export default function ProjectsArchive() {
       <Reveal>
         <div className="flex justify-between items-end flex-wrap gap-5 mb-9">
           <div>
-            <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>ARCHIVE</span>
-            <h1 className="font-display font-semibold text-[clamp(28px,3.6vw,42px)] mt-2 tracking-tight">All projects</h1>
+            <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(0,229,255,0.422)" }}>ARCHIVE</span>
+            <h1 className="font-display text-[clamp(15px,2.2vw,19px)] mt-3 tracking-tight leading-relaxed">All projects</h1>
           </div>
           <div className="flex gap-2 flex-wrap">
             {FILTERS.map((f) => (
@@ -43,9 +43,9 @@ export default function ProjectsArchive() {
                 onClick={() => setFilter(f.id)}
                 className="inline-flex items-center gap-1.5 text-[13px] font-medium rounded-full px-3.5 py-2 transition-colors"
                 style={{
-                  color: filter === f.id ? "#0A090C" : "#F3F0F7",
-                  background: filter === f.id ? "#F3F0F7" : "rgba(243,240,247,0.06)",
-                  border: "1px solid rgba(243,240,247,0.12)",
+                  color: filter === f.id ? "#0A0118" : "#D9D6E8",
+                  background: filter === f.id ? "#D9D6E8" : "rgba(217,214,232,0.06)",
+                  border: "1px solid rgba(217,214,232,0.12)",
                 }}
               >
                 {f.icon && <f.icon size={13} />}
@@ -69,8 +69,8 @@ export default function ProjectsArchive() {
                   <div>
                     <SafeImage src={p.thumbnail} className="w-full h-[170px] object-cover" iconSize={28} />
                     <div className="p-5">
-                      <span className="text-[11px] font-mono px-2 py-1 rounded" style={{ color: "rgba(180,92,255,0.422)", background: "rgba(139,47,224,0.034)" }}>{p.category}</span>
-                      <h3 className="font-display font-semibold text-lg mt-3 mb-1.5">{p.title}</h3>
+                      <span className="text-[11px] font-mono px-2 py-1 rounded" style={{ color: "rgba(0,229,255,0.422)", background: "rgba(57,255,20,0.034)" }}>{p.category}</span>
+                      <h3 className="font-display text-[13px] mt-3 mb-1.5 leading-relaxed">{p.title}</h3>
                       <p className="text-mute text-[13px] leading-relaxed">{p.description}</p>
                       <div className="flex items-center gap-1 text-violet text-[13px] mt-4">
                         View case study <ArrowUpRight size={13} />

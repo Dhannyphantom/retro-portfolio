@@ -24,7 +24,7 @@ export default function StatusEditor({ bookingId, status }: { bookingId: string;
       onChange={(e) => change(e.target.value)}
       disabled={saving}
       className="text-[12.5px] font-mono px-3 py-2 rounded"
-      style={{ color: "#B45CFF", background: "rgba(139,47,224,0.08)", border: "1px solid rgba(180,92,255,0.24)" }}
+      style={{ color: "#00E5FF", background: "rgba(57,255,20,0.08)", border: "1px solid rgba(0,229,255,0.24)" }}
     >
       {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
     </select>

@@ -58,7 +58,7 @@ export function bookingConfirmationEmail({ name, referenceId, setupUrl }: { name
       <h2>Thanks, ${name} — your project brief is in.</h2>
       <p>Reference: <strong>${referenceId}</strong></p>
       <p>I'll take a look and get back to you within a day or two.</p>
-      ${setupUrl ? `<p><a href="${setupUrl}" style="display:inline-block;padding:12px 20px;background:#8B2FE0;color:#fff;border-radius:6px;text-decoration:none;">Set up your project dashboard</a></p>` : ""}
+      ${setupUrl ? `<p><a href="${setupUrl}" style="display:inline-block;padding:12px 20px;background:#39FF14;color:#fff;border-radius:6px;text-decoration:none;">Set up your project dashboard</a></p>` : ""}
     </div>
   `;
 }

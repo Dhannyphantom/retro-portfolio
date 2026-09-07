@@ -113,7 +113,7 @@ export default function ResourceManager({
       {loading ? (
         <p className="text-mute text-sm">Loading…</p>
       ) : loadError ? (
-        <div className="rounded-lg px-4 py-3.5 text-sm" style={{ border: "1px solid rgba(226,75,74,0.35)", background: "rgba(226,75,74,0.08)", color: "#F3F0F7" }}>
+        <div className="rounded-lg px-4 py-3.5 text-sm" style={{ border: "1px solid rgba(255,59,59,0.35)", background: "rgba(255,59,59,0.08)", color: "#D9D6E8" }}>
           <p className="font-medium mb-1">Couldn&apos;t load {collection}</p>
           <p className="text-mute text-[13px]">{loadError}</p>
           <button onClick={load} className="mt-3 text-[13px] text-violet">Try again</button>
@@ -121,22 +121,22 @@ export default function ResourceManager({
       ) : items.length === 0 ? (
         <p className="text-mute text-sm">Nothing here yet — click New to add the first one.</p>
       ) : (
-        <div className="rounded-xl overflow-hidden" style={{ border: "1px solid rgba(243,240,247,0.09)" }}>
+        <div className="rounded-xl overflow-hidden" style={{ border: "1px solid rgba(217,214,232,0.09)" }}>
           {items.map((item) => (
             <div key={item._id} className="flex items-center justify-between px-4 py-3.5 border-b border-white/[0.06] last:border-b-0">
               <span className="text-sm truncate pr-4">{item[titleKey] || "(untitled)"}</span>
               <div className="flex gap-2 flex-shrink-0">
                 {viewHref && (
-                  <Link href={viewHref(item)} className="icon-hover w-8 h-8 rounded flex items-center justify-center" style={{ border: "1px solid rgba(243,240,247,0.12)" }}>
+                  <Link href={viewHref(item)} className="icon-hover w-8 h-8 rounded flex items-center justify-center" style={{ border: "1px solid rgba(217,214,232,0.12)" }}>
                     <ExternalLink size={14} />
                   </Link>
                 )}
                 {!hideEdit && (
-                  <button onClick={() => openEdit(item)} className="icon-hover w-8 h-8 rounded flex items-center justify-center" style={{ border: "1px solid rgba(243,240,247,0.12)" }}>
+                  <button onClick={() => openEdit(item)} className="icon-hover w-8 h-8 rounded flex items-center justify-center" style={{ border: "1px solid rgba(217,214,232,0.12)" }}>
                     <Pencil size={14} />
                   </button>
                 )}
-                <button onClick={() => remove(item._id)} className="icon-hover w-8 h-8 rounded flex items-center justify-center text-red-400" style={{ border: "1px solid rgba(243,240,247,0.12)" }}>
+                <button onClick={() => remove(item._id)} className="icon-hover w-8 h-8 rounded flex items-center justify-center text-red-400" style={{ border: "1px solid rgba(217,214,232,0.12)" }}>
                   <Trash2 size={14} />
                 </button>
               </div>
@@ -146,8 +146,8 @@ export default function ResourceManager({
       )}
 
       {showForm && editing && (
-        <div className="fixed inset-0 z-[300] flex items-center justify-center p-5" style={{ background: "rgba(7,5,11,0.8)", backdropFilter: "blur(6px)" }}>
-          <div className="w-full max-w-[560px] max-h-[85vh] overflow-y-auto rounded-2xl p-6" style={{ background: "#131115", border: "1px solid rgba(180,92,255,0.136)" }}>
+        <div className="fixed inset-0 z-[300] flex items-center justify-center p-5" style={{ background: "rgba(10,1,24,0.9)" }}>
+          <div className="w-full max-w-[560px] max-h-[85vh] overflow-y-auto rounded-2xl p-6" style={{ background: "#120A1F", border: "1px solid rgba(0,229,255,0.136)" }}>
             <div className="flex justify-between items-center mb-5">
               <h3 className="font-display text-lg">{editing._id ? "Edit" : "New"} {collection.slice(0, -1) || collection}</h3>
               <button onClick={() => setShowForm(false)}><X size={18} /></button>
@@ -182,7 +182,7 @@ export default function ResourceManager({
                   )}
                 </label>
               ))}
-              {error && <p className="text-[12.5px]" style={{ color: "#E24B4A" }}>{error}</p>}
+              {error && <p className="text-[12.5px]" style={{ color: "#FF3B3B" }}>{error}</p>}
               <button onClick={save} className="mt-2 text-sm px-4 py-3 rounded bg-gradient-to-r from-purple to-purple-2">
                 Save
               </button>

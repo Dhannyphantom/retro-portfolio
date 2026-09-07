@@ -1,6 +1,5 @@
 "use client";
 import { useState, MouseEvent } from "react";
-import Magnetic from "./Magnetic";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -12,6 +11,9 @@ type Props = {
   type?: "button" | "submit";
 };
 
+// Retro terminal button: transparent with a colored border by default,
+// fills solid on hover, hard press-down on click — no magnetic cursor-
+// following (that's a modern web trope), no gradient, no light-sweep shine.
 export default function CTAButton({ children, variant = "primary", href, onClick, className = "", type = "button" }: Props) {
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
 
@@ -24,8 +26,8 @@ export default function CTAButton({ children, variant = "primary", href, onClick
   };
 
   const base = cn(
-    "inline-flex items-center justify-center gap-2 text-sm rounded relative overflow-hidden px-5 py-3",
-    variant === "primary" ? "font-semibold text-paper bg-gradient-to-r from-purple to-purple-2 shine-wrap" : "font-medium text-paper border border-white/[0.16] fill-wrap",
+    "inline-flex items-center justify-center gap-2 text-[13px] font-medium relative overflow-hidden px-5 py-3 uppercase tracking-wide retro-btn",
+    variant === "outline" && "retro-btn-cyan",
     className
   );
 
@@ -40,14 +42,14 @@ export default function CTAButton({ children, variant = "primary", href, onClick
 
   if (href) {
     return (
-      <Magnetic as="a" href={href} onClick={trigger} className={base}>
+      <a href={href} onClick={trigger} className={base}>
         {content}
-      </Magnetic>
+      </a>
     );
   }
   return (
-    <Magnetic as="button" type={type} onClick={trigger} className={base}>
+    <button type={type} onClick={trigger} className={base}>
       {content}
-    </Magnetic>
+    </button>
   );
 }

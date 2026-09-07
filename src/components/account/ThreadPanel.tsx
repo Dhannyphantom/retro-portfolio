@@ -100,7 +100,7 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
         className="fixed top-1/2 -translate-y-1/2 z-40 flex items-center gap-2 px-3 py-3 rounded-l-xl transition-all"
         style={{
           right: open ? 380 : 0,
-          background: "linear-gradient(120deg, #8B2FE0, #4C1D95)",
+          background: "linear-gradient(120deg, #39FF14, #1FAE0C)",
           boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
         }}
         aria-label={open ? "Close conversation" : "Open conversation"}
@@ -116,8 +116,8 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
         style={{
           width: 380,
           maxWidth: "92vw",
-          background: "#0A090C",
-          borderLeft: "1px solid rgba(243,240,247,0.09)",
+          background: "#0A0118",
+          borderLeft: "1px solid rgba(217,214,232,0.09)",
           transform: open ? "translateX(0)" : "translateX(100%)",
         }}
       >
@@ -139,9 +139,9 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
                   <div
                     className="rounded-xl px-3.5 py-2.5 text-[13.5px]"
                     style={{
-                      background: mine ? "linear-gradient(120deg, #8B2FE0, #4C1D95)" : "#131115",
-                      border: mine ? "none" : "1px solid rgba(243,240,247,0.09)",
-                      color: "#F3F0F7",
+                      background: mine ? "linear-gradient(120deg, #39FF14, #1FAE0C)" : "#120A1F",
+                      border: mine ? "none" : "1px solid rgba(217,214,232,0.09)",
+                      color: "#D9D6E8",
                     }}
                   >
                     <div className="text-[11px] opacity-70 mb-0.5">{m.senderName}</div>
@@ -154,7 +154,7 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
                   )}
 
                   {m.proposal && (
-                    <div className="w-full rounded-lg p-3.5 mt-1" style={{ border: "1px solid rgba(180,92,255,0.28)", background: "rgba(139,47,224,0.05)" }}>
+                    <div className="w-full rounded-lg p-3.5 mt-1" style={{ border: "1px solid rgba(0,229,255,0.28)", background: "rgba(57,255,20,0.05)" }}>
                       <div className="flex items-center gap-1.5 text-[12px] font-mono text-violet mb-2">
                         <FileText size={13} /> PROJECT PROPOSAL
                       </div>
@@ -175,7 +175,7 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
                           </button>
                         </div>
                       ) : (
-                        <div className="text-[11.5px] font-mono mt-1" style={{ color: m.proposalStatus === "approved" ? "#8FE3A6" : m.proposalStatus === "declined" ? "#E24B4A" : "#A79FB8" }}>
+                        <div className="text-[11.5px] font-mono mt-1" style={{ color: m.proposalStatus === "approved" ? "#8FE3A6" : m.proposalStatus === "declined" ? "#FF3B3B" : "#8A86A8" }}>
                           {m.proposalStatus === "pending" ? "Awaiting client approval" : m.proposalStatus?.toUpperCase()}
                         </div>
                       )}
@@ -190,7 +190,7 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
 
         <div className="border-t border-white/[0.08] p-3.5 flex-shrink-0">
           {showProposal && viewerRole === "admin" && (
-            <div className="mb-3 rounded-lg p-3.5 flex flex-col gap-2.5" style={{ border: "1px solid rgba(180,92,255,0.24)", background: "rgba(139,47,224,0.05)" }}>
+            <div className="mb-3 rounded-lg p-3.5 flex flex-col gap-2.5" style={{ border: "1px solid rgba(0,229,255,0.24)", background: "rgba(57,255,20,0.05)" }}>
               <input placeholder="Budget (USD)" type="number" value={proposal.budget} onChange={(e) => setProposal({ ...proposal, budget: e.target.value })} className={inputClass} />
               <input placeholder="Timeline (e.g. 4-6 weeks)" value={proposal.timeline} onChange={(e) => setProposal({ ...proposal, timeline: e.target.value })} className={inputClass} />
               <div className="flex flex-col gap-2">
@@ -207,7 +207,7 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
             </div>
           )}
 
-          {error && <p className="text-[12.5px] mb-2" style={{ color: "#E24B4A" }}>{error}</p>}
+          {error && <p className="text-[12.5px] mb-2" style={{ color: "#FF3B3B" }}>{error}</p>}
 
           <div className="flex gap-2">
             <input
@@ -221,7 +221,7 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
               <button
                 onClick={() => setShowProposal((s) => !s)}
                 className="px-3 rounded text-[12.5px] flex-shrink-0"
-                style={{ border: "1px solid rgba(180,92,255,0.3)", color: showProposal ? "#F3F0F7" : "#B45CFF", background: showProposal ? "rgba(139,47,224,0.2)" : "transparent" }}
+                style={{ border: "1px solid rgba(0,229,255,0.3)", color: showProposal ? "#D9D6E8" : "#00E5FF", background: showProposal ? "rgba(57,255,20,0.2)" : "transparent" }}
               >
                 <FileText size={15} />
               </button>

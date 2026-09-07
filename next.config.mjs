@@ -4,8 +4,8 @@ const nextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "cdn.simpleicons.org" },
     ],
   },
-  allowedDevOrigins: ["192.168.74.9"],
 };
 export default nextConfig;

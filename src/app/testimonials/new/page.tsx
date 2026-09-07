@@ -41,10 +41,10 @@ export default function NewTestimonialPage() {
   if (sent) {
     return (
       <div className="max-w-[560px] mx-auto px-7 pt-28 pb-32 text-center">
-        <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 text-violet" style={{ background: "rgba(180,92,255,0.1)", border: "1px solid rgba(180,92,255,0.3)" }}>
+        <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 text-violet" style={{ background: "rgba(0,229,255,0.1)", border: "1px solid rgba(0,229,255,0.3)" }}>
           <Check size={22} />
         </div>
-        <h1 className="font-display font-bold text-3xl mb-3">Thank you</h1>
+        <h1 className="font-display text-[17px] leading-relaxed mb-3">Thank you</h1>
         <p className="text-mute">Your review has been submitted and will appear on the site once reviewed.</p>
       </div>
     );
@@ -55,8 +55,8 @@ export default function NewTestimonialPage() {
   return (
     <div className="max-w-[560px] mx-auto px-7 pt-16 pb-28">
       <Reveal>
-        <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.42)" }}>SHARE YOUR EXPERIENCE</span>
-        <h1 className="font-display font-bold text-[clamp(28px,4vw,38px)] tracking-tight mt-2 mb-2">Leave a review</h1>
+        <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(0,229,255,0.42)" }}>SHARE YOUR EXPERIENCE</span>
+        <h1 className="font-display text-[clamp(15px,2.2vw,19px)] tracking-tight mt-3 mb-3 leading-relaxed">Leave a review</h1>
         <p className="text-mute text-sm mb-8">Worked with me on something? I&apos;d love to hear how it went.</p>
 
         <form onSubmit={submit} className="flex flex-col gap-4">
@@ -92,7 +92,7 @@ export default function NewTestimonialPage() {
             <span className="block text-[13px] text-mute mb-1.5">Your review</span>
             <textarea rows={5} className={`${input} resize-none`} value={form.quote} onChange={(e) => set("quote", e.target.value)} />
           </label>
-          {error && <p className="text-[12.5px]" style={{ color: "#E24B4A" }}>{error}</p>}
+          {error && <p className="text-[12.5px]" style={{ color: "#FF3B3B" }}>{error}</p>}
           <CTAButton variant="primary" type="submit" className="w-full">{submitting ? "Submitting..." : "Submit review"}</CTAButton>
         </form>
       </Reveal>

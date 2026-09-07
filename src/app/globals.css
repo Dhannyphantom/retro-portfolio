@@ -3,64 +3,131 @@
 @tailwind utilities;
 
 :root {
-  --font-display: "Bricolage Grotesque", sans-serif;
-  --font-body: "Inter", sans-serif;
+  --font-display: "Press Start 2P", monospace;
+  --font-body: "JetBrains Mono", monospace;
   --font-mono: "JetBrains Mono", monospace;
+  --void: #0A0118;
+  --panel: #120A1F;
+  --panel-alt: #1A1030;
+  --border: #3A2A5C;
+  --green: #39FF14;
+  --cyan: #00E5FF;
+  --magenta: #FF2D95;
+  --amber: #FFB400;
+  --text: #D9D6E8;
+  --text-dim: #8A86A8;
 }
 
 * { box-sizing: border-box; }
 
+/* Retro sharp corners everywhere — no rounded UI in an authentic terminal/
+   OS aesthetic. !important beats inline styles too, so this retro-fits the
+   whole app in one rule rather than needing every component touched.
+   Anything that legitimately must stay circular (cursor dot, a couple of
+   decorative marks) opts back in via .retro-circle. */
+*, *::before, *::after { border-radius: 0 !important; }
+.retro-circle { border-radius: 50% !important; }
+
+html { scroll-behavior: smooth; }
+
 body {
-  background: #0A090C;
-  color: #F3F0F7;
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-body);
 }
 
-::selection { background: #8B2FE0; color: #F3F0F7; }
+/* Custom cursor everywhere except touch devices (see CustomCursor.tsx) */
+* { cursor: none; }
+@media (pointer: coarse) { * { cursor: auto !important; } }
+
+::selection { background: var(--green); color: var(--void); }
+
+/* faint CRT scanlines + vignette, fixed over the whole viewport */
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+}
+body::after {
+  content: "";
+  position: fixed; inset: 0; z-index: 9997; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
+}
+
+/* retro scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--void); }
+::-webkit-scrollbar-thumb { background: var(--border); border: 2px solid var(--void); }
+::-webkit-scrollbar-thumb:hover { background: var(--green); }
 
 /* --------------------------------------------------------------------
-   Keyframes declared as plain CSS (not left to Tailwind's JIT utility
-   scanner) so they're always present, whether they're triggered by a
-   Tailwind `animate-*` class or by a hand-written class below. Some of
-   these are duplicated in tailwind.config.ts for the `animate-*`
-   utilities used directly in components — that's intentional and
-   harmless; both definitions are identical.
+   Keyframes declared as plain CSS so they're always present regardless
+   of Tailwind's JIT utility-detection.
 -------------------------------------------------------------------- */
 @keyframes spin2 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes spinReverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-@keyframes drift { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30px,-20px) scale(1.06); } }
-@keyframes breathe { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.6; } }
-@keyframes ambientGlow { 0%, 100% { box-shadow: 0 0 5px 0px rgba(180,92,255,0.054); } 50% { box-shadow: 0 0 14px 2px rgba(180,92,255,0.102); } }
-@keyframes borderRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes breathe { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.75; } }
+@keyframes termBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@keyframes floatSmall { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes floatSmall { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @keyframes blink { 50% { opacity: 0; } }
 @keyframes rippleFade { from { transform: scale(0); opacity: 0.35; } to { transform: scale(5); opacity: 0; } }
-@keyframes heroGlow { 0%, 100% { opacity: 0.55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.18); } }
+@keyframes marchAnts { to { background-position: 16px 0; } }
 
-/* ambient background blobs + hero avatar ring */
-.animate-drift { animation: drift 14s ease-in-out infinite; }
-.animate-breathe { animation: breathe 4s ease-in-out infinite; }
-.animate-ambientGlow { animation: ambientGlow 3.6s ease-in-out infinite; }
+.animate-breathe { animation: breathe 3s ease-in-out infinite; }
 .animate-spin2 { animation: spin2 20s linear infinite; }
 .animate-spinReverse { animation: spinReverse 20s linear infinite; }
 .animate-floatSmall { animation: floatSmall 5s ease-in-out infinite; }
 .animate-blink { animation: blink 1s steps(1) infinite; }
-.animate-heroGlow { animation: heroGlow 6s ease-in-out infinite; }
+.animate-termBlink { animation: termBlink 1.1s steps(1) infinite; }
 
-/* diagonal rotating border used on project cards / tags / services —
-   this is the one place purple ambient should read clearly, so it runs
-   noticeably brighter than the rest of the (mostly neutral) UI. */
-.diag-wrap { animation: diagPulse 3.4s ease-in-out infinite; position: relative; overflow: hidden; }
-.diag-wrap-hover { animation-play-state: paused; }
-.diag-wrap-hover:hover { animation-play-state: running; }
-@keyframes diagPulse { 0%, 100% { box-shadow: 0 0 10px 0px rgba(180,92,255,0.18); } 50% { box-shadow: 0 0 26px 4px rgba(180,92,255,0.4); } }
-.diag-border-spin {
-  position: absolute; inset: -60%;
-  background: conic-gradient(from 0deg, transparent 0%, rgba(196,140,255,0.85) 6%, transparent 14%, transparent 50%, rgba(139,47,224,0.85) 56%, transparent 64%, transparent 100%);
-  animation: borderRotate 7s linear infinite;
+/* "marching ants" dashed border — the retro stand-in for the old rotating
+   conic-gradient glow border. Classic OS marquee-selection look: a dashed
+   outline that visibly scrolls. Used sparingly (hover/active states only)
+   rather than running constantly everywhere. */
+.diag-wrap {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--border);
 }
-.paused-until-hover { animation-play-state: paused; }
-.diag-wrap-hover:hover .paused-until-hover { animation-play-state: running; }
+.diag-wrap-hover { border-color: var(--border); }
+.diag-border-spin { display: none; } /* superseded by .marching-border below */
+.paused-until-hover { display: none; }
+
+.marching-border {
+  background-image:
+    linear-gradient(90deg, var(--green) 50%, transparent 50%),
+    linear-gradient(90deg, var(--green) 50%, transparent 50%),
+    linear-gradient(0deg, var(--green) 50%, transparent 50%),
+    linear-gradient(0deg, var(--green) 50%, transparent 50%);
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  background-size: 16px 2px, 16px 2px, 2px 16px, 2px 16px;
+  background-position: 0 0, 0 100%, 0 0, 100% 0;
+  animation: marchAnts 0.5s linear infinite;
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+  position: absolute;
+  inset: -1px;
+}
+.diag-wrap:hover .marching-border,
+.diag-wrap.always-march .marching-border { opacity: 1; }
+
+/* window chrome — retro OS window title bar, used on project/feature cards */
+.win { background: var(--panel); border: 1px solid var(--border); }
+.win-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 6px 10px; background: var(--panel-alt); border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-dim);
+}
+.win-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.win-controls { display: flex; gap: 6px; flex-shrink: 0; }
+.win-dot {
+  width: 10px; height: 10px; border: 1px solid var(--border); background: var(--void);
+  display: flex; align-items: center; justify-content: center; font-size: 8px; line-height: 1; color: var(--text-dim);
+}
 
 /* marquee */
 .marquee-track { animation: marquee 26s linear infinite; }
@@ -69,65 +136,59 @@ body {
 /* nav underline */
 .nav-link { position: relative; }
 .nav-link::after {
-  content: ""; position: absolute; left: 0; bottom: -4px; width: 0%; height: 1px;
-  background: #B45CFF; transition: width 0.3s cubic-bezier(.16,1,.3,1);
+  content: ""; position: absolute; left: 0; bottom: -4px; width: 0%; height: 2px;
+  background: var(--green); transition: width 0.15s steps(3);
 }
 .nav-link:hover::after { width: 100%; }
 
-/* card hover lift */
-.hover-card { transition: transform 0.4s cubic-bezier(.16,1,.3,1), border-color 0.4s ease, box-shadow 0.4s ease; }
-.hover-card:hover { transform: translateY(-6px); border-color: rgba(180,92,255,0.136); box-shadow: 0 16px 28px -16px rgba(139,47,224,0.122); }
+/* card hover — snappy, not a soft modern ease */
+.hover-card { transition: transform 0.15s steps(2), border-color 0.15s ease; }
+.hover-card:hover { transform: translate(-2px, -2px); border-color: var(--green); box-shadow: 4px 4px 0 var(--border); }
 
-.icon-hover { transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), border-color 0.3s ease, background 0.3s ease; }
-.icon-hover:hover { transform: scale(1.1) rotate(-4deg); border-color: rgba(180,92,255,0.218); background: rgba(139,47,224,0.054); }
+.icon-hover { transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease; }
+.icon-hover:hover { border-color: var(--green); background: rgba(57,255,20,0.08); }
 
-/* button shine / fill */
-.shine-wrap { position: relative; overflow: hidden; }
-.shine-wrap::after {
-  content: ""; position: absolute; top: 0; left: -130%; width: 55%; height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.22), transparent);
-  transform: skewX(-20deg); transition: left 0.7s ease; pointer-events: none;
-}
-.shine-wrap:hover::after { left: 140%; }
+/* retro buttons: transparent outline by default, solid fill on hover, hard
+   press-down on click — no light-sweep shine, no soft glow gradients */
+.retro-btn { position: relative; border: 2px solid var(--green); color: var(--green); background: transparent; transition: transform 0.1s ease, background 0.12s ease, color 0.12s ease, box-shadow 0.12s ease; }
+.retro-btn:hover { background: var(--green); color: var(--void); box-shadow: 0 0 0 2px rgba(57,255,20,0.25); }
+.retro-btn:active { transform: translateY(2px); box-shadow: none; }
 
-.fill-wrap { position: relative; z-index: 0; overflow: hidden; }
-.fill-wrap::before {
-  content: ""; position: absolute; inset: 0; background: linear-gradient(120deg, #8B2FE0, #4C1D95);
-  transform: translateX(-101%); transition: transform 0.4s cubic-bezier(.16,1,.3,1); z-index: -1;
-}
-.fill-wrap:hover::before { transform: translateX(0); }
-.fill-wrap:hover { border-color: transparent; }
+.retro-btn-cyan { border-color: var(--cyan); color: var(--cyan); }
+.retro-btn-cyan:hover { background: var(--cyan); color: var(--void); box-shadow: 0 0 0 2px rgba(0,229,255,0.25); }
 
 .ripple-el {
   position: absolute; width: 10px; height: 10px; margin-left: -5px; margin-top: -5px;
-  border-radius: 50%; background: rgba(243,240,247,0.5); pointer-events: none;
+  border-radius: 50% !important; background: rgba(217,214,232,0.5); pointer-events: none;
   animation: rippleFade 0.6s ease-out forwards;
 }
 
 .blink-cursor { animation: blink 1s steps(1) infinite; }
 
 /* Native <select> dropdown lists ignore most CSS and fall back to the OS/
-   browser's light theme by default, which is how "options" end up unreadable
-   on a dark site. `color-scheme: dark` tells the browser to render native
-   form UI (including the popup option list) in its dark variant, and the
-   explicit background/color below cover the browsers that need it spelled
-   out directly rather than inferred from color-scheme alone. */
+   browser's light theme by default. color-scheme tells the browser to
+   render native form UI in dark, and the explicit colors below cover
+   browsers that need it spelled out directly. */
 select {
   color-scheme: dark;
-  background-color: #131115;
-  color: #F3F0F7;
+  background-color: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
 }
 select option {
-  background-color: #131115;
-  color: #F3F0F7;
+  background-color: var(--panel);
+  color: var(--text);
 }
-input[type="date"] {
-  color-scheme: dark;
+input, textarea {
+  border: 1px solid var(--border) !important;
+  background-color: rgba(217,214,232,0.04);
 }
+input[type="date"] { color-scheme: dark; }
 
 .notif-dot {
-  position: absolute; top: -3px; right: -3px; width: 9px; height: 9px; border-radius: 50%;
-  background: #B45CFF; border: 2px solid #07050B; animation: ambientGlow 1.8s ease-in-out infinite;
+  position: absolute; top: -3px; right: -3px; width: 8px; height: 8px;
+  background: var(--magenta); border: 2px solid var(--void);
+  animation: termBlink 1s steps(1) infinite;
 }
 
 @media (max-width: 700px) { .hide-sm { display: none; } }

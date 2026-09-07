@@ -41,10 +41,10 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative max-w-[1120px] mx-auto px-7 pb-[90px]">
-      <div className="hover-card relative overflow-hidden rounded-2xl p-8 sm:p-11 grid grid-cols-1 md:grid-cols-2 gap-12" style={{ border: "1px solid rgba(255,255,255,0.08)", background: "linear-gradient(135deg, #131116, #08070A)" }}>
+      <div className="hover-card relative overflow-hidden rounded-2xl p-8 sm:p-11 grid grid-cols-1 md:grid-cols-2 gap-12" style={{ border: "1px solid rgba(255,255,255,0.08)", background: "linear-gradient(135deg, #120A1F, #0A0118)" }}>
         <Reveal from="left">
-          <span className="font-mono text-xs tracking-widest" style={{ color: "rgba(180,92,255,0.422)" }}>CONTACTS</span>
-          <h2 className="font-display font-semibold text-[clamp(26px,3.2vw,36px)] mt-2.5 mb-4 tracking-tight">
+          <span className="font-mono text-xs tracking-widest text-violet">$ CONTACTS</span>
+          <h2 className="font-display font-semibold text-[clamp(15px,2vw,19px)] mt-3 mb-4 tracking-tight leading-relaxed">
             Have a project?<br />Let&apos;s talk.
           </h2>
           <p className="text-mute text-[15px] leading-relaxed mb-5 max-w-[380px]">Tell me what you&apos;re building and I&apos;ll get back within a day or two.</p>
@@ -52,7 +52,7 @@ export default function Contact() {
           <div className="flex items-center gap-2 text-mute text-[13px] mb-[22px]"><Clock size={14} /> Usually replies within 1–2 days</div>
           <div className="flex gap-3 mb-5">
             {[Github, Linkedin, Mail].map((Icon, idx) => (
-              <a key={idx} href="#" className="icon-hover w-[42px] h-[42px] rounded flex items-center justify-center" style={{ border: "1px solid rgba(243,240,247,0.12)" }}>
+              <a key={idx} href="#" className="icon-hover w-[42px] h-[42px] rounded flex items-center justify-center" style={{ border: "1px solid rgba(217,214,232,0.12)" }}>
                 <Icon size={17} />
               </a>
             ))}
@@ -65,8 +65,8 @@ export default function Contact() {
         <Reveal from="right" delay={80}>
           {sent ? (
             <div className="flex flex-col justify-center h-full items-start">
-              <div className="w-[46px] h-[46px] rounded flex items-center justify-center mb-4 text-violet" style={{ background: "rgba(180,92,255,0.068)", border: "1px solid rgba(180,92,255,0.177)" }}>✓</div>
-              <h3 className="font-display text-xl mb-2">Message sent</h3>
+              <div className="w-[46px] h-[46px] rounded flex items-center justify-center mb-4 text-violet" style={{ background: "rgba(0,229,255,0.068)", border: "1px solid rgba(0,229,255,0.177)" }}>✓</div>
+              <h3 className="font-display text-[15px] mb-3 leading-relaxed">Message sent</h3>
               <p className="text-mute text-sm mb-[18px]">Thanks — I&apos;ll reply soon.</p>
               <button onClick={() => setSent(false)} className="text-violet text-[13.5px]">Send another message</button>
             </div>
@@ -77,29 +77,29 @@ export default function Contact() {
                   type="text" placeholder="Your name" value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   className="w-full rounded px-3.5 py-3 text-[14.5px] outline-none bg-white/[0.04]"
-                  style={{ border: `1px solid ${errors.name ? "#E24B4A" : "rgba(243,240,247,0.12)"}` }}
+                  style={{ border: `1px solid ${errors.name ? "#FF3B3B" : "rgba(217,214,232,0.12)"}` }}
                 />
-                {errors.name && <p className="text-[12.5px] mt-1.5" style={{ color: "#E24B4A" }}>{errors.name}</p>}
+                {errors.name && <p className="text-[12.5px] mt-1.5" style={{ color: "#FF3B3B" }}>{errors.name}</p>}
               </div>
               <div>
                 <input
                   type="email" placeholder="you@company.com" value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className="w-full rounded px-3.5 py-3 text-[14.5px] outline-none bg-white/[0.04]"
-                  style={{ border: `1px solid ${errors.email ? "#E24B4A" : "rgba(243,240,247,0.12)"}` }}
+                  style={{ border: `1px solid ${errors.email ? "#FF3B3B" : "rgba(217,214,232,0.12)"}` }}
                 />
-                {errors.email && <p className="text-[12.5px] mt-1.5" style={{ color: "#E24B4A" }}>{errors.email}</p>}
+                {errors.email && <p className="text-[12.5px] mt-1.5" style={{ color: "#FF3B3B" }}>{errors.email}</p>}
               </div>
               <div>
                 <textarea
                   placeholder="What are you building?" rows={4} value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                   className="w-full rounded px-3.5 py-3 text-[14.5px] outline-none bg-white/[0.04] resize-none"
-                  style={{ border: `1px solid ${errors.message ? "#E24B4A" : "rgba(243,240,247,0.12)"}` }}
+                  style={{ border: `1px solid ${errors.message ? "#FF3B3B" : "rgba(217,214,232,0.12)"}` }}
                 />
-                {errors.message && <p className="text-[12.5px] mt-1.5" style={{ color: "#E24B4A" }}>{errors.message}</p>}
+                {errors.message && <p className="text-[12.5px] mt-1.5" style={{ color: "#FF3B3B" }}>{errors.message}</p>}
               </div>
-              {serverError && <p className="text-[12.5px]" style={{ color: "#E24B4A" }}>{serverError}</p>}
+              {serverError && <p className="text-[12.5px]" style={{ color: "#FF3B3B" }}>{serverError}</p>}
               <CTAButton variant="primary" type="submit" className="w-full">
                 {submitting ? "Sending..." : "Submit"} <ArrowUpRight size={16} />
               </CTAButton>

@@ -1,47 +1,51 @@
 "use client";
-import { useState, MouseEvent } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Download } from "lucide-react";
 import CTAButton from "@/components/ui/CTAButton";
 import SplitText from "@/components/ui/SplitText";
 import SafeImage from "@/components/ui/SafeImage";
+import { setCursorDragging } from "@/lib/cursorBus";
 
 const PROFILE_IMG = "https://images.unsplash.com/photo-1506863530036-1efeddceb993?auto=format&fit=crop&w=600&q=80";
 const VIEWPORT = { once: false, amount: 0.4 };
 
 export type TechBadge = { name: string; iconUrl: string };
 const DEFAULT_BADGES: TechBadge[] = [
-  { name: "React", iconUrl: "https://cdn.simpleicons.org/react" },
-  { name: "Next.js", iconUrl: "https://cdn.simpleicons.org/nextdotjs/F3F0F7" },
-  { name: "Node.js", iconUrl: "https://cdn.simpleicons.org/nodedotjs" },
+  { name: "React", iconUrl: "https://cdn.simpleicons.org/react/39FF14" },
+  { name: "Next.js", iconUrl: "https://cdn.simpleicons.org/nextdotjs/39FF14" },
+  { name: "Node.js", iconUrl: "https://cdn.simpleicons.org/nodedotjs/39FF14" },
 ];
 
-function OrbitBadge({ badge, radius, size, dur, delay, angle, appear }: { badge: TechBadge; radius: number; size: number; dur: number; delay: number; angle: number; appear: number }) {
+// Orbits idly, but can be grabbed and flung — it snaps back to its orbital
+// position on release (framer-motion's dragSnapToOrigin). A concrete,
+// contained "mouse drag" interaction rather than a decorative gimmick.
+function OrbitBadge({ badge, radius, size, dur, delay, angle, appear, boundsRef }: { badge: TechBadge; radius: number; size: number; dur: number; delay: number; angle: number; appear: number; boundsRef: React.RefObject<HTMLDivElement | null> }) {
   return (
     <motion.div
-      className="absolute top-1/2 left-1/2 pointer-events-none z-20"
+      className="absolute top-1/2 left-1/2 z-20"
       style={{ width: radius * 2, height: radius * 2, marginLeft: -radius, marginTop: -radius }}
       initial={{ opacity: 0, scale: 0.4 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={VIEWPORT}
-      transition={{ duration: 0.6, delay: appear, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.5, delay: appear }}
     >
-      <div className="absolute animate-spin2" style={{ inset: 0, animationDuration: `${dur}s`, animationDelay: `${delay}s` }}>
-        <div className="absolute" style={{ top: -size / 2, left: "50%", marginLeft: -size / 2, transform: `rotate(${angle}deg) translate(0, ${radius}px) rotate(-${angle}deg)` }}>
-          <div
-            className="animate-spinReverse flex items-center justify-center rounded-full p-2"
-            style={{
-              animationDuration: `${dur}s`,
-              animationDelay: `${delay}s`,
-              width: size,
-              height: size,
-              background: "rgba(10,9,13,0.95)",
-              border: "1px solid rgba(180,92,255,0.4)",
-              boxShadow: "0 0 16px 2px rgba(139,47,224,0.28)",
-            }}
+      <div className="absolute animate-spin2 pointer-events-none" style={{ inset: 0, animationDuration: `${dur}s`, animationDelay: `${delay}s` }}>
+        <div className="absolute pointer-events-auto" style={{ top: -size / 2, left: "50%", marginLeft: -size / 2, transform: `rotate(${angle}deg) translate(0, ${radius}px) rotate(-${angle}deg)` }}>
+          <motion.div
+            className="animate-spinReverse flex items-center justify-center p-2 win"
+            drag
+            dragConstraints={boundsRef as React.RefObject<HTMLDivElement>}
+            dragElastic={0.4}
+            dragSnapToOrigin
+            whileDrag={{ scale: 1.25, zIndex: 50 }}
+            onDragStart={() => setCursorDragging(true)}
+            onDragEnd={() => setCursorDragging(false)}
+            style={{ animationDuration: `${dur}s`, animationDelay: `${delay}s`, width: size, height: size, cursor: "grab" }}
+            data-cursor-hover
           >
-            <SafeImage src={badge.iconUrl} alt={badge.name} className="w-full h-full object-contain" iconSize={14} />
-          </div>
+            <SafeImage src={badge.iconUrl} alt={badge.name} className="w-full h-full object-contain p-1.5 pointer-events-none" iconSize={14} />
+          </motion.div>
         </div>
       </div>
     </motion.div>
@@ -49,38 +53,31 @@ function OrbitBadge({ badge, radius, size, dur, delay, angle, appear }: { badge:
 }
 
 export default function Hero({ name = "Daniel", headline = "Software Developer", techBadges = DEFAULT_BADGES }: { name?: string; headline?: string; techBadges?: TechBadge[] }) {
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const badges = techBadges.slice(0, 3);
   const angles = [35, 155, 275];
-
-  const onMove = (e: MouseEvent<HTMLElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
-    setTilt({ x: px * 12, y: py * -12 });
-  };
+  const boundsRef = useRef<HTMLDivElement>(null);
 
   return (
     <section className="max-w-[1120px] mx-auto px-7 pt-16 pb-[70px] grid grid-cols-1 md:grid-cols-[1fr_0.8fr] gap-10 items-center">
       <div>
         <motion.p
-          className="font-display text-[22px] text-violet mb-1.5"
-          initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={VIEWPORT} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="font-mono text-[15px] text-violet mb-2"
+          initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={VIEWPORT} transition={{ duration: 0.5 }}
         >
-          Hello.
+          {"> Hello."}
         </motion.p>
-        <h1 className="font-display font-bold text-[clamp(30px,4vw,44px)] leading-[1.12] tracking-tight mb-1.5">
+        <h1 className="font-display text-[clamp(18px,3vw,26px)] leading-[1.6] tracking-tight mb-3">
           <SplitText text={`I'm ${name}`} by="char" step={24} />
         </h1>
         <motion.h2
-          className="font-display font-bold text-[clamp(30px,4vw,44px)] leading-[1.12] tracking-tight mb-9 bg-gradient-to-r from-violet to-purple bg-clip-text text-transparent"
-          initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={VIEWPORT} transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="font-mono text-[15px] text-violet mb-9"
+          initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={VIEWPORT} transition={{ duration: 0.5, delay: 0.15 }}
         >
-          {headline}
+          {headline} <span className="animate-termBlink">█</span>
         </motion.h2>
         <motion.div
           className="flex gap-3.5 flex-wrap"
-          initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={VIEWPORT} transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={VIEWPORT} transition={{ duration: 0.5, delay: 0.3 }}
         >
           <CTAButton href="/hire" variant="primary">Get a project</CTAButton>
           <CTAButton href="/cv" variant="outline">
@@ -89,51 +86,32 @@ export default function Hero({ name = "Daniel", headline = "Software Developer",
         </motion.div>
       </div>
 
-      <div
-        onMouseMove={onMove}
-        onMouseLeave={() => setTilt({ x: 0, y: 0 })}
-        className="relative mx-auto aspect-[1/1.1] w-full max-w-[400px]"
-      >
-        <div
-          className="relative w-full h-full transition-transform duration-300"
-          style={{ transform: `perspective(1000px) rotateY(${tilt.x}deg) rotateX(${tilt.y}deg)` }}
+      <div ref={boundsRef} className="relative mx-auto aspect-[1/1.1] w-full max-w-[400px]">
+        {/* photo presented as a retro "webcam" window rather than a soft
+            glowing circular frame — flat border, scanline overlay, no blur */}
+        <motion.div
+          className="win absolute inset-[16%] overflow-hidden z-10"
+          initial={{ opacity: 0, scale: 0.85 }} whileInView={{ opacity: 1, scale: 1 }} viewport={VIEWPORT} transition={{ duration: 0.6 }}
         >
-          {/* the circular "socket" the avatar sits in — indented/recessed, with a
-              subtle animated purple glow gathered in the depth at opposite edges */}
-          <motion.div
-            className="absolute inset-[3%] rounded-full overflow-hidden"
-            style={{ background: "#0C0B0F", boxShadow: "inset 10px 10px 26px rgba(0,0,0,0.55), inset -8px -8px 22px rgba(255,255,255,0.025)" }}
-            initial={{ opacity: 0, scale: 0.85 }} whileInView={{ opacity: 1, scale: 1 }} viewport={VIEWPORT} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <div className="win-bar">
+            <span className="win-title">WEBCAM.EXE</span>
+            <span className="win-controls"><span className="win-dot">▢</span><span className="win-dot">×</span></span>
+          </div>
+          <div className="relative">
+            <SafeImage src={PROFILE_IMG} alt={name} className="w-full h-full object-cover grayscale contrast-125" iconSize={46} />
             <div
-              className="absolute rounded-full animate-heroGlow"
-              style={{ width: 150, height: 150, top: "4%", left: "6%", background: "radial-gradient(circle, rgba(139,47,224,0.5) 0%, transparent 70%)", filter: "blur(26px)" }}
+              className="absolute inset-0 pointer-events-none"
+              style={{ background: "repeating-linear-gradient(0deg, rgba(57,255,20,0.06) 0px, rgba(57,255,20,0.06) 1px, transparent 1px, transparent 3px)" }}
             />
-            <div
-              className="absolute rounded-full animate-heroGlow"
-              style={{ width: 170, height: 170, bottom: "4%", right: "4%", animationDelay: "2.4s", background: "radial-gradient(circle, rgba(180,92,255,0.4) 0%, transparent 70%)", filter: "blur(26px)" }}
-            />
-          </motion.div>
+          </div>
+        </motion.div>
 
-          {badges.map((b, i) => (
-            <OrbitBadge key={b.name} badge={b} radius={172} size={40} dur={20} delay={-6.6 * i} angle={angles[i] ?? 35 + i * 120} appear={0.5 + i * 0.15} />
-          ))}
+        {badges.map((b, i) => (
+          <OrbitBadge key={b.name} badge={b} radius={172} size={40} dur={20} delay={-6.6 * i} angle={angles[i] ?? 35 + i * 120} appear={0.5 + i * 0.15} boundsRef={boundsRef} />
+        ))}
 
-          <div className="absolute top-[4%] left-[2%] w-1.5 h-1.5 rounded-full bg-violet animate-floatSmall" style={{ boxShadow: "0 0 7px 1px rgba(180,92,255,0.35)" }} />
-          <div className="absolute bottom-[6%] right-0 w-[5px] h-[5px] rounded-full bg-purple animate-floatSmall [animation-delay:1.4s]" style={{ boxShadow: "0 0 7px 1px rgba(139,47,224,0.35)" }} />
-
-          <motion.div
-            className="absolute inset-[13%] rounded-full border-2 border-purple animate-breathe z-10"
-            style={{ boxShadow: "0 0 46px 10px rgba(139,47,224,0.32)" }}
-            initial={{ opacity: 0, scale: 0.7 }} whileInView={{ opacity: 1, scale: 1 }} viewport={VIEWPORT} transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          />
-          <motion.div
-            className="absolute inset-[20%] rounded-full overflow-hidden border border-white/10 animate-ambientGlow z-10"
-            initial={{ opacity: 0, scale: 0.7 }} whileInView={{ opacity: 1, scale: 1 }} viewport={VIEWPORT} transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <SafeImage src={PROFILE_IMG} alt={name} className="w-full h-full object-cover" iconSize={46} />
-          </motion.div>
-        </div>
+        <div className="absolute top-[4%] left-[2%] w-1.5 h-1.5 bg-violet animate-floatSmall" />
+        <div className="absolute bottom-[6%] right-0 w-[5px] h-[5px] bg-purple animate-floatSmall [animation-delay:1.4s]" />
       </div>
     </section>
   );

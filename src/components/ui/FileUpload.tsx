@@ -63,7 +63,7 @@ export default function FileUpload({
         </button>
       )}
       <input ref={inputRef} type="file" accept={accept} className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
-      {error && <p className="text-[12.5px] mt-1.5" style={{ color: "#E24B4A" }}>{error}</p>}
+      {error && <p className="text-[12.5px] mt-1.5" style={{ color: "#FF3B3B" }}>{error}</p>}
     </div>
   );
 }
