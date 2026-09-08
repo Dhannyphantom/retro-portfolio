@@ -1,6 +1,7 @@
 "use client";
 import { useState, MouseEvent } from "react";
 import { cn } from "@/lib/utils";
+import Magnetic from "./Magnetic";
 
 type Props = {
   children: React.ReactNode;
@@ -12,8 +13,9 @@ type Props = {
 };
 
 // Retro terminal button: transparent with a colored border by default,
-// fills solid on hover, hard press-down on click — no magnetic cursor-
-// following (that's a modern web trope), no gradient, no light-sweep shine.
+// fills solid on hover, hard press-down on click. Also carries a heavy
+// magnetic pull + skew (see ui/Magnetic.tsx) — the cursor drags it around
+// with real spring weight before it snaps back, like the reference site.
 export default function CTAButton({ children, variant = "primary", href, onClick, className = "", type = "button" }: Props) {
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
 
@@ -42,14 +44,14 @@ export default function CTAButton({ children, variant = "primary", href, onClick
 
   if (href) {
     return (
-      <a href={href} onClick={trigger} className={base}>
+      <Magnetic as="a" href={href} onClick={trigger} className={base}>
         {content}
-      </a>
+      </Magnetic>
     );
   }
   return (
-    <button type={type} onClick={trigger} className={base}>
+    <Magnetic as="button" type={type} onClick={trigger} className={base}>
       {content}
-    </button>
+    </Magnetic>
   );
 }

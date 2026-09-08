@@ -20,7 +20,7 @@ function Item({ item, i }: { item: FAQItem; i: number }) {
       <div className="border-b border-white/[0.07]">
         <button onClick={() => setOpen((o) => !o)} className="w-full flex justify-between items-center py-[18px] px-1 text-left">
           <span className="text-[15px] font-medium">{item.question}</span>
-          <ChevronDown size={18} className={`text-violet flex-shrink-0 ml-3 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
+          <ChevronDown size={18} className={`text-neon flex-shrink-0 ml-3 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
         </button>
         <div className="overflow-hidden transition-[max-height] duration-400" style={{ maxHeight: open ? 200 : 0 }}>
           <p className="text-mute text-sm leading-relaxed px-1 pb-[18px]">{item.answer}</p>
@@ -35,7 +35,7 @@ export default function FAQ({ items = FALLBACK }: { items?: FAQItem[] }) {
     <section className="max-w-[780px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-10">
-          <span className="font-mono text-xs tracking-widest text-violet">$ FAQ</span>
+          <span className="font-mono text-xs tracking-widest text-neon">$ FAQ</span>
           <h2 className="font-display font-semibold text-[clamp(15px,2vw,19px)] mt-3 tracking-tight leading-relaxed">Common questions</h2>
         </div>
       </Reveal>

@@ -18,7 +18,7 @@ export default function HowIWork({ items = FALLBACK }: { items?: WorkflowStepIte
     <section className="max-w-[1120px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-12">
-          <span className="font-mono text-xs tracking-widest text-violet">$ FROM IDEA TO PRODUCT</span>
+          <span className="font-mono text-xs tracking-widest text-neon">$ FROM IDEA TO PRODUCT</span>
           <h2 className="font-display font-semibold text-[clamp(16px,2.2vw,22px)] mt-3 tracking-tight leading-relaxed">How I work</h2>
         </div>
       </Reveal>
@@ -29,7 +29,7 @@ export default function HowIWork({ items = FALLBACK }: { items?: WorkflowStepIte
             <Reveal key={w.title} delay={i * 80} className="flex items-center">
               <div className="flex flex-col items-center w-[120px] text-center">
                 <div
-                  className="animate-ambientGlow w-[52px] h-[52px] rounded-full flex items-center justify-center text-violet mb-3 bg-ink2"
+                  className="animate-ambientGlow w-[52px] h-[52px] rounded-full flex items-center justify-center text-neon mb-3 bg-ink2"
                   style={{ animationDelay: `${i * 0.3}s`, border: "1px solid #00E5FF" }}
                 >
                   <Icon size={20} />

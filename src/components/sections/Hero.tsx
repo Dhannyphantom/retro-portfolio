@@ -75,7 +75,7 @@ export default function Hero({ name = "Daniel", headline = "Software Developer",
     <section className="max-w-[1120px] mx-auto px-7 pt-16 pb-[70px] grid grid-cols-1 md:grid-cols-[1fr_0.8fr] gap-10 items-center">
       <div>
         <motion.p
-          className="font-mono text-[15px] text-violet mb-2"
+          className="font-mono text-[15px] text-neon mb-2"
           initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={VIEWPORT} transition={{ duration: 0.5 }}
         >
           {"> Hello."}
@@ -84,7 +84,7 @@ export default function Hero({ name = "Daniel", headline = "Software Developer",
           <SplitText text={`I'm ${name}`} by="char" step={24} />
         </h1>
         <motion.h2
-          className="font-mono text-[15px] text-violet mb-9"
+          className="font-mono text-[15px] text-neon mb-9"
           initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={VIEWPORT} transition={{ duration: 0.5, delay: 0.15 }}
         >
           {headline} <span className="animate-termBlink">█</span>
@@ -126,8 +126,8 @@ export default function Hero({ name = "Daniel", headline = "Software Developer",
           <OrbitBadge key={b.name} badge={b} radius={172} size={40} dur={20} delay={-6.6 * i} angle={angles[i] ?? 35 + i * 120} appear={0.5 + i * 0.15} boundsRef={boundsRef} />
         ))}
 
-        <div className="absolute top-[4%] left-[2%] w-1.5 h-1.5 bg-violet animate-floatSmall" />
-        <div className="absolute bottom-[6%] right-0 w-[5px] h-[5px] bg-purple animate-floatSmall [animation-delay:1.4s]" />
+        <div className="absolute top-[4%] left-[2%] w-1.5 h-1.5 bg-neon animate-floatSmall" />
+        <div className="absolute bottom-[6%] right-0 w-[5px] h-[5px] bg-phosphor animate-floatSmall [animation-delay:1.4s]" />
       </div>
     </section>
   );

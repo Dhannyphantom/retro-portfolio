@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Press_Start_2P, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/layout/Nav";
@@ -13,7 +14,11 @@ import { THEME_INIT_SCRIPT } from "@/lib/theme";
 // Retro CRT-terminal type system: a pixel font for headers/labels (used
 // sparingly — it's chunky, not for body copy) and JetBrains Mono for
 // everything else, matching an actual monospaced terminal.
-const display = Press_Start_2P({ subsets: ["latin"], weight: "400", variable: "--font-display" });
+const display = Press_Start_2P({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-display",
+});
 const body = JetBrains_Mono({ subsets: ["latin"], variable: "--font-body" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
@@ -31,23 +36,46 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const settings = await getSiteSettings();
 
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${display.variable} ${body.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        {/* Runs before paint so a light-mode visitor never sees a dark flash. */}
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        {/* next/script (not a raw <script> tag) so React doesn't warn about
+            rendering a script during client render — beforeInteractive still
+            runs it before paint, so a light-mode visitor never sees a dark
+            flash. */}
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
+        />
       </head>
-      <body className="font-body bg-ink text-paper min-h-screen relative overflow-x-hidden" suppressHydrationWarning>
+      <body
+        className="font-body bg-ink text-paper min-h-screen relative overflow-x-hidden"
+        suppressHydrationWarning
+      >
         <Providers>
           <BootScreen name={settings.name} />
           <MatrixRain />
           <CustomCursor />
           <Nav name={settings.name} />
           <main className="relative z-10">{children}</main>
-          <Footer name={settings.name} bio={settings.bio} email={settings.email} socials={settings.socials} />
+          <Footer
+            name={settings.name}
+            bio={settings.bio}
+            email={settings.email}
+            socials={settings.socials}
+          />
         </Providers>
       </body>
     </html>

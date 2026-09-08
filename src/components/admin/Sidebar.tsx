@@ -51,7 +51,7 @@ export default function Sidebar() {
                 {count > 0 && <span className="notif-dot" />}
               </span>
               {l.label}
-              {count > 0 && <span className="ml-auto text-[11px] font-mono text-violet">{count}</span>}
+              {count > 0 && <span className="ml-auto text-[11px] font-mono text-neon">{count}</span>}
             </Link>
           );
         })}

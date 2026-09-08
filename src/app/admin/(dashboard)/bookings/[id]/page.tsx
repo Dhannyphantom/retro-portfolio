@@ -28,7 +28,7 @@ export default async function AdminBookingDetail({ params }: { params: Promise<{
 
       <div className="flex justify-between items-start flex-wrap gap-4 mb-6">
         <div>
-          <span className="font-mono text-xs tracking-widest text-violet">{b.referenceId}</span>
+          <span className="font-mono text-xs tracking-widest text-neon">{b.referenceId}</span>
           <h1 className="font-display text-[15px] tracking-tight mt-3 leading-relaxed">{b.name} — {b.projectType || "Project"}</h1>
           <p className="text-mute text-sm mt-1">{b.email}{b.company ? ` · ${b.company}` : ""}{b.phone ? ` · ${b.phone}` : ""}</p>
         </div>
@@ -44,7 +44,7 @@ export default async function AdminBookingDetail({ params }: { params: Promise<{
           {b.preferredStartDate && <span>Preferred start: <span className="text-paper">{b.preferredStartDate}</span></span>}
         </div>
         {b.documentUrl && (
-          <a href={b.documentUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 mt-3 text-violet text-[12.5px]">
+          <a href={b.documentUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 mt-3 text-neon text-[12.5px]">
             <FileText size={13} /> {b.documentName || "Attached document"}
           </a>
         )}

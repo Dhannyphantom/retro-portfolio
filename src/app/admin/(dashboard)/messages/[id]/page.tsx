@@ -96,7 +96,7 @@ export default function AdminMessageDetail({ params }: { params: Promise<{ id: s
           className="w-full rounded px-3.5 py-3 text-sm bg-white/[0.04] border border-white/[0.12] resize-none mb-3"
         />
         {error && <p className="text-[12.5px] mb-3" style={{ color: "#FF3B3B" }}>{error}</p>}
-        <button type="submit" disabled={sending} className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded bg-gradient-to-r from-purple to-purple-2 disabled:opacity-50">
+        <button type="submit" disabled={sending} className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded bg-gradient-to-r from-phosphor to-phosphor-2 disabled:opacity-50">
           <Send size={14} /> {sending ? "Sending..." : "Send reply"}
         </button>
       </form>

@@ -54,7 +54,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       {b.totalBudget > 0 && (
         <div className="mb-10">
           <div className="h-2 rounded-full overflow-hidden" style={{ background: "rgba(var(--text-rgb),0.08)" }}>
-            <div className="h-full rounded-full bg-gradient-to-r from-violet to-purple" style={{ width: `${progressPct}%` }} />
+            <div className="h-full rounded-full bg-gradient-to-r from-neon to-phosphor" style={{ width: `${progressPct}%` }} />
           </div>
           <div className="text-mute text-[12px] mt-1.5">{progressPct}% paid</div>
         </div>

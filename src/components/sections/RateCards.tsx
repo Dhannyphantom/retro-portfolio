@@ -15,7 +15,7 @@ export default function RateCards({ items = FALLBACK }: { items?: RateCardItem[]
     <section className="max-w-[1120px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-11">
-          <span className="font-mono text-xs tracking-widest text-violet">$ LET&apos;S TALK BUSINESS</span>
+          <span className="font-mono text-xs tracking-widest text-neon">$ LET&apos;S TALK BUSINESS</span>
           <h2 className="font-display font-semibold text-[clamp(16px,2.2vw,22px)] mt-3 tracking-tight leading-relaxed">Rate cards</h2>
         </div>
       </Reveal>
@@ -45,7 +45,7 @@ export default function RateCards({ items = FALLBACK }: { items?: RateCardItem[]
                   <div className="flex flex-col gap-2.5 mb-6 flex-1">
                     {(r.features || []).map((f) => (
                       <div key={f} className="flex items-center gap-2 text-[13px]" style={{ color: "rgba(var(--text-rgb),0.8)" }}>
-                        <Check size={14} className="text-violet" /> {f}
+                        <Check size={14} className="text-neon" /> {f}
                       </div>
                     ))}
                   </div>

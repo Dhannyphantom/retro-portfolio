@@ -104,7 +104,7 @@ export default function ResourceManager({
       <div className="flex justify-between items-center mb-5">
         <h1 className="font-display font-semibold text-2xl capitalize">{title || collection}</h1>
         {!hideCreate && (
-          <button onClick={openNew} className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded bg-gradient-to-r from-purple to-purple-2">
+          <button onClick={openNew} className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded bg-gradient-to-r from-phosphor to-phosphor-2">
             <Plus size={15} /> New
           </button>
         )}
@@ -116,7 +116,7 @@ export default function ResourceManager({
         <div className="rounded-lg px-4 py-3.5 text-sm" style={{ border: "1px solid rgba(255,59,59,0.35)", background: "rgba(255,59,59,0.08)", color: "var(--text)" }}>
           <p className="font-medium mb-1">Couldn&apos;t load {collection}</p>
           <p className="text-mute text-[13px]">{loadError}</p>
-          <button onClick={load} className="mt-3 text-[13px] text-violet">Try again</button>
+          <button onClick={load} className="mt-3 text-[13px] text-neon">Try again</button>
         </div>
       ) : items.length === 0 ? (
         <p className="text-mute text-sm">Nothing here yet — click New to add the first one.</p>
@@ -183,7 +183,7 @@ export default function ResourceManager({
                 </label>
               ))}
               {error && <p className="text-[12.5px]" style={{ color: "#FF3B3B" }}>{error}</p>}
-              <button onClick={save} className="mt-2 text-sm px-4 py-3 rounded bg-gradient-to-r from-purple to-purple-2">
+              <button onClick={save} className="mt-2 text-sm px-4 py-3 rounded bg-gradient-to-r from-phosphor to-phosphor-2">
                 Save
               </button>
             </div>

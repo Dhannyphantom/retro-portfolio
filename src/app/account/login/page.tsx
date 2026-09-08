@@ -46,7 +46,7 @@ export default function AccountLoginPage() {
         {error && <p className="text-[12.5px] mb-4" style={{ color: "#FF3B3B" }}>{error}</p>}
         <CTAButton variant="primary" type="submit" className="w-full">{loading ? "Signing in..." : "Sign in"}</CTAButton>
         <p className="text-mute text-[12.5px] text-center mt-5">
-          No account yet? <Link href="/hire" className="text-violet">Submit a project brief</Link> to get one.
+          No account yet? <Link href="/hire" className="text-neon">Submit a project brief</Link> to get one.
         </p>
       </form>
     </div>

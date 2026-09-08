@@ -17,14 +17,13 @@ export default function ClickEffects() {
         el.className = "pixel-burst-particle";
         const angle = (Math.PI * 2 * i) / BURST_COUNT + Math.random() * 0.4;
         const dist = 26 + Math.random() * 34;
+        el.style.setProperty("--x", `${x}px`);
+        el.style.setProperty("--y", `${y}px`);
         el.style.setProperty("--dx0", "0px");
         el.style.setProperty("--dy0", "0px");
         el.style.setProperty("--dx", `${Math.cos(angle) * dist}px`);
         el.style.setProperty("--dy", `${Math.sin(angle) * dist}px`);
         el.style.background = COLORS[i % COLORS.length];
-        el.style.transform = `translate(${x}px, ${y}px)`;
-        el.style.left = "0px";
-        el.style.top = "0px";
         document.body.appendChild(el);
         setTimeout(() => el.remove(), 600);
       }
@@ -44,7 +43,8 @@ export default function ClickEffects() {
       const el = document.createElement("div");
       el.className = "cursor-trail-dot";
       el.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
-      el.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      el.style.setProperty("--x", `${e.clientX}px`);
+      el.style.setProperty("--y", `${e.clientY}px`);
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 420);
     };

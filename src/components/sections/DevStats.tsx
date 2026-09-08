@@ -44,7 +44,7 @@ export default function DevStats({ items = FALLBACK }: { items?: StatItem[] }) {
           return (
             <Reveal key={s.label} delay={i * 90} className="border-r border-b border-retroBorder">
               <div className="p-6 h-full bg-ink2 hover-card">
-                <Icon size={18} className="text-violet mb-3.5" />
+                <Icon size={18} className="text-neon mb-3.5" />
                 <div className="font-display text-[20px] text-amber">
                   <Counter to={s.value} suffix={s.suffix || ""} shown={shown} />
                 </div>

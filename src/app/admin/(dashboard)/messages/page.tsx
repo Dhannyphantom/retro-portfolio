@@ -42,7 +42,7 @@ export default function AdminMessages() {
             >
               <div className="min-w-0 flex items-center gap-3">
                 <span className="relative flex-shrink-0">
-                  {m.status === "unread" ? <Mail size={16} className="text-violet" /> : <Archive size={16} className="text-mute" />}
+                  {m.status === "unread" ? <Mail size={16} className="text-neon" /> : <Archive size={16} className="text-mute" />}
                   {m.status === "unread" && <span className="notif-dot" />}
                 </span>
                 <div className="min-w-0">
@@ -51,7 +51,7 @@ export default function AdminMessages() {
                 </div>
               </div>
               <div className="flex items-center gap-3 flex-shrink-0">
-                {!!m.replies?.length && <span className="text-[11px] font-mono text-violet">replied</span>}
+                {!!m.replies?.length && <span className="text-[11px] font-mono text-neon">replied</span>}
                 <span className="text-mute text-[12px]">{new Date(m.createdAt).toLocaleDateString()}</span>
               </div>
             </Link>

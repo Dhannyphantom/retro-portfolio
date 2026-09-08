@@ -39,8 +39,8 @@ export default function BudgetEditor({ bookingId, totalBudget, amountPaid, curre
           <input type="number" value={paid} onChange={(e) => setPaid(Number(e.target.value))} className={input} />
         </label>
       </div>
-      {saved && <p className="text-[12.5px] text-violet mb-2">Saved.</p>}
-      <button onClick={save} className="text-[13px] px-4 py-2 rounded bg-gradient-to-r from-purple to-purple-2">Save</button>
+      {saved && <p className="text-[12.5px] text-neon mb-2">Saved.</p>}
+      <button onClick={save} className="text-[13px] px-4 py-2 rounded bg-gradient-to-r from-phosphor to-phosphor-2">Save</button>
       <p className="text-mute text-[12px] mt-3">
         Note: setting a total budget here is a manual override — the normal flow is sending a
         proposal in the conversation, which the client approves and which fills this in

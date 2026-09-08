@@ -51,7 +51,7 @@ export default function ProjectReview({ bookingId }: { bookingId: string }) {
             {existing.approved ? "Thanks — your review is live on the site." : "Thanks — your review is awaiting approval before it appears on the site."}
           </p>
           <div className="flex gap-0.5 mb-2">
-            {Array.from({ length: existing.rating }).map((_, i) => <Star key={i} size={14} className="text-violet fill-violet" />)}
+            {Array.from({ length: existing.rating }).map((_, i) => <Star key={i} size={14} className="text-neon fill-neon" />)}
           </div>
           <p className="text-[13.5px] italic text-mute">&quot;{existing.quote}&quot;</p>
         </>
@@ -61,7 +61,7 @@ export default function ProjectReview({ bookingId }: { bookingId: string }) {
           <div className="flex gap-1.5 mb-3">
             {[1, 2, 3, 4, 5].map((n) => (
               <button type="button" key={n} onClick={() => setRating(n)}>
-                <Star size={20} className={n <= rating ? "text-violet fill-violet" : "text-mute"} />
+                <Star size={20} className={n <= rating ? "text-neon fill-neon" : "text-mute"} />
               </button>
             ))}
           </div>
@@ -73,7 +73,7 @@ export default function ProjectReview({ bookingId }: { bookingId: string }) {
             className="w-full rounded px-3.5 py-2.5 text-[13.5px] bg-white/[0.04] border border-white/[0.12] resize-none mb-3"
           />
           {error && <p className="text-[12.5px] mb-3" style={{ color: "#FF3B3B" }}>{error}</p>}
-          <button type="submit" disabled={submitting} className="inline-flex items-center gap-1.5 text-[13px] px-4 py-2.5 rounded bg-gradient-to-r from-purple to-purple-2 disabled:opacity-50">
+          <button type="submit" disabled={submitting} className="inline-flex items-center gap-1.5 text-[13px] px-4 py-2.5 rounded bg-gradient-to-r from-phosphor to-phosphor-2 disabled:opacity-50">
             <Check size={14} /> {submitting ? "Submitting..." : "Submit review"}
           </button>
         </form>

@@ -15,112 +15,238 @@
   --font-body: "JetBrains Mono", monospace;
   --font-mono: "JetBrains Mono", monospace;
   --void: #000000;
-  --void-rgb: 0,0,0;
-  --panel: #0D0D0D;
-  --panel-alt: #1A1A1A;
+  --void-rgb: 0, 0, 0;
+  --panel: #0d0d0d;
+  --panel-alt: #1a1a1a;
   --border: #333333;
-  --border-strong: #E8E8E8;
-  --green: #39FF14;
-  --cyan: #00E5FF;
-  --magenta: #FF2D95;
-  --amber: #FFB400;
-  --text: #ECECEC;
-  --text-rgb: 236,236,236;
-  --text-dim: #8C8C8C;
+  --border-strong: #e8e8e8;
+  --green: #39ff14;
+  --cyan: #00e5ff;
+  --magenta: #ff2d95;
+  --amber: #ffb400;
+  --text: #ececec;
+  --text-rgb: 236, 236, 236;
+  --text-dim: #8c8c8c;
   --scanline-opacity: 0.35;
-  --matrix-bg: rgba(0,0,0,0.09);
-  --matrix-fg: rgba(120,255,90,0.85);
+  --matrix-bg: rgba(0, 0, 0, 0.09);
+  --matrix-fg: rgba(255, 255, 255, 0.55);
 }
 
 [data-theme="light"] {
-  --void: #F2F1EC;
-  --void-rgb: 242,241,236;
-  --panel: #FFFFFF;
-  --panel-alt: #E4E2D8;
-  --border: #1A1A1A;
+  --void: #f2f1ec;
+  --void-rgb: 242, 241, 236;
+  --panel: #ffffff;
+  --panel-alt: #e4e2d8;
+  --border: #1a1a1a;
   --border-strong: #000000;
-  --green: #1FAE0C;
-  --cyan: #007A8A;
-  --magenta: #C4136B;
-  --amber: #A66200;
+  --green: #1fae0c;
+  --cyan: #007a8a;
+  --magenta: #c4136b;
+  --amber: #a66200;
   --text: #121212;
-  --text-rgb: 18,18,18;
-  --text-dim: #55534A;
+  --text-rgb: 18, 18, 18;
+  --text-dim: #55534a;
   --scanline-opacity: 0.06;
-  --matrix-bg: rgba(242,241,236,0.12);
-  --matrix-fg: rgba(31,174,12,0.55);
+  --matrix-bg: rgba(242, 241, 236, 0.12);
+  --matrix-fg: rgba(18, 18, 18, 0.4);
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 /* Retro sharp corners everywhere — no rounded UI in an authentic terminal/
    OS aesthetic. !important beats inline styles too, so this retro-fits the
    whole app in one rule rather than needing every component touched.
    Anything that legitimately must stay circular (cursor dot, a couple of
    decorative marks) opts back in via .retro-circle. */
-*, *::before, *::after { border-radius: 0 !important; }
-.retro-circle { border-radius: 50% !important; }
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
+}
+.retro-circle {
+  border-radius: 50% !important;
+}
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   background: var(--void);
   color: var(--text);
   font-family: var(--font-body);
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 /* Custom cursor everywhere except touch devices (see CustomCursor.tsx) */
-* { cursor: none; }
-@media (pointer: coarse) { * { cursor: auto !important; } }
+* {
+  cursor: none;
+}
+@media (pointer: coarse) {
+  * {
+    cursor: auto !important;
+  }
+}
 
-::selection { background: var(--green); color: var(--void); }
+::selection {
+  background: var(--green);
+  color: var(--void);
+}
 
 /* faint CRT scanlines + vignette, fixed over the whole viewport. Cranked
    down to near-nothing in light mode — scanlines over white paper just
    look like dirt, not CRT. */
 body::before {
   content: "";
-  position: fixed; inset: 0; z-index: 9998; pointer-events: none;
-  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.18) 0px,
+    rgba(0, 0, 0, 0.18) 1px,
+    transparent 1px,
+    transparent 3px
+  );
   opacity: var(--scanline-opacity);
   mix-blend-mode: multiply;
 }
 body::after {
   content: "";
-  position: fixed; inset: 0; z-index: 9997; pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
 }
 [data-theme="light"] body::after {
-  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.12) 100%);
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
 }
 
 /* retro scrollbar */
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: var(--void); }
-::-webkit-scrollbar-thumb { background: var(--border); border: 2px solid var(--void); }
-::-webkit-scrollbar-thumb:hover { background: var(--green); }
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--void);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border: 2px solid var(--void);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--green);
+}
 
 /* --------------------------------------------------------------------
    Keyframes declared as plain CSS so they're always present regardless
    of Tailwind's JIT utility-detection.
 -------------------------------------------------------------------- */
-@keyframes spin2 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes spinReverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-@keyframes breathe { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.75; } }
-@keyframes termBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@keyframes floatSmall { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-@keyframes blink { 50% { opacity: 0; } }
-@keyframes rippleFade { from { transform: scale(0); opacity: 0.35; } to { transform: scale(5); opacity: 0; } }
-@keyframes marchAnts { to { background-position: 16px 0; } }
+@keyframes spin2 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinReverse {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+@keyframes termBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes floatSmall {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes rippleFade {
+  from {
+    transform: scale(0);
+    opacity: 0.35;
+  }
+  to {
+    transform: scale(5);
+    opacity: 0;
+  }
+}
+@keyframes marchAnts {
+  to {
+    background-position: 16px 0;
+  }
+}
 
-.animate-breathe { animation: breathe 3s ease-in-out infinite; }
-.animate-spin2 { animation: spin2 20s linear infinite; }
-.animate-spinReverse { animation: spinReverse 20s linear infinite; }
-.animate-floatSmall { animation: floatSmall 5s ease-in-out infinite; }
-.animate-blink { animation: blink 1s steps(1) infinite; }
-.animate-termBlink { animation: termBlink 1.1s steps(1) infinite; }
+.animate-breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+.animate-spin2 {
+  animation: spin2 20s linear infinite;
+}
+.animate-spinReverse {
+  animation: spinReverse 20s linear infinite;
+}
+.animate-floatSmall {
+  animation: floatSmall 5s ease-in-out infinite;
+}
+.animate-blink {
+  animation: blink 1s steps(1) infinite;
+}
+.animate-termBlink {
+  animation: termBlink 1.1s steps(1) infinite;
+}
 
 /* "marching ants" dashed border — the retro stand-in for the old rotating
    conic-gradient glow border. Classic OS marquee-selection look: a dashed
@@ -131,9 +257,15 @@ body::after {
   background: var(--panel);
   border: 1px solid var(--border);
 }
-.diag-wrap-hover { border-color: var(--border); }
-.diag-border-spin { display: none; } /* superseded by .marching-border below */
-.paused-until-hover { display: none; }
+.diag-wrap-hover {
+  border-color: var(--border);
+}
+.diag-border-spin {
+  display: none;
+} /* superseded by .marching-border below */
+.paused-until-hover {
+  display: none;
+}
 
 .marching-border {
   background-image:
@@ -142,8 +274,16 @@ body::after {
     linear-gradient(0deg, var(--green) 50%, transparent 50%),
     linear-gradient(0deg, var(--green) 50%, transparent 50%);
   background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
-  background-size: 16px 2px, 16px 2px, 2px 16px, 2px 16px;
-  background-position: 0 0, 0 100%, 0 0, 100% 0;
+  background-size:
+    16px 2px,
+    16px 2px,
+    2px 16px,
+    2px 16px;
+  background-position:
+    0 0,
+    0 100%,
+    0 0,
+    100% 0;
   animation: marchAnts 0.5s linear infinite;
   opacity: 0;
   transition: opacity 0.15s;
@@ -152,7 +292,9 @@ body::after {
   inset: -1px;
 }
 .diag-wrap:hover .marching-border,
-.diag-wrap.always-march .marching-border { opacity: 1; }
+.diag-wrap.always-march .marching-border {
+  opacity: 1;
+}
 
 /* --------------------------------------------------------------------
    Window chrome — retro OS window title bar (File-Explorer-1998 style),
@@ -161,8 +303,17 @@ body::after {
    flat line — the "slightly animated" retro-OS feel.
 -------------------------------------------------------------------- */
 @keyframes winGlow {
-  0%, 100% { box-shadow: 3px 3px 0 var(--border), 0 0 0 rgba(57,255,20,0); }
-  50% { box-shadow: 3px 3px 0 var(--border), 0 0 14px -4px var(--green); }
+  0%,
+  100% {
+    box-shadow:
+      3px 3px 0 var(--border),
+      0 0 0 rgba(57, 255, 20, 0);
+  }
+  50% {
+    box-shadow:
+      3px 3px 0 var(--border),
+      0 0 14px -4px var(--green);
+  }
 }
 .win {
   background: var(--panel);
@@ -170,52 +321,137 @@ body::after {
   animation: winGlow 4.5s ease-in-out infinite;
 }
 .win-bar {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  padding: 6px 10px; background: var(--panel-alt); border-bottom: 3px solid var(--border-strong);
-  font-family: var(--font-mono); font-size: 11px; color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--panel-alt);
+  border-bottom: 3px solid var(--border-strong);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
 }
-.win-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.win-controls { display: flex; gap: 6px; flex-shrink: 0; }
+.win-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.win-controls {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
 .win-dot {
-  width: 10px; height: 10px; border: 1px solid var(--border-strong); background: var(--void);
-  display: flex; align-items: center; justify-content: center; font-size: 8px; line-height: 1; color: var(--text-dim);
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--border-strong);
+  background: var(--void);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  line-height: 1;
+  color: var(--text-dim);
 }
 
 /* marquee */
-.marquee-track { animation: marquee 26s linear infinite; }
-.marquee-track:hover { animation-play-state: paused; }
+.marquee-track {
+  animation: marquee 26s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
 
 /* nav underline */
-.nav-link { position: relative; }
-.nav-link::after {
-  content: ""; position: absolute; left: 0; bottom: -4px; width: 0%; height: 2px;
-  background: var(--green); transition: width 0.15s steps(3);
+.nav-link {
+  position: relative;
 }
-.nav-link:hover::after { width: 100%; }
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: var(--green);
+  transition: width 0.15s steps(3);
+}
+.nav-link:hover::after {
+  width: 100%;
+}
 
 /* card hover — snappy, not a soft modern ease */
-.hover-card { transition: transform 0.15s steps(2), border-color 0.15s ease; }
-.hover-card:hover { transform: translate(-2px, -2px); border-color: var(--green); box-shadow: 4px 4px 0 var(--border); }
+.hover-card {
+  transition:
+    transform 0.15s steps(2),
+    border-color 0.15s ease;
+}
+.hover-card:hover {
+  transform: translate(-2px, -2px);
+  border-color: var(--green);
+  box-shadow: 4px 4px 0 var(--border);
+}
 
-.icon-hover { transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease; }
-.icon-hover:hover { border-color: var(--green); background: rgba(57,255,20,0.08); }
+.icon-hover {
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+.icon-hover:hover {
+  border-color: var(--green);
+  background: rgba(57, 255, 20, 0.08);
+}
 
 /* retro buttons: transparent outline by default, solid fill on hover, hard
    press-down on click — no light-sweep shine, no soft glow gradients */
-.retro-btn { position: relative; border: 2px solid var(--green); color: var(--green); background: transparent; transition: transform 0.1s ease, background 0.12s ease, color 0.12s ease, box-shadow 0.12s ease; }
-.retro-btn:hover { background: var(--green); color: var(--void); box-shadow: 0 0 0 2px rgba(57,255,20,0.25); }
-.retro-btn:active { transform: translateY(2px); box-shadow: none; }
+.retro-btn {
+  position: relative;
+  border: 2px solid var(--green);
+  color: var(--green);
+  background: transparent;
+  transition:
+    transform 0.1s ease,
+    background 0.12s ease,
+    color 0.12s ease,
+    box-shadow 0.12s ease;
+}
+.retro-btn:hover {
+  background: var(--green);
+  color: var(--void);
+  box-shadow: 0 0 0 2px rgba(57, 255, 20, 0.25);
+}
+.retro-btn:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
 
-.retro-btn-cyan { border-color: var(--cyan); color: var(--cyan); }
-.retro-btn-cyan:hover { background: var(--cyan); color: var(--void); box-shadow: 0 0 0 2px rgba(0,229,255,0.25); }
+.retro-btn-cyan {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+.retro-btn-cyan:hover {
+  background: var(--cyan);
+  color: var(--void);
+  box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.25);
+}
 
 .ripple-el {
-  position: absolute; width: 10px; height: 10px; margin-left: -5px; margin-top: -5px;
-  border-radius: 50% !important; background: rgba(var(--text-rgb),0.5); pointer-events: none;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  margin-top: -5px;
+  border-radius: 50% !important;
+  background: rgba(var(--text-rgb), 0.5);
+  pointer-events: none;
   animation: rippleFade 0.6s ease-out forwards;
 }
 
-.blink-cursor { animation: blink 1s steps(1) infinite; }
+.blink-cursor {
+  animation: blink 1s steps(1) infinite;
+}
 
 /* Native <select> dropdown lists ignore most CSS and fall back to the OS/
    browser's light theme by default. color-scheme tells the browser to
@@ -231,54 +467,118 @@ select option {
   background-color: var(--panel);
   color: var(--text);
 }
-input, textarea {
+input,
+textarea {
   border: 1px solid var(--border) !important;
-  background-color: rgba(140,140,140,0.06);
+  background-color: rgba(140, 140, 140, 0.06);
 }
-input[type="date"] { color-scheme: dark; }
+input[type="date"] {
+  color-scheme: dark;
+}
 [data-theme="light"] select,
-[data-theme="light"] input[type="date"] { color-scheme: light; }
+[data-theme="light"] input[type="date"] {
+  color-scheme: light;
+}
 
 .notif-dot {
-  position: absolute; top: -3px; right: -3px; width: 8px; height: 8px;
-  background: var(--magenta); border: 2px solid var(--void);
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 8px;
+  height: 8px;
+  background: var(--magenta);
+  border: 2px solid var(--void);
   animation: termBlink 1s steps(1) infinite;
 }
 
-@media (max-width: 700px) { .hide-sm { display: none; } }
+@media (max-width: 700px) {
+  .hide-sm {
+    display: none;
+  }
+}
 
 /* --------------------------------------------------------------------
    Theme toggle — an old rocker/power switch, not a modern iOS pill.
 -------------------------------------------------------------------- */
 .theme-switch {
-  width: 46px; height: 24px; border: 2px solid var(--border-strong);
-  background: var(--panel-alt); position: relative; flex-shrink: 0;
+  width: 46px;
+  height: 24px;
+  border: 2px solid var(--border-strong);
+  background: var(--panel-alt);
+  position: relative;
+  flex-shrink: 0;
   transition: background 0.15s ease;
 }
 .theme-switch-knob {
-  position: absolute; top: 1px; left: 1px; width: 16px; height: 16px;
-  background: var(--green); border: 1px solid var(--border-strong);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 9px; color: var(--void);
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 16px;
+  height: 16px;
+  background: var(--green);
+  border: 1px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: var(--void);
   transition: transform 0.18s steps(4);
 }
-[data-theme="light"] .theme-switch-knob { transform: translateX(20px); background: var(--amber); }
+[data-theme="light"] .theme-switch-knob {
+  transform: translateX(20px);
+  background: var(--amber);
+}
 
 /* --------------------------------------------------------------------
    Click-burst pixel particles (see ClickEffects.tsx) and cursor trail.
 -------------------------------------------------------------------- */
+/* Both particle types now carry their spawn point in --x/--y custom
+   properties (set by JS via setProperty, never via el.style.transform).
+   The keyframes fold that origin into every step of the transform, so
+   the CSS animation's own transform value never clobbers the JS-supplied
+   position back to the element's default top:0/left:0 — the bug that
+   made the trail and burst appear to snap to the top-left corner. */
 @keyframes pixelBurst {
-  0% { transform: translate(var(--dx0,0), var(--dy0,0)) scale(1); opacity: 1; }
-  100% { transform: translate(var(--dx,0), var(--dy,0)) scale(0); opacity: 0; }
+  0% {
+    transform: translate(var(--x, 0), var(--y, 0))
+      translate(var(--dx0, 0), var(--dy0, 0)) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x, 0), var(--y, 0))
+      translate(var(--dx, 0), var(--dy, 0)) scale(0);
+    opacity: 0;
+  }
 }
 .pixel-burst-particle {
-  position: fixed; top: 0; left: 0; width: 6px; height: 6px; pointer-events: none;
-  z-index: 10002; animation: pixelBurst 0.55s ease-out forwards;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  pointer-events: none;
+  z-index: 10002;
+  animation: pixelBurst 0.55s ease-out forwards;
 }
-@keyframes trailFade { to { opacity: 0; transform: scale(0.3); } }
+@keyframes trailFade {
+  from {
+    transform: translate(var(--x, 0), var(--y, 0)) scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: translate(var(--x, 0), var(--y, 0)) scale(0.3);
+    opacity: 0;
+  }
+}
 .cursor-trail-dot {
-  position: fixed; top: 0; left: 0; width: 4px; height: 4px; pointer-events: none;
-  z-index: 10000; animation: trailFade 0.4s linear forwards;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  pointer-events: none;
+  z-index: 10000;
+  animation: trailFade 0.4s linear forwards;
 }
 
 /* --------------------------------------------------------------------
@@ -286,32 +586,86 @@ input[type="date"] { color-scheme: dark; }
    "Trophy Unlocked" popup.
 -------------------------------------------------------------------- */
 @keyframes achieveIn {
-  0% { transform: translateX(120%); opacity: 0; }
-  10% { transform: translateX(0); opacity: 1; }
-  90% { transform: translateX(0); opacity: 1; }
-  100% { transform: translateX(120%); opacity: 0; }
+  0% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  10% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  90% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
 }
-.achievement-toast { animation: achieveIn 4.2s ease-in-out forwards; }
+.achievement-toast {
+  animation: achieveIn 4.2s ease-in-out forwards;
+}
 
 /* --------------------------------------------------------------------
    Terminal (About section) + Games panel shared bits.
 -------------------------------------------------------------------- */
-.terminal-scroll::-webkit-scrollbar { width: 8px; }
-.terminal-input { border: none !important; background: transparent !important; }
-.terminal-caret { display: inline-block; width: 7px; height: 14px; background: var(--green); vertical-align: middle; animation: termBlink 1s steps(1) infinite; }
+.terminal-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.terminal-input {
+  border: none !important;
+  background: transparent !important;
+}
+.terminal-caret {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background: var(--green);
+  vertical-align: middle;
+  animation: termBlink 1s steps(1) infinite;
+}
 
-@keyframes modalPop { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-.modal-pop { animation: modalPop 0.15s ease-out; }
+@keyframes modalPop {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.modal-pop {
+  animation: modalPop 0.15s ease-out;
+}
 
 @keyframes glitchFlash {
-  0%, 100% { filter: none; }
-  20% { filter: invert(1) hue-rotate(90deg); }
-  40% { filter: none; }
-  60% { filter: invert(1); }
-  80% { filter: none; }
+  0%,
+  100% {
+    filter: none;
+  }
+  20% {
+    filter: invert(1) hue-rotate(90deg);
+  }
+  40% {
+    filter: none;
+  }
+  60% {
+    filter: invert(1);
+  }
+  80% {
+    filter: none;
+  }
 }
-.glitch-flash { animation: glitchFlash 0.4s steps(2); }
+.glitch-flash {
+  animation: glitchFlash 0.4s steps(2);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

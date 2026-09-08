@@ -15,7 +15,7 @@ export default function Testimonials({ items = FALLBACK }: { items?: Testimonial
     <section className="max-w-[1120px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-11">
-          <span className="font-mono text-xs tracking-widest text-violet">$ WHAT PEOPLE SAY</span>
+          <span className="font-mono text-xs tracking-widest text-neon">$ WHAT PEOPLE SAY</span>
           <h2 className="font-display font-semibold text-[clamp(16px,2.2vw,22px)] mt-3 tracking-tight leading-relaxed">Testimonials</h2>
         </div>
       </Reveal>      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -23,7 +23,7 @@ export default function Testimonials({ items = FALLBACK }: { items?: Testimonial
           <Reveal key={t.clientName} delay={i * 90}>
             <div className="hover-card rounded-xl p-6 bg-ink2 h-full" style={{ border: "1px solid rgba(var(--text-rgb),0.09)" }}>
               <div className="flex gap-0.5 mb-4">
-                {Array.from({ length: t.rating || 5 }).map((_, si) => <Star key={si} size={13} className="text-violet fill-violet" />)}
+                {Array.from({ length: t.rating || 5 }).map((_, si) => <Star key={si} size={13} className="text-neon fill-neon" />)}
               </div>
               <p className="text-[14px] leading-relaxed mb-5 italic" style={{ color: "rgba(var(--text-rgb),0.8)" }}>&quot;{t.quote}&quot;</p>
               <div className="flex items-center gap-2.5">
@@ -39,7 +39,7 @@ export default function Testimonials({ items = FALLBACK }: { items?: Testimonial
       </div>
       <Reveal delay={items.length * 90}>
         <div className="text-center mt-8">
-          <Link href="/testimonials/new" className="inline-flex items-center gap-2 text-[13.5px] text-mute hover:text-violet transition-colors">
+          <Link href="/testimonials/new" className="inline-flex items-center gap-2 text-[13.5px] text-mute hover:text-neon transition-colors">
             <PenLine size={14} /> Worked with me? Leave a review
           </Link>
         </div>

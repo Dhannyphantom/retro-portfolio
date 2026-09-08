@@ -42,7 +42,7 @@ export default function MeetDeveloper({
     <section className="max-w-[1120px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-11">
-          <span className="font-mono text-xs tracking-widest text-violet">$ MEET THE DEVELOPER</span>
+          <span className="font-mono text-xs tracking-widest text-neon">$ MEET THE DEVELOPER</span>
           <h2 className="font-display text-[clamp(16px,2.4vw,22px)] mt-3 leading-relaxed">More than the code</h2>
         </div>
       </Reveal>
@@ -88,7 +88,7 @@ export default function MeetDeveloper({
               <div className="relative">
                 <SafeImage src={v.thumb} className="w-full h-[160px] object-cover block grayscale contrast-125" iconSize={30} />
                 <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.9) 100%)" }} />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center border border-purple transition-transform duration-150 group-hover:scale-110 bg-ink/80">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center border border-phosphor transition-transform duration-150 group-hover:scale-110 bg-ink/80">
                   <Play size={16} style={{ color: "#39FF14", fill: "#39FF14" }} className="ml-0.5" />
                 </div>
                 {v.duration && <span className="absolute bottom-2 right-2 text-[11px] font-mono px-1.5 py-0.5 bg-ink border border-retroBorder">{v.duration}</span>}

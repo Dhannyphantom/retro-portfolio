@@ -41,7 +41,7 @@ export default function NewTestimonialPage() {
   if (sent) {
     return (
       <div className="max-w-[560px] mx-auto px-7 pt-28 pb-32 text-center">
-        <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 text-violet" style={{ background: "rgba(0,229,255,0.1)", border: "1px solid rgba(0,229,255,0.3)" }}>
+        <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 text-neon" style={{ background: "rgba(0,229,255,0.1)", border: "1px solid rgba(0,229,255,0.3)" }}>
           <Check size={22} />
         </div>
         <h1 className="font-display text-[17px] leading-relaxed mb-3">Thank you</h1>
@@ -83,7 +83,7 @@ export default function NewTestimonialPage() {
             <div className="flex gap-1.5">
               {[1, 2, 3, 4, 5].map((n) => (
                 <button type="button" key={n} onClick={() => setRating(n)} aria-label={`${n} stars`}>
-                  <Star size={22} className={n <= rating ? "text-violet fill-violet" : "text-mute"} />
+                  <Star size={22} className={n <= rating ? "text-neon fill-neon" : "text-mute"} />
                 </button>
               ))}
             </div>

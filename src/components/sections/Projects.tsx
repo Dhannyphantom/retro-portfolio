@@ -76,7 +76,7 @@ export default function Projects({ items, limit }: { items: ProjectItem[]; limit
     <section id="work" className="relative max-w-[1120px] mx-auto px-7 pt-12 pb-[60px]">
       <Reveal>
         <div className="text-center mb-2.5">
-          <span className="font-mono text-xs tracking-widest text-violet">$ SELECTED WORK</span>
+          <span className="font-mono text-xs tracking-widest text-neon">$ SELECTED WORK</span>
           <h2 className="font-display font-semibold text-[clamp(16px,2.2vw,22px)] mt-3 tracking-tight leading-relaxed">Projects</h2>
         </div>
       </Reveal>

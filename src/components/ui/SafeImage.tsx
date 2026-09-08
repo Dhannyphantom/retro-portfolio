@@ -17,8 +17,8 @@ export default function SafeImage({
   const [failed, setFailed] = useState(false);
   if (!src || failed) {
     return (
-      <div className={cn("flex items-center justify-center bg-gradient-to-br from-ink2 to-purple-2/10", className)}>
-        <ImageIcon size={iconSize} className="text-violet" strokeWidth={1.4} />
+      <div className={cn("flex items-center justify-center bg-gradient-to-br from-ink2 to-phosphor-2/10", className)}>
+        <ImageIcon size={iconSize} className="text-neon" strokeWidth={1.4} />
       </div>
     );
   }

@@ -10,7 +10,7 @@ export default function BigCTA() {
           <h2 className="relative font-display font-bold text-[clamp(16px,2.6vw,22px)] tracking-tight mb-4 leading-relaxed">
             <SplitText text="Have an idea worth building?" by="word" step={50} />
           </h2>
-          <p className="relative font-display font-semibold text-[clamp(13px,1.8vw,16px)] text-violet mb-8 leading-relaxed">
+          <p className="relative font-display font-semibold text-[clamp(13px,1.8vw,16px)] text-neon mb-8 leading-relaxed">
             Let&apos;s turn it into software.
           </p>
           <div className="relative flex gap-3.5 justify-center flex-wrap">

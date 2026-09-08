@@ -75,7 +75,7 @@ export default function MilestoneEditor({ bookingId, milestones }: { bookingId: 
                 <span key={mi} className="text-[11px] px-2 py-1 rounded truncate max-w-[140px]" style={{ background: "rgba(var(--text-rgb),0.06)" }}>{url}</span>
               ))}
             </div>
-            <label className="inline-flex items-center gap-1.5 text-[12.5px] text-violet cursor-pointer">
+            <label className="inline-flex items-center gap-1.5 text-[12.5px] text-neon cursor-pointer">
               {uploadingIdx === i ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
               {uploadingIdx === i ? "Uploading…" : "Upload image or video"}
               <input
@@ -92,12 +92,12 @@ export default function MilestoneEditor({ bookingId, milestones }: { bookingId: 
       <div className="flex items-center gap-3">
         <button
           onClick={() => setItems([...items, { title: "", description: "", dueDate: "", status: "pending", media: [] }])}
-          className="inline-flex items-center gap-1.5 text-[13px] text-violet"
+          className="inline-flex items-center gap-1.5 text-[13px] text-neon"
         >
           <Plus size={14} /> Add milestone
         </button>
-        <button onClick={save} className="text-[13px] px-4 py-2 rounded bg-gradient-to-r from-purple to-purple-2">Save</button>
-        {saved && <span className="text-[12.5px] text-violet">Saved.</span>}
+        <button onClick={save} className="text-[13px] px-4 py-2 rounded bg-gradient-to-r from-phosphor to-phosphor-2">Save</button>
+        {saved && <span className="text-[12.5px] text-neon">Saved.</span>}
       </div>
     </div>
   );

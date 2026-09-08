@@ -46,15 +46,15 @@ export default function AdminProfile() {
           label="CV file"
           onUploaded={(url) => set("cvUrl", url)}
         />
-        {form.cvUrl && <p className="text-[12px] text-mute -mt-2">Current: <a href={form.cvUrl} target="_blank" rel="noreferrer" className="text-violet">view uploaded CV</a></p>}
+        {form.cvUrl && <p className="text-[12px] text-mute -mt-2">Current: <a href={form.cvUrl} target="_blank" rel="noreferrer" className="text-neon">view uploaded CV</a></p>}
         <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" checked={!!form.cvEnabled} onChange={(e) => set("cvEnabled", e.target.checked)} /> CV download enabled
         </label>
         <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" checked={!!form.availability} onChange={(e) => set("availability", e.target.checked)} /> Currently available for projects
         </label>
-        {saved && <p className="text-[13px] text-violet">Saved.</p>}
-        <button onClick={save} className="mt-2 text-sm px-4 py-3 rounded bg-gradient-to-r from-purple to-purple-2 w-full">Save profile</button>
+        {saved && <p className="text-[13px] text-neon">Saved.</p>}
+        <button onClick={save} className="mt-2 text-sm px-4 py-3 rounded bg-gradient-to-r from-phosphor to-phosphor-2 w-full">Save profile</button>
       </div>
     </div>
   );

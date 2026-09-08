@@ -12,7 +12,7 @@ export default function Experience({ items = FALLBACK }: { items?: ExperienceIte
     <section id="experience" className="max-w-[1120px] mx-auto px-7 py-16">
       <Reveal>
         <div className="text-center mb-11">
-          <span className="font-mono text-xs tracking-widest text-violet">$ THE JOURNEY</span>
+          <span className="font-mono text-xs tracking-widest text-neon">$ THE JOURNEY</span>
           <h2 className="font-display font-semibold text-[clamp(16px,2.2vw,22px)] mt-3 tracking-tight leading-relaxed">Experience</h2>
         </div>
       </Reveal>
@@ -26,7 +26,7 @@ export default function Experience({ items = FALLBACK }: { items?: ExperienceIte
             />
             <div className="flex justify-between items-baseline flex-wrap gap-2 mb-2">
               <h4 className="font-display font-semibold text-lg">
-                {e.role} · <span className="text-violet">{e.organization}</span>
+                {e.role} · <span className="text-neon">{e.organization}</span>
               </h4>
               <span className="font-mono text-xs text-mute">{e.startDate} — {e.endDate || "Present"}</span>
             </div>

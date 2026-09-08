@@ -29,7 +29,7 @@ export default async function AccountDashboard() {
       </div>
 
       {bookings.length === 0 ? (
-        <p className="text-mute">No projects yet. <Link href="/hire" className="text-violet">Submit a project brief</Link> to get started.</p>
+        <p className="text-mute">No projects yet. <Link href="/hire" className="text-neon">Submit a project brief</Link> to get started.</p>
       ) : (
         <div className="flex flex-col gap-3">
           {bookings.map((b: any) => (

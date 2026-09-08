@@ -149,13 +149,13 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
                   </div>
                   {mine && (
                     <div className="flex items-center gap-1 text-[10.5px] text-mute pr-1">
-                      {m.readAt ? <><CheckCheck size={11} className="text-violet" /> Read</> : <><Check size={11} /> Delivered</>}
+                      {m.readAt ? <><CheckCheck size={11} className="text-neon" /> Read</> : <><Check size={11} /> Delivered</>}
                     </div>
                   )}
 
                   {m.proposal && (
                     <div className="w-full rounded-lg p-3.5 mt-1" style={{ border: "1px solid rgba(0,229,255,0.28)", background: "rgba(57,255,20,0.05)" }}>
-                      <div className="flex items-center gap-1.5 text-[12px] font-mono text-violet mb-2">
+                      <div className="flex items-center gap-1.5 text-[12px] font-mono text-neon mb-2">
                         <FileText size={13} /> PROJECT PROPOSAL
                       </div>
                       <div className="text-[13px] text-mute mb-1">Budget: <span className="text-paper">${m.proposal.budget.toLocaleString()}</span></div>
@@ -167,7 +167,7 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
                       )}
                       {m.proposalStatus === "pending" && viewerRole === "client" ? (
                         <div className="flex gap-2 mt-2">
-                          <button onClick={() => decide(m._id, "approve")} className="inline-flex items-center gap-1.5 text-[12.5px] px-3 py-1.5 rounded bg-gradient-to-r from-violet to-purple">
+                          <button onClick={() => decide(m._id, "approve")} className="inline-flex items-center gap-1.5 text-[12.5px] px-3 py-1.5 rounded bg-gradient-to-r from-neon to-phosphor">
                             <Check size={13} /> Approve
                           </button>
                           <button onClick={() => decide(m._id, "decline")} className="inline-flex items-center gap-1.5 text-[12.5px] px-3 py-1.5 rounded border border-white/[0.14]">
@@ -200,7 +200,7 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
                     <button onClick={() => setProposal({ ...proposal, milestones: proposal.milestones.filter((_, idx) => idx !== i) })} className="text-mute px-2"><Trash2 size={14} /></button>
                   </div>
                 ))}
-                <button onClick={() => setProposal({ ...proposal, milestones: [...proposal.milestones, emptyMilestone()] })} className="inline-flex items-center gap-1 text-[12.5px] text-violet self-start">
+                <button onClick={() => setProposal({ ...proposal, milestones: [...proposal.milestones, emptyMilestone()] })} className="inline-flex items-center gap-1 text-[12.5px] text-neon self-start">
                   <Plus size={13} /> Add milestone
                 </button>
               </div>
@@ -226,7 +226,7 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
                 <FileText size={15} />
               </button>
             )}
-            <button onClick={() => send(showProposal)} disabled={sending} className="w-10 h-10 rounded flex items-center justify-center flex-shrink-0 bg-gradient-to-r from-purple to-purple-2 disabled:opacity-50">
+            <button onClick={() => send(showProposal)} disabled={sending} className="w-10 h-10 rounded flex items-center justify-center flex-shrink-0 bg-gradient-to-r from-phosphor to-phosphor-2 disabled:opacity-50">
               <Send size={15} />
             </button>
           </div>

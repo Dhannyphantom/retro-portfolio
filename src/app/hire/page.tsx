@@ -89,12 +89,12 @@ export default function HirePage() {
     return (
       <div className="max-w-[600px] mx-auto px-7 pt-28 pb-32 text-center">
         <Reveal>
-          <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 text-violet" style={{ background: "rgba(0,229,255,0.068)", border: "1px solid rgba(0,229,255,0.204)" }}>
+          <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 text-neon" style={{ background: "rgba(0,229,255,0.068)", border: "1px solid rgba(0,229,255,0.204)" }}>
             <Check size={22} />
           </div>
           <h1 className="font-display text-[17px] leading-relaxed mb-3">Request received</h1>
           <p className="text-mute mb-2">Thanks — I&apos;ll review this and get back to you within a day or two.</p>
-          <p className="font-mono text-sm text-violet mb-8">Reference: {refId}</p>
+          <p className="font-mono text-sm text-neon mb-8">Reference: {refId}</p>
 
           {setupLink && (
             <div className="rounded-xl p-6 text-left" style={{ border: "1px solid rgba(0,229,255,0.204)", background: "rgba(57,255,20,0.05)" }}>
@@ -102,7 +102,7 @@ export default function HirePage() {
               <p className="text-mute text-sm mb-4">
                 Track messages, milestones, and payments for this project in one place. Set a password to get in.
               </p>
-              <a href={setupLink} className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded bg-gradient-to-r from-purple to-purple-2">
+              <a href={setupLink} className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded bg-gradient-to-r from-phosphor to-phosphor-2">
                 Set up dashboard access <ArrowRight size={14} />
               </a>
             </div>

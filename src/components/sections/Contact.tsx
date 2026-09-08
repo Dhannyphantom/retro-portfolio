@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Github, Linkedin, Mail, ArrowUpRight, MapPin, Clock, LogIn } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import CTAButton from "@/components/ui/CTAButton";
+import Magnetic from "@/components/ui/Magnetic";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -43,7 +44,7 @@ export default function Contact() {
     <section id="contact" className="relative max-w-[1120px] mx-auto px-7 pb-[90px]">
       <div className="hover-card relative overflow-hidden rounded-2xl p-8 sm:p-11 grid grid-cols-1 md:grid-cols-2 gap-12" style={{ border: "1px solid rgba(255,255,255,0.08)", background: "linear-gradient(135deg, var(--panel), var(--void))" }}>
         <Reveal from="left">
-          <span className="font-mono text-xs tracking-widest text-violet">$ CONTACTS</span>
+          <span className="font-mono text-xs tracking-widest text-neon">$ CONTACTS</span>
           <h2 className="font-display font-semibold text-[clamp(15px,2vw,19px)] mt-3 mb-4 tracking-tight leading-relaxed">
             Have a project?<br />Let&apos;s talk.
           </h2>
@@ -52,12 +53,12 @@ export default function Contact() {
           <div className="flex items-center gap-2 text-mute text-[13px] mb-[22px]"><Clock size={14} /> Usually replies within 1–2 days</div>
           <div className="flex gap-3 mb-5">
             {[Github, Linkedin, Mail].map((Icon, idx) => (
-              <a key={idx} href="#" className="icon-hover w-[42px] h-[42px] rounded flex items-center justify-center" style={{ border: "1px solid rgba(var(--text-rgb),0.12)" }}>
+              <Magnetic key={idx} as="a" href="#" strength={14} className="icon-hover w-[42px] h-[42px] rounded flex items-center justify-center" style={{ border: "1px solid rgba(var(--text-rgb),0.12)" }}>
                 <Icon size={17} />
-              </a>
+              </Magnetic>
             ))}
           </div>
-          <Link href="/account/login" className="inline-flex items-center gap-1.5 text-[13px] text-violet">
+          <Link href="/account/login" className="inline-flex items-center gap-1.5 text-[13px] text-neon">
             <LogIn size={14} /> Already a client? Log in to your project dashboard
           </Link>
         </Reveal>
@@ -65,10 +66,10 @@ export default function Contact() {
         <Reveal from="right" delay={80}>
           {sent ? (
             <div className="flex flex-col justify-center h-full items-start">
-              <div className="w-[46px] h-[46px] rounded flex items-center justify-center mb-4 text-violet" style={{ background: "rgba(0,229,255,0.068)", border: "1px solid rgba(0,229,255,0.177)" }}>✓</div>
+              <div className="w-[46px] h-[46px] rounded flex items-center justify-center mb-4 text-neon" style={{ background: "rgba(0,229,255,0.068)", border: "1px solid rgba(0,229,255,0.177)" }}>✓</div>
               <h3 className="font-display text-[15px] mb-3 leading-relaxed">Message sent</h3>
               <p className="text-mute text-sm mb-[18px]">Thanks — I&apos;ll reply soon.</p>
-              <button onClick={() => setSent(false)} className="text-violet text-[13.5px]">Send another message</button>
+              <button onClick={() => setSent(false)} className="text-neon text-[13.5px]">Send another message</button>
             </div>
           ) : (
             <form onSubmit={submit} noValidate className="flex flex-col gap-4">

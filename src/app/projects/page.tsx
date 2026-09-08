@@ -72,7 +72,7 @@ export default function ProjectsArchive() {
                       <span className="text-[11px] font-mono px-2 py-1 rounded" style={{ color: "rgba(0,229,255,0.422)", background: "rgba(57,255,20,0.034)" }}>{p.category}</span>
                       <h3 className="font-display text-[13px] mt-3 mb-1.5 leading-relaxed">{p.title}</h3>
                       <p className="text-mute text-[13px] leading-relaxed">{p.description}</p>
-                      <div className="flex items-center gap-1 text-violet text-[13px] mt-4">
+                      <div className="flex items-center gap-1 text-neon text-[13px] mt-4">
                         View case study <ArrowUpRight size={13} />
                       </div>
                     </div>
