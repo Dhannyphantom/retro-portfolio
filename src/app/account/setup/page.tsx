@@ -37,14 +37,14 @@ function SetupForm() {
 
   if (!token) {
     return (
-      <div className="w-full max-w-[380px] rounded-2xl p-8 text-center" style={{ border: "1px solid rgba(0,229,255,0.17)", background: "#120A1F" }}>
+      <div className="w-full max-w-[380px] rounded-2xl p-8 text-center" style={{ border: "1px solid rgba(0,229,255,0.17)", background: "var(--panel)" }}>
         <p className="text-mute text-sm">This link is missing its setup token. Check the link from your booking confirmation, or contact support.</p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={submit} className="w-full max-w-[380px] rounded-2xl p-8" style={{ border: "1px solid rgba(0,229,255,0.17)", background: "#120A1F" }}>
+    <form onSubmit={submit} className="w-full max-w-[380px] rounded-2xl p-8" style={{ border: "1px solid rgba(0,229,255,0.17)", background: "var(--panel)" }}>
       <h1 className="font-display text-[16px] mb-2 leading-relaxed">Set up your dashboard</h1>
       <p className="text-mute text-sm mb-6">Choose a password to access your project — messages, milestones, and payments will all live here.</p>
       <label className="block mb-4">

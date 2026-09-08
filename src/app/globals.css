@@ -2,20 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* --------------------------------------------------------------------
+   THEME — pure black/white retro terminal, no purple in the neutrals.
+   Dark is the default (matches the boot-screen feel); light flips the
+   void/panel/text scale while every accent (green/cyan/magenta/amber)
+   stays identical in both, same as an old monitor that could be switched
+   between a black-glass and a white-glass phosphor tube.
+-------------------------------------------------------------------- */
+:root,
+[data-theme="dark"] {
   --font-display: "Press Start 2P", monospace;
   --font-body: "JetBrains Mono", monospace;
   --font-mono: "JetBrains Mono", monospace;
-  --void: #0A0118;
-  --panel: #120A1F;
-  --panel-alt: #1A1030;
-  --border: #3A2A5C;
+  --void: #000000;
+  --void-rgb: 0,0,0;
+  --panel: #0D0D0D;
+  --panel-alt: #1A1A1A;
+  --border: #333333;
+  --border-strong: #E8E8E8;
   --green: #39FF14;
   --cyan: #00E5FF;
   --magenta: #FF2D95;
   --amber: #FFB400;
-  --text: #D9D6E8;
-  --text-dim: #8A86A8;
+  --text: #ECECEC;
+  --text-rgb: 236,236,236;
+  --text-dim: #8C8C8C;
+  --scanline-opacity: 0.35;
+  --matrix-bg: rgba(0,0,0,0.09);
+  --matrix-fg: rgba(120,255,90,0.85);
+}
+
+[data-theme="light"] {
+  --void: #F2F1EC;
+  --void-rgb: 242,241,236;
+  --panel: #FFFFFF;
+  --panel-alt: #E4E2D8;
+  --border: #1A1A1A;
+  --border-strong: #000000;
+  --green: #1FAE0C;
+  --cyan: #007A8A;
+  --magenta: #C4136B;
+  --amber: #A66200;
+  --text: #121212;
+  --text-rgb: 18,18,18;
+  --text-dim: #55534A;
+  --scanline-opacity: 0.06;
+  --matrix-bg: rgba(242,241,236,0.12);
+  --matrix-fg: rgba(31,174,12,0.55);
 }
 
 * { box-sizing: border-box; }
@@ -34,6 +67,7 @@ body {
   background: var(--void);
   color: var(--text);
   font-family: var(--font-body);
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 /* Custom cursor everywhere except touch devices (see CustomCursor.tsx) */
@@ -42,18 +76,23 @@ body {
 
 ::selection { background: var(--green); color: var(--void); }
 
-/* faint CRT scanlines + vignette, fixed over the whole viewport */
+/* faint CRT scanlines + vignette, fixed over the whole viewport. Cranked
+   down to near-nothing in light mode — scanlines over white paper just
+   look like dirt, not CRT. */
 body::before {
   content: "";
   position: fixed; inset: 0; z-index: 9998; pointer-events: none;
   background: repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
-  opacity: 0.35;
+  opacity: var(--scanline-opacity);
   mix-blend-mode: multiply;
 }
 body::after {
   content: "";
   position: fixed; inset: 0; z-index: 9997; pointer-events: none;
   background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
+}
+[data-theme="light"] body::after {
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.12) 100%);
 }
 
 /* retro scrollbar */
@@ -115,17 +154,30 @@ body::after {
 .diag-wrap:hover .marching-border,
 .diag-wrap.always-march .marching-border { opacity: 1; }
 
-/* window chrome — retro OS window title bar, used on project/feature cards */
-.win { background: var(--panel); border: 1px solid var(--border); }
+/* --------------------------------------------------------------------
+   Window chrome — retro OS window title bar (File-Explorer-1998 style),
+   used on project/feature cards and every panel below. Border is thick
+   and dark, with a slow "power idle" breathing glow instead of a static
+   flat line — the "slightly animated" retro-OS feel.
+-------------------------------------------------------------------- */
+@keyframes winGlow {
+  0%, 100% { box-shadow: 3px 3px 0 var(--border), 0 0 0 rgba(57,255,20,0); }
+  50% { box-shadow: 3px 3px 0 var(--border), 0 0 14px -4px var(--green); }
+}
+.win {
+  background: var(--panel);
+  border: 3px solid var(--border-strong);
+  animation: winGlow 4.5s ease-in-out infinite;
+}
 .win-bar {
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  padding: 6px 10px; background: var(--panel-alt); border-bottom: 1px solid var(--border);
+  padding: 6px 10px; background: var(--panel-alt); border-bottom: 3px solid var(--border-strong);
   font-family: var(--font-mono); font-size: 11px; color: var(--text-dim);
 }
 .win-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .win-controls { display: flex; gap: 6px; flex-shrink: 0; }
 .win-dot {
-  width: 10px; height: 10px; border: 1px solid var(--border); background: var(--void);
+  width: 10px; height: 10px; border: 1px solid var(--border-strong); background: var(--void);
   display: flex; align-items: center; justify-content: center; font-size: 8px; line-height: 1; color: var(--text-dim);
 }
 
@@ -159,7 +211,7 @@ body::after {
 
 .ripple-el {
   position: absolute; width: 10px; height: 10px; margin-left: -5px; margin-top: -5px;
-  border-radius: 50% !important; background: rgba(217,214,232,0.5); pointer-events: none;
+  border-radius: 50% !important; background: rgba(var(--text-rgb),0.5); pointer-events: none;
   animation: rippleFade 0.6s ease-out forwards;
 }
 
@@ -181,9 +233,11 @@ select option {
 }
 input, textarea {
   border: 1px solid var(--border) !important;
-  background-color: rgba(217,214,232,0.04);
+  background-color: rgba(140,140,140,0.06);
 }
 input[type="date"] { color-scheme: dark; }
+[data-theme="light"] select,
+[data-theme="light"] input[type="date"] { color-scheme: light; }
 
 .notif-dot {
   position: absolute; top: -3px; right: -3px; width: 8px; height: 8px;
@@ -192,6 +246,71 @@ input[type="date"] { color-scheme: dark; }
 }
 
 @media (max-width: 700px) { .hide-sm { display: none; } }
+
+/* --------------------------------------------------------------------
+   Theme toggle — an old rocker/power switch, not a modern iOS pill.
+-------------------------------------------------------------------- */
+.theme-switch {
+  width: 46px; height: 24px; border: 2px solid var(--border-strong);
+  background: var(--panel-alt); position: relative; flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+.theme-switch-knob {
+  position: absolute; top: 1px; left: 1px; width: 16px; height: 16px;
+  background: var(--green); border: 1px solid var(--border-strong);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: var(--void);
+  transition: transform 0.18s steps(4);
+}
+[data-theme="light"] .theme-switch-knob { transform: translateX(20px); background: var(--amber); }
+
+/* --------------------------------------------------------------------
+   Click-burst pixel particles (see ClickEffects.tsx) and cursor trail.
+-------------------------------------------------------------------- */
+@keyframes pixelBurst {
+  0% { transform: translate(var(--dx0,0), var(--dy0,0)) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx,0), var(--dy,0)) scale(0); opacity: 0; }
+}
+.pixel-burst-particle {
+  position: fixed; top: 0; left: 0; width: 6px; height: 6px; pointer-events: none;
+  z-index: 10002; animation: pixelBurst 0.55s ease-out forwards;
+}
+@keyframes trailFade { to { opacity: 0; transform: scale(0.3); } }
+.cursor-trail-dot {
+  position: fixed; top: 0; left: 0; width: 4px; height: 4px; pointer-events: none;
+  z-index: 10000; animation: trailFade 0.4s linear forwards;
+}
+
+/* --------------------------------------------------------------------
+   Achievement toast — slides in from the corner like an old game's
+   "Trophy Unlocked" popup.
+-------------------------------------------------------------------- */
+@keyframes achieveIn {
+  0% { transform: translateX(120%); opacity: 0; }
+  10% { transform: translateX(0); opacity: 1; }
+  90% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(120%); opacity: 0; }
+}
+.achievement-toast { animation: achieveIn 4.2s ease-in-out forwards; }
+
+/* --------------------------------------------------------------------
+   Terminal (About section) + Games panel shared bits.
+-------------------------------------------------------------------- */
+.terminal-scroll::-webkit-scrollbar { width: 8px; }
+.terminal-input { border: none !important; background: transparent !important; }
+.terminal-caret { display: inline-block; width: 7px; height: 14px; background: var(--green); vertical-align: middle; animation: termBlink 1s steps(1) infinite; }
+
+@keyframes modalPop { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-pop { animation: modalPop 0.15s ease-out; }
+
+@keyframes glitchFlash {
+  0%, 100% { filter: none; }
+  20% { filter: invert(1) hue-rotate(90deg); }
+  40% { filter: none; }
+  60% { filter: invert(1); }
+  80% { filter: none; }
+}
+.glitch-flash { animation: glitchFlash 0.4s steps(2); }
 
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }

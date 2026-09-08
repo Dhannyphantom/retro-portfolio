@@ -47,14 +47,14 @@ export default function CustomCursor() {
   }, []);
 
   const size = dragging ? 46 : hovering ? 38 : 22;
-  const color = dragging ? "#FFB400" : hovering ? "#FF2D95" : "#39FF14";
+  const color = dragging ? "var(--amber)" : hovering ? "var(--magenta)" : "var(--green)";
 
   return (
     <div className="hidden md:block fixed inset-0 pointer-events-none z-[10001]">
       <div
         ref={dotRef}
         className="fixed top-0 left-0 w-1.5 h-1.5"
-        style={{ background: "#39FF14", boxShadow: "0 0 6px #39FF14, 0 0 12px #39FF14" }}
+        style={{ background: "var(--green)", boxShadow: "0 0 6px var(--green), 0 0 12px var(--green)" }}
       />
       <div
         ref={ringRef}
@@ -74,7 +74,7 @@ export default function CustomCursor() {
       <div
         ref={coordsRef}
         className="fixed top-0 left-0 font-mono text-[10px] whitespace-nowrap"
-        style={{ color: "#8A86A8", marginTop: 14, marginLeft: 14, letterSpacing: 0.5 }}
+        style={{ color: "var(--text-dim)", marginTop: 14, marginLeft: 14, letterSpacing: 0.5 }}
       >
         {coords.x},{coords.y}
       </div>

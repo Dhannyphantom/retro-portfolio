@@ -43,7 +43,7 @@ export default function ProjectReview({ bookingId }: { bookingId: string }) {
   if (existing === undefined) return null;
 
   return (
-    <div className="rounded-xl p-5 mb-10" style={{ border: "1px solid rgba(217,214,232,0.09)", background: "#120A1F" }}>
+    <div className="rounded-xl p-5 mb-10" style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}>
       <h2 className="font-display font-semibold text-lg mb-1">Review & rating</h2>
       {existing ? (
         <>

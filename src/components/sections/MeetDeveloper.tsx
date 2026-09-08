@@ -87,7 +87,7 @@ export default function MeetDeveloper({
               </div>
               <div className="relative">
                 <SafeImage src={v.thumb} className="w-full h-[160px] object-cover block grayscale contrast-125" iconSize={30} />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 50%, rgba(10,1,24,0.9) 100%)" }} />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.9) 100%)" }} />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center border border-purple transition-transform duration-150 group-hover:scale-110 bg-ink/80">
                   <Play size={16} style={{ color: "#39FF14", fill: "#39FF14" }} className="ml-0.5" />
                 </div>
@@ -102,7 +102,7 @@ export default function MeetDeveloper({
       {active && (
         <div
           className="fixed inset-0 z-[300] flex items-center justify-center p-5"
-          style={{ background: "rgba(10,1,24,0.9)" }}
+          style={{ background: "rgba(0,0,0,0.85)" }}
           onClick={() => setActive(null)}
         >
           <div onClick={(e) => e.stopPropagation()} className="win w-full max-w-[720px]">

@@ -121,7 +121,7 @@ export default function HirePage() {
         <div className="flex gap-2 mb-10">
           {STEPS.map((s, i) => (
             <div key={s} className="flex-1">
-              <div className="h-1 rounded-full mb-2" style={{ background: i <= step ? "linear-gradient(90deg, #00E5FF, #39FF14)" : "rgba(217,214,232,0.1)" }} />
+              <div className="h-1 rounded-full mb-2" style={{ background: i <= step ? "linear-gradient(90deg, #00E5FF, #39FF14)" : "rgba(var(--text-rgb),0.1)" }} />
               <span className="text-[11px] text-mute hidden sm:block">{s}</span>
             </div>
           ))}
@@ -181,9 +181,9 @@ export default function HirePage() {
                       type="button" key={s} onClick={() => toggleService(s)}
                       className="text-[13px] rounded-full px-3.5 py-2"
                       style={{
-                        color: form.servicesNeeded.includes(s) ? "#0A0118" : "#D9D6E8",
-                        background: form.servicesNeeded.includes(s) ? "#D9D6E8" : "rgba(217,214,232,0.06)",
-                        border: "1px solid rgba(217,214,232,0.12)",
+                        color: form.servicesNeeded.includes(s) ? "var(--void)" : "var(--text)",
+                        background: form.servicesNeeded.includes(s) ? "var(--text)" : "rgba(var(--text-rgb),0.06)",
+                        border: "1px solid rgba(var(--text-rgb),0.12)",
                       }}
                     >
                       {s}
@@ -202,7 +202,7 @@ export default function HirePage() {
           )}
 
           {step === 4 && (
-            <div className="text-sm text-mute space-y-2 rounded-xl p-5" style={{ border: "1px solid rgba(217,214,232,0.1)" }}>
+            <div className="text-sm text-mute space-y-2 rounded-xl p-5" style={{ border: "1px solid rgba(var(--text-rgb),0.1)" }}>
               <p><strong className="text-paper">Name:</strong> {form.name}</p>
               <p><strong className="text-paper">Email:</strong> {form.email}</p>
               <p><strong className="text-paper">Project:</strong> {form.projectType}</p>

@@ -97,7 +97,7 @@ export default async function ProjectCaseStudy({ params }: { params: Promise<{ s
             <h3 className="font-display text-[13px] mb-3 leading-relaxed">Key features</h3>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               {project.features.map((f) => (
-                <li key={f} className="text-mute text-sm rounded px-3.5 py-2.5" style={{ border: "1px solid rgba(217,214,232,0.08)" }}>{f}</li>
+                <li key={f} className="text-mute text-sm rounded px-3.5 py-2.5" style={{ border: "1px solid rgba(var(--text-rgb),0.08)" }}>{f}</li>
               ))}
             </ul>
           </div>

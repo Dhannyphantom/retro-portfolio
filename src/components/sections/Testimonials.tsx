@@ -21,11 +21,11 @@ export default function Testimonials({ items = FALLBACK }: { items?: Testimonial
       </Reveal>      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {items.map((t, i) => (
           <Reveal key={t.clientName} delay={i * 90}>
-            <div className="hover-card rounded-xl p-6 bg-ink2 h-full" style={{ border: "1px solid rgba(217,214,232,0.09)" }}>
+            <div className="hover-card rounded-xl p-6 bg-ink2 h-full" style={{ border: "1px solid rgba(var(--text-rgb),0.09)" }}>
               <div className="flex gap-0.5 mb-4">
                 {Array.from({ length: t.rating || 5 }).map((_, si) => <Star key={si} size={13} className="text-violet fill-violet" />)}
               </div>
-              <p className="text-[14px] leading-relaxed mb-5 italic" style={{ color: "rgba(217,214,232,0.8)" }}>&quot;{t.quote}&quot;</p>
+              <p className="text-[14px] leading-relaxed mb-5 italic" style={{ color: "rgba(var(--text-rgb),0.8)" }}>&quot;{t.quote}&quot;</p>
               <div className="flex items-center gap-2.5">
                 <SafeImage src={t.avatar} className="w-[38px] h-[38px] rounded-full object-cover transition-transform duration-300 hover:scale-110" iconSize={16} />
                 <div>

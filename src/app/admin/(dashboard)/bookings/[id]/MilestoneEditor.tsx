@@ -52,11 +52,11 @@ export default function MilestoneEditor({ bookingId, milestones }: { bookingId: 
   const input = "w-full rounded px-2.5 py-2 text-[13px] bg-white/[0.04] border border-white/[0.12]";
 
   return (
-    <div className="rounded-xl p-5" style={{ border: "1px solid rgba(217,214,232,0.09)", background: "#120A1F" }}>
+    <div className="rounded-xl p-5" style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}>
       <h2 className="font-display text-[13px] mb-4 leading-relaxed">Milestones</h2>
       <div className="flex flex-col gap-4 mb-4">
         {items.map((m, i) => (
-          <div key={i} className="rounded-lg p-3.5" style={{ border: "1px solid rgba(217,214,232,0.08)" }}>
+          <div key={i} className="rounded-lg p-3.5" style={{ border: "1px solid rgba(var(--text-rgb),0.08)" }}>
             <div className="grid grid-cols-[1fr_auto] gap-2 mb-2">
               <input placeholder="Title" value={m.title} onChange={(e) => update(i, { title: e.target.value })} className={input} />
               <button onClick={() => setItems(items.filter((_, idx) => idx !== i))} className="text-mute px-2"><Trash2 size={14} /></button>
@@ -72,7 +72,7 @@ export default function MilestoneEditor({ bookingId, milestones }: { bookingId: 
             <textarea placeholder="Description" rows={2} value={m.description || ""} onChange={(e) => update(i, { description: e.target.value })} className={`${input} resize-none mb-2`} />
             <div className="flex flex-wrap gap-1.5 mb-2">
               {(m.media || []).map((url, mi) => (
-                <span key={mi} className="text-[11px] px-2 py-1 rounded truncate max-w-[140px]" style={{ background: "rgba(217,214,232,0.06)" }}>{url}</span>
+                <span key={mi} className="text-[11px] px-2 py-1 rounded truncate max-w-[140px]" style={{ background: "rgba(var(--text-rgb),0.06)" }}>{url}</span>
               ))}
             </div>
             <label className="inline-flex items-center gap-1.5 text-[12.5px] text-violet cursor-pointer">

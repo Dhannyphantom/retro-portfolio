@@ -1,5 +1,6 @@
 import { Smartphone, Globe, Server } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
+import Terminal from "@/components/sections/Terminal";
 
 const SERVICES = [
   { icon: Smartphone, title: "Mobile Development", desc: "React Native apps built for real users — leaderboards, wallets, media playback, offline-safe reading." },
@@ -7,7 +8,7 @@ const SERVICES = [
   { icon: Server, title: "Backend & APIs", desc: "Node.js and MongoDB systems built to stay boring under real traffic." },
 ];
 
-export default function About({ bio }: { bio?: string }) {
+export default function About({ bio, name }: { bio?: string; name?: string }) {
   return (
     <section id="about" className="relative max-w-[1120px] mx-auto px-7 pt-16 pb-5 grid grid-cols-1 md:grid-cols-2 gap-14">
       <div>
@@ -31,10 +32,11 @@ export default function About({ bio }: { bio?: string }) {
             <span className="font-mono text-xs tracking-widest text-violet">$ INTRODUCE</span>
           </div>
           <h2 className="font-display font-semibold text-[clamp(15px,2vw,19px)] mb-[18px] tracking-tight leading-relaxed">About me</h2>
-          <p className="text-mute text-[15px] leading-[1.75] max-w-[440px]">
-            {bio ||
-              "I started building software to solve problems in front of me — a quiz app for a community, a reading app that needed better notes. That habit turned into a full-stack practice across mobile, web and backend, always aimed at software that holds up once real people start using it."}
+          <p className="text-mute text-[13px] leading-[1.7] max-w-[440px] mb-4">
+            Don&apos;t just take my word for it — the terminal below actually runs. Type <code className="text-violet">help</code> to
+            poke around (and keep an eye out for hidden commands).
           </p>
+          <Terminal name={name} bio={bio} />
         </Reveal>
       </div>
     </section>

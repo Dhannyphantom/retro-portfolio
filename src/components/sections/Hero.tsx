@@ -6,6 +6,7 @@ import CTAButton from "@/components/ui/CTAButton";
 import SplitText from "@/components/ui/SplitText";
 import SafeImage from "@/components/ui/SafeImage";
 import { setCursorDragging } from "@/lib/cursorBus";
+import { useAchievements } from "@/lib/achievements";
 
 const PROFILE_IMG = "https://images.unsplash.com/photo-1506863530036-1efeddceb993?auto=format&fit=crop&w=600&q=80";
 const VIEWPORT = { once: false, amount: 0.4 };
@@ -56,6 +57,19 @@ export default function Hero({ name = "Daniel", headline = "Software Developer",
   const badges = techBadges.slice(0, 3);
   const angles = [35, 155, 275];
   const boundsRef = useRef<HTMLDivElement>(null);
+  const { unlock } = useAchievements();
+  const [webcamClicks, setWebcamClicks] = useState(0);
+  const [glitch, setGlitch] = useState(false);
+
+  const handleWebcamClick = () => {
+    const next = webcamClicks + 1;
+    setWebcamClicks(next);
+    if (next === 5) {
+      unlock("curious_clicker");
+      setGlitch(true);
+      setTimeout(() => setGlitch(false), 420);
+    }
+  };
 
   return (
     <section className="max-w-[1120px] mx-auto px-7 pt-16 pb-[70px] grid grid-cols-1 md:grid-cols-[1fr_0.8fr] gap-10 items-center">
@@ -90,11 +104,13 @@ export default function Hero({ name = "Daniel", headline = "Software Developer",
         {/* photo presented as a retro "webcam" window rather than a soft
             glowing circular frame — flat border, scanline overlay, no blur */}
         <motion.div
-          className="win absolute inset-[16%] overflow-hidden z-10"
+          className={`win absolute inset-[16%] overflow-hidden z-10 ${glitch ? "glitch-flash" : ""}`}
           initial={{ opacity: 0, scale: 0.85 }} whileInView={{ opacity: 1, scale: 1 }} viewport={VIEWPORT} transition={{ duration: 0.6 }}
+          onClick={handleWebcamClick}
+          data-cursor-hover
         >
           <div className="win-bar">
-            <span className="win-title">WEBCAM.EXE</span>
+            <span className="win-title">WEBCAM.EXE{webcamClicks > 0 && webcamClicks < 5 ? ` (${webcamClicks}/5)` : ""}</span>
             <span className="win-controls"><span className="win-dot">▢</span><span className="win-dot">×</span></span>
           </div>
           <div className="relative">

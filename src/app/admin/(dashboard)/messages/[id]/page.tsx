@@ -76,7 +76,7 @@ export default function AdminMessageDetail({ params }: { params: Promise<{ id: s
       </div>
 
       {/* read-only — the original message is never editable here */}
-      <div className="rounded-xl p-4 my-5 text-sm leading-relaxed whitespace-pre-wrap" style={{ border: "1px solid rgba(217,214,232,0.09)", background: "#120A1F" }}>
+      <div className="rounded-xl p-4 my-5 text-sm leading-relaxed whitespace-pre-wrap" style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}>
         {msg.message}
       </div>
 

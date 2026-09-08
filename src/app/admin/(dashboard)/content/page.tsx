@@ -122,8 +122,8 @@ export default function AdminContent() {
             onClick={() => setActive(t.key)}
             className="text-[12.5px] px-3 py-1.5 rounded-full"
             style={{
-              color: active === t.key ? "#0A0118" : "#8A86A8",
-              background: active === t.key ? "#D9D6E8" : "rgba(217,214,232,0.05)",
+              color: active === t.key ? "var(--void)" : "var(--text-dim)",
+              background: active === t.key ? "var(--text)" : "rgba(var(--text-rgb),0.05)",
             }}
           >
             {t.label}

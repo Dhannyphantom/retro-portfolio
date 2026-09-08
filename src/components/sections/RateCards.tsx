@@ -44,7 +44,7 @@ export default function RateCards({ items = FALLBACK }: { items?: RateCardItem[]
                   <p className="text-mute text-[13px] mb-5">{r.description}</p>
                   <div className="flex flex-col gap-2.5 mb-6 flex-1">
                     {(r.features || []).map((f) => (
-                      <div key={f} className="flex items-center gap-2 text-[13px]" style={{ color: "rgba(217,214,232,0.8)" }}>
+                      <div key={f} className="flex items-center gap-2 text-[13px]" style={{ color: "rgba(var(--text-rgb),0.8)" }}>
                         <Check size={14} className="text-violet" /> {f}
                       </div>
                     ))}

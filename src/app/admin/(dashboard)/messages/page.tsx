@@ -33,7 +33,7 @@ export default function AdminMessages() {
       ) : items.length === 0 ? (
         <p className="text-mute text-sm">No messages yet.</p>
       ) : (
-        <div className="rounded-xl overflow-hidden" style={{ border: "1px solid rgba(217,214,232,0.09)" }}>
+        <div className="rounded-xl overflow-hidden" style={{ border: "1px solid rgba(var(--text-rgb),0.09)" }}>
           {items.map((m) => (
             <Link
               key={m._id}

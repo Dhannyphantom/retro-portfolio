@@ -84,7 +84,7 @@ export default async function HomePage() {
         techBadges={heroBadges.length ? heroBadges : undefined}
       />
       <Marquee items={marqueeItems.length ? marqueeItems : undefined} />
-      <About bio={settings?.bio} />
+      <About bio={settings?.bio} name={settings?.name?.split(" ")[0] || "Daniel"} />
       <DevStats items={stats.length ? (stats as any) : undefined} />
       <ExperienceSection items={experience.length ? (experience as any) : undefined} />
       <ProjectsSection items={projects.length ? (projects as any) : FALLBACK_PROJECTS} limit={6} />

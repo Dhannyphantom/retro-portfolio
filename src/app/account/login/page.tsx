@@ -32,7 +32,7 @@ export default function AccountLoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-6">
-      <form onSubmit={submit} className="w-full max-w-[360px] rounded-2xl p-8" style={{ border: "1px solid rgba(0,229,255,0.17)", background: "#120A1F" }}>
+      <form onSubmit={submit} className="w-full max-w-[360px] rounded-2xl p-8" style={{ border: "1px solid rgba(0,229,255,0.17)", background: "var(--panel)" }}>
         <h1 className="font-display text-[16px] mb-2 leading-relaxed">Project dashboard</h1>
         <p className="text-mute text-sm mb-6">Log in to see your messages, milestones and payments.</p>
         <label className="block mb-4">

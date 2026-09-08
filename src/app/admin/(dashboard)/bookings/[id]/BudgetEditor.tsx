@@ -21,7 +21,7 @@ export default function BudgetEditor({ bookingId, totalBudget, amountPaid, curre
   const input = "w-full rounded px-3 py-2.5 text-sm bg-white/[0.04] border border-white/[0.12]";
 
   return (
-    <div className="rounded-xl p-5" style={{ border: "1px solid rgba(217,214,232,0.09)", background: "#120A1F" }}>
+    <div className="rounded-xl p-5" style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}>
       <h2 className="font-display text-[13px] mb-4 leading-relaxed">Budget & payments</h2>
       <label className="block mb-3">
         <span className="block text-[12.5px] text-mute mb-1.5">Currency</span>

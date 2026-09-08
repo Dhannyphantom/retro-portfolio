@@ -36,7 +36,7 @@ export default async function AdminBookingDetail({ params }: { params: Promise<{
       </div>
 
       {/* read-only — this is exactly what the client submitted */}
-      <div className="rounded-xl p-5 mb-4 text-sm text-mute leading-relaxed" style={{ border: "1px solid rgba(217,214,232,0.09)", background: "#120A1F" }}>
+      <div className="rounded-xl p-5 mb-4 text-sm text-mute leading-relaxed" style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}>
         {b.description}
         <div className="flex flex-wrap gap-4 mt-4 pt-4 border-t border-white/[0.07] text-[12.5px]">
           {b.budget && <span>Requested budget: <span className="text-paper">{b.budget}</span></span>}

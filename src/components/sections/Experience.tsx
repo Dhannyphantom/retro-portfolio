@@ -33,7 +33,7 @@ export default function Experience({ items = FALLBACK }: { items?: ExperienceIte
             {e.description && <p className="text-mute text-sm leading-relaxed mb-3">{e.description}</p>}
             <div className="flex flex-wrap gap-2">
               {(e.technologies || []).map((t) => (
-                <span key={t} className="text-[11px] font-mono rounded px-2 py-1" style={{ color: "rgba(217,214,232,0.6)", background: "rgba(217,214,232,0.04)", border: "1px solid rgba(217,214,232,0.08)" }}>
+                <span key={t} className="text-[11px] font-mono rounded px-2 py-1" style={{ color: "rgba(var(--text-rgb),0.6)", background: "rgba(var(--text-rgb),0.04)", border: "1px solid rgba(var(--text-rgb),0.08)" }}>
                   {t}
                 </span>
               ))}

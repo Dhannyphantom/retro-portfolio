@@ -116,8 +116,8 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
         style={{
           width: 380,
           maxWidth: "92vw",
-          background: "#0A0118",
-          borderLeft: "1px solid rgba(217,214,232,0.09)",
+          background: "var(--void)",
+          borderLeft: "1px solid rgba(var(--text-rgb),0.09)",
           transform: open ? "translateX(0)" : "translateX(100%)",
         }}
       >
@@ -139,9 +139,9 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
                   <div
                     className="rounded-xl px-3.5 py-2.5 text-[13.5px]"
                     style={{
-                      background: mine ? "linear-gradient(120deg, #39FF14, #1FAE0C)" : "#120A1F",
-                      border: mine ? "none" : "1px solid rgba(217,214,232,0.09)",
-                      color: "#D9D6E8",
+                      background: mine ? "linear-gradient(120deg, #39FF14, #1FAE0C)" : "var(--panel)",
+                      border: mine ? "none" : "1px solid rgba(var(--text-rgb),0.09)",
+                      color: "var(--text)",
                     }}
                   >
                     <div className="text-[11px] opacity-70 mb-0.5">{m.senderName}</div>
@@ -175,7 +175,7 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
                           </button>
                         </div>
                       ) : (
-                        <div className="text-[11.5px] font-mono mt-1" style={{ color: m.proposalStatus === "approved" ? "#8FE3A6" : m.proposalStatus === "declined" ? "#FF3B3B" : "#8A86A8" }}>
+                        <div className="text-[11.5px] font-mono mt-1" style={{ color: m.proposalStatus === "approved" ? "#8FE3A6" : m.proposalStatus === "declined" ? "#FF3B3B" : "var(--text-dim)" }}>
                           {m.proposalStatus === "pending" ? "Awaiting client approval" : m.proposalStatus?.toUpperCase()}
                         </div>
                       )}
@@ -221,7 +221,7 @@ export default function ThreadPanel({ bookingId, viewerRole, defaultOpen = true 
               <button
                 onClick={() => setShowProposal((s) => !s)}
                 className="px-3 rounded text-[12.5px] flex-shrink-0"
-                style={{ border: "1px solid rgba(0,229,255,0.3)", color: showProposal ? "#D9D6E8" : "#00E5FF", background: showProposal ? "rgba(57,255,20,0.2)" : "transparent" }}
+                style={{ border: "1px solid rgba(0,229,255,0.3)", color: showProposal ? "var(--text)" : "#00E5FF", background: showProposal ? "rgba(57,255,20,0.2)" : "transparent" }}
               >
                 <FileText size={15} />
               </button>

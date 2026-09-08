@@ -7,6 +7,8 @@ import CustomCursor from "@/components/layout/CustomCursor";
 import MatrixRain from "@/components/layout/MatrixRain";
 import BootScreen from "@/components/layout/BootScreen";
 import { getSiteSettings } from "@/lib/settings";
+import Providers from "@/lib/providers";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 
 // Retro CRT-terminal type system: a pixel font for headers/labels (used
 // sparingly — it's chunky, not for body copy) and JetBrains Mono for
@@ -33,14 +35,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const settings = await getSiteSettings();
 
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
-      <body className="font-body bg-ink text-paper min-h-screen relative overflow-x-hidden">
-        <BootScreen name={settings.name} />
-        <MatrixRain />
-        <CustomCursor />
-        <Nav name={settings.name} />
-        <main className="relative z-10">{children}</main>
-        <Footer name={settings.name} bio={settings.bio} email={settings.email} socials={settings.socials} />
+    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Runs before paint so a light-mode visitor never sees a dark flash. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
+      <body className="font-body bg-ink text-paper min-h-screen relative overflow-x-hidden" suppressHydrationWarning>
+        <Providers>
+          <BootScreen name={settings.name} />
+          <MatrixRain />
+          <CustomCursor />
+          <Nav name={settings.name} />
+          <main className="relative z-10">{children}</main>
+          <Footer name={settings.name} bio={settings.bio} email={settings.email} socials={settings.socials} />
+        </Providers>
       </body>
     </html>
   );

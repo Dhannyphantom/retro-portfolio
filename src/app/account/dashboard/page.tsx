@@ -37,7 +37,7 @@ export default async function AccountDashboard() {
               key={b._id}
               href={`/account/projects/${b._id}`}
               className="hover-card flex items-center justify-between rounded-xl p-5"
-              style={{ border: "1px solid rgba(217,214,232,0.09)", background: "#120A1F" }}
+              style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}
             >
               <div>
                 <div className="font-display font-semibold text-lg mb-1">{b.projectType || "Project"}</div>

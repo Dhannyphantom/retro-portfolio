@@ -1,13 +1,24 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { useTheme } from "@/lib/theme";
 
 const CHARS = "01{}[]()<>/;=+-*ABCDEFGHIJKLMNOPQRSTUVWXYZ$#";
+
+// Real color values (not CSS vars — canvas 2D can't read those) mirroring
+// globals.css's --matrix-bg/--matrix-fg/--void per theme.
+const PALETTE = {
+  dark: { void: "#000000", trailFill: "rgba(0,0,0,0.09)", glyph: "rgba(120,255,90,0.85)" },
+  light: { void: "#F2F1EC", trailFill: "rgba(242,241,236,0.12)", glyph: "rgba(31,174,12,0.55)" },
+};
 
 // A full-viewport, always-visible matrix-style code rain — kept intentionally
 // faint (low opacity + a slow trail fade) so it reads as backdrop texture
 // rather than competing with real content. Respects prefers-reduced-motion.
 export default function MatrixRain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { theme } = useTheme();
+  const paletteRef = useRef(PALETTE[theme]);
+  paletteRef.current = PALETTE[theme];
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -32,10 +43,10 @@ export default function MatrixRain() {
 
     if (reduceMotion) {
       // Draw a single faint static frame instead of looping.
-      ctx.fillStyle = "#0A0118";
+      ctx.fillStyle = paletteRef.current.void;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.font = `${fontSize}px var(--font-mono, monospace)`;
-      ctx.fillStyle = "rgba(0,229,255,0.238)";
+      ctx.fillStyle = paletteRef.current.glyph;
       drops.forEach((d, i) => {
         const ch = CHARS[Math.floor(Math.random() * CHARS.length)];
         ctx.fillText(ch, i * fontSize, (d < 0 ? 4 : d) * fontSize);
@@ -53,7 +64,7 @@ export default function MatrixRain() {
       last = ts;
 
       // translucent fill creates the fading-trail effect
-      ctx.fillStyle = "rgba(10,1,24,0.09)";
+      ctx.fillStyle = paletteRef.current.trailFill;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = `${fontSize}px var(--font-mono, monospace)`;
@@ -61,7 +72,7 @@ export default function MatrixRain() {
         const ch = CHARS[Math.floor(Math.random() * CHARS.length)];
         const y = drops[i] * fontSize;
         // leading character brighter, rest of trail dimmer
-        ctx.fillStyle = "rgba(120,255,90,0.85)";
+        ctx.fillStyle = paletteRef.current.glyph;
         ctx.fillText(ch, i * fontSize, y);
 
         if (y > canvas.height && Math.random() > 0.975) {

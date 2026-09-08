@@ -41,7 +41,7 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative max-w-[1120px] mx-auto px-7 pb-[90px]">
-      <div className="hover-card relative overflow-hidden rounded-2xl p-8 sm:p-11 grid grid-cols-1 md:grid-cols-2 gap-12" style={{ border: "1px solid rgba(255,255,255,0.08)", background: "linear-gradient(135deg, #120A1F, #0A0118)" }}>
+      <div className="hover-card relative overflow-hidden rounded-2xl p-8 sm:p-11 grid grid-cols-1 md:grid-cols-2 gap-12" style={{ border: "1px solid rgba(255,255,255,0.08)", background: "linear-gradient(135deg, var(--panel), var(--void))" }}>
         <Reveal from="left">
           <span className="font-mono text-xs tracking-widest text-violet">$ CONTACTS</span>
           <h2 className="font-display font-semibold text-[clamp(15px,2vw,19px)] mt-3 mb-4 tracking-tight leading-relaxed">
@@ -52,7 +52,7 @@ export default function Contact() {
           <div className="flex items-center gap-2 text-mute text-[13px] mb-[22px]"><Clock size={14} /> Usually replies within 1–2 days</div>
           <div className="flex gap-3 mb-5">
             {[Github, Linkedin, Mail].map((Icon, idx) => (
-              <a key={idx} href="#" className="icon-hover w-[42px] h-[42px] rounded flex items-center justify-center" style={{ border: "1px solid rgba(217,214,232,0.12)" }}>
+              <a key={idx} href="#" className="icon-hover w-[42px] h-[42px] rounded flex items-center justify-center" style={{ border: "1px solid rgba(var(--text-rgb),0.12)" }}>
                 <Icon size={17} />
               </a>
             ))}
@@ -77,7 +77,7 @@ export default function Contact() {
                   type="text" placeholder="Your name" value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   className="w-full rounded px-3.5 py-3 text-[14.5px] outline-none bg-white/[0.04]"
-                  style={{ border: `1px solid ${errors.name ? "#FF3B3B" : "rgba(217,214,232,0.12)"}` }}
+                  style={{ border: `1px solid ${errors.name ? "#FF3B3B" : "rgba(var(--text-rgb),0.12)"}` }}
                 />
                 {errors.name && <p className="text-[12.5px] mt-1.5" style={{ color: "#FF3B3B" }}>{errors.name}</p>}
               </div>
@@ -86,7 +86,7 @@ export default function Contact() {
                   type="email" placeholder="you@company.com" value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className="w-full rounded px-3.5 py-3 text-[14.5px] outline-none bg-white/[0.04]"
-                  style={{ border: `1px solid ${errors.email ? "#FF3B3B" : "rgba(217,214,232,0.12)"}` }}
+                  style={{ border: `1px solid ${errors.email ? "#FF3B3B" : "rgba(var(--text-rgb),0.12)"}` }}
                 />
                 {errors.email && <p className="text-[12.5px] mt-1.5" style={{ color: "#FF3B3B" }}>{errors.email}</p>}
               </div>
@@ -95,7 +95,7 @@ export default function Contact() {
                   placeholder="What are you building?" rows={4} value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                   className="w-full rounded px-3.5 py-3 text-[14.5px] outline-none bg-white/[0.04] resize-none"
-                  style={{ border: `1px solid ${errors.message ? "#FF3B3B" : "rgba(217,214,232,0.12)"}` }}
+                  style={{ border: `1px solid ${errors.message ? "#FF3B3B" : "rgba(var(--text-rgb),0.12)"}` }}
                 />
                 {errors.message && <p className="text-[12.5px] mt-1.5" style={{ color: "#FF3B3B" }}>{errors.message}</p>}
               </div>

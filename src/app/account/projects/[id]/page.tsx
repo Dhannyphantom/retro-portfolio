@@ -37,15 +37,15 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-        <div className="rounded-xl p-5" style={{ border: "1px solid rgba(217,214,232,0.09)", background: "#120A1F" }}>
+        <div className="rounded-xl p-5" style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}>
           <div className="text-mute text-[12.5px] mb-1.5">Total budget</div>
           <div className="font-display text-[18px] leading-relaxed">{b.totalBudget ? formatMoney(b.totalBudget, b.currency) : "Not yet agreed"}</div>
         </div>
-        <div className="rounded-xl p-5" style={{ border: "1px solid rgba(217,214,232,0.09)", background: "#120A1F" }}>
+        <div className="rounded-xl p-5" style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}>
           <div className="text-mute text-[12.5px] mb-1.5">Paid so far</div>
           <div className="font-display text-[18px] leading-relaxed">{formatMoney(b.amountPaid || 0, b.currency)}</div>
         </div>
-        <div className="rounded-xl p-5" style={{ border: "1px solid rgba(217,214,232,0.09)", background: "#120A1F" }}>
+        <div className="rounded-xl p-5" style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}>
           <div className="text-mute text-[12.5px] mb-1.5">Outstanding</div>
           <div className="font-display text-[18px] leading-relaxed">{formatMoney(outstanding, b.currency)}</div>
         </div>
@@ -53,7 +53,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
       {b.totalBudget > 0 && (
         <div className="mb-10">
-          <div className="h-2 rounded-full overflow-hidden" style={{ background: "rgba(217,214,232,0.08)" }}>
+          <div className="h-2 rounded-full overflow-hidden" style={{ background: "rgba(var(--text-rgb),0.08)" }}>
             <div className="h-full rounded-full bg-gradient-to-r from-violet to-purple" style={{ width: `${progressPct}%` }} />
           </div>
           <div className="text-mute text-[12px] mt-1.5">{progressPct}% paid</div>
@@ -68,14 +68,14 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         ) : (
           <div className="flex flex-col gap-3">
             {b.milestones.map((m: any, i: number) => (
-              <div key={i} className="rounded-xl p-4" style={{ border: "1px solid rgba(217,214,232,0.09)", background: "#120A1F" }}>
+              <div key={i} className="rounded-xl p-4" style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}>
                 <div className="flex justify-between items-start gap-3 mb-1.5">
                   <div className="font-medium text-[14.5px]">{m.title}</div>
                   <span
                     className="text-[11px] font-mono px-2 py-0.5 rounded flex-shrink-0"
                     style={{
-                      color: m.status === "completed" ? "#8FE3A6" : m.status === "in-progress" ? "#00E5FF" : "#8A86A8",
-                      background: m.status === "completed" ? "rgba(143,227,166,0.1)" : m.status === "in-progress" ? "rgba(57,255,20,0.1)" : "rgba(217,214,232,0.06)",
+                      color: m.status === "completed" ? "#8FE3A6" : m.status === "in-progress" ? "#00E5FF" : "var(--text-dim)",
+                      background: m.status === "completed" ? "rgba(143,227,166,0.1)" : m.status === "in-progress" ? "rgba(57,255,20,0.1)" : "rgba(var(--text-rgb),0.06)",
                     }}
                   >
                     {m.status}
