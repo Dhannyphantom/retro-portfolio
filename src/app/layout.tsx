@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Press_Start_2P, JetBrains_Mono } from "next/font/google";
+import { Press_Start_2P, JetBrains_Mono, VT323, Space_Mono } from "next/font/google";
 import "./globals.css";
-import Nav from "@/components/layout/Nav";
-import Footer from "@/components/layout/Footer";
-import CustomCursor from "@/components/layout/CustomCursor";
-import MatrixRain from "@/components/layout/MatrixRain";
-import BootScreen from "@/components/layout/BootScreen";
+import SiteChrome from "@/components/layout/SiteChrome";
 import { getSiteSettings } from "@/lib/settings";
 import Providers from "@/lib/providers";
 import { THEME_INIT_SCRIPT } from "@/lib/theme";
 
-// Retro CRT-terminal type system: a pixel font for headers/labels (used
-// sparingly — it's chunky, not for body copy) and JetBrains Mono for
-// everything else, matching an actual monospaced terminal.
+// Legacy type system (still used by pages not yet migrated to the retro UI).
 const display = Press_Start_2P({
   subsets: ["latin"],
   weight: "400",
@@ -22,9 +16,12 @@ const display = Press_Start_2P({
 const body = JetBrains_Mono({ subsets: ["latin"], variable: "--font-body" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
-// Dynamic — reads from the same Profile data managed at /admin/profile, so
-// editing your name/title/bio there updates the browser tab title and social
-// share previews too, not just the visible page content.
+// Retro-terminal type system (new homepage). Press Start 2P is shared with
+// the legacy pixel font above via --font-retro-pixel so it isn't loaded
+// twice.
+const retroDisplay = VT323({ subsets: ["latin"], weight: "400", variable: "--font-retro-display" });
+const retroBody = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-retro-body" });
+
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
   const title = `${settings.name} — ${settings.title}`;
@@ -46,14 +43,11 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${body.variable} ${mono.variable}`}
+      className={`${display.variable} ${body.variable} ${mono.variable} ${retroDisplay.variable} ${retroBody.variable}`}
+      style={{ "--font-retro-pixel": "var(--font-display)" } as React.CSSProperties}
       suppressHydrationWarning
     >
       <head>
-        {/* next/script (not a raw <script> tag) so React doesn't warn about
-            rendering a script during client render — beforeInteractive still
-            runs it before paint, so a light-mode visitor never sees a dark
-            flash. */}
         <Script
           id="theme-init"
           strategy="beforeInteractive"
@@ -65,17 +59,9 @@ export default async function RootLayout({
         suppressHydrationWarning
       >
         <Providers>
-          <BootScreen name={settings.name} />
-          <MatrixRain />
-          <CustomCursor />
-          <Nav name={settings.name} />
-          <main className="relative z-10">{children}</main>
-          <Footer
-            name={settings.name}
-            bio={settings.bio}
-            email={settings.email}
-            socials={settings.socials}
-          />
+          <SiteChrome name={settings.name} bio={settings.bio} email={settings.email} socials={settings.socials}>
+            {children}
+          </SiteChrome>
         </Providers>
       </body>
     </html>

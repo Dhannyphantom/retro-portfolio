@@ -3,11 +3,10 @@
 @tailwind utilities;
 
 /* --------------------------------------------------------------------
-   THEME — pure black/white retro terminal, no purple in the neutrals.
-   Dark is the default (matches the boot-screen feel); light flips the
-   void/panel/text scale while every accent (green/cyan/magenta/amber)
-   stays identical in both, same as an old monitor that could be switched
-   between a black-glass and a white-glass phosphor tube.
+   LEGACY THEME — used by pages not yet migrated to the new retro UI
+   (e.g. /hire, /admin, /projects, /account). As each page is migrated
+   in a later phase, its dependency on these classes/tokens goes away;
+   once nothing references them, this whole legacy block can be deleted.
 -------------------------------------------------------------------- */
 :root,
 [data-theme="dark"] {
@@ -55,11 +54,6 @@
   box-sizing: border-box;
 }
 
-/* Retro sharp corners everywhere — no rounded UI in an authentic terminal/
-   OS aesthetic. !important beats inline styles too, so this retro-fits the
-   whole app in one rule rather than needing every component touched.
-   Anything that legitimately must stay circular (cursor dot, a couple of
-   decorative marks) opts back in via .retro-circle. */
 *,
 *::before,
 *::after {
@@ -82,7 +76,8 @@ body {
     color 0.2s ease;
 }
 
-/* Custom cursor everywhere except touch devices (see CustomCursor.tsx) */
+/* Custom cursor everywhere except touch devices — the retro homepage
+   (body.retro-active) renders its own cursor and manages this itself. */
 * {
   cursor: none;
 }
@@ -97,10 +92,10 @@ body {
   color: var(--void);
 }
 
-/* faint CRT scanlines + vignette, fixed over the whole viewport. Cranked
-   down to near-nothing in light mode — scanlines over white paper just
-   look like dirt, not CRT. */
-body::before {
+/* faint CRT scanlines + vignette for legacy (non-migrated) pages only —
+   suppressed on the retro homepage via body.retro-active, which draws
+   its own CRT overlay scoped to .retro-root so the two don't stack. */
+body:not(.retro-active)::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -116,7 +111,7 @@ body::before {
   opacity: var(--scanline-opacity);
   mix-blend-mode: multiply;
 }
-body::after {
+body:not(.retro-active)::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -128,7 +123,7 @@ body::after {
     rgba(0, 0, 0, 0.55) 100%
   );
 }
-[data-theme="light"] body::after {
+[data-theme="light"] body:not(.retro-active)::after {
   background: radial-gradient(
     ellipse at center,
     transparent 60%,
@@ -152,10 +147,6 @@ body::after {
   background: var(--green);
 }
 
-/* --------------------------------------------------------------------
-   Keyframes declared as plain CSS so they're always present regardless
-   of Tailwind's JIT utility-detection.
--------------------------------------------------------------------- */
 @keyframes spin2 {
   from {
     transform: rotate(0deg);
@@ -248,10 +239,6 @@ body::after {
   animation: termBlink 1.1s steps(1) infinite;
 }
 
-/* "marching ants" dashed border — the retro stand-in for the old rotating
-   conic-gradient glow border. Classic OS marquee-selection look: a dashed
-   outline that visibly scrolls. Used sparingly (hover/active states only)
-   rather than running constantly everywhere. */
 .diag-wrap {
   position: relative;
   background: var(--panel);
@@ -262,7 +249,7 @@ body::after {
 }
 .diag-border-spin {
   display: none;
-} /* superseded by .marching-border below */
+}
 .paused-until-hover {
   display: none;
 }
@@ -296,12 +283,6 @@ body::after {
   opacity: 1;
 }
 
-/* --------------------------------------------------------------------
-   Window chrome — retro OS window title bar (File-Explorer-1998 style),
-   used on project/feature cards and every panel below. Border is thick
-   and dark, with a slow "power idle" breathing glow instead of a static
-   flat line — the "slightly animated" retro-OS feel.
--------------------------------------------------------------------- */
 @keyframes winGlow {
   0%,
   100% {
@@ -355,7 +336,6 @@ body::after {
   color: var(--text-dim);
 }
 
-/* marquee */
 .marquee-track {
   animation: marquee 26s linear infinite;
 }
@@ -363,7 +343,6 @@ body::after {
   animation-play-state: paused;
 }
 
-/* nav underline */
 .nav-link {
   position: relative;
 }
@@ -381,7 +360,6 @@ body::after {
   width: 100%;
 }
 
-/* card hover — snappy, not a soft modern ease */
 .hover-card {
   transition:
     transform 0.15s steps(2),
@@ -404,8 +382,6 @@ body::after {
   background: rgba(57, 255, 20, 0.08);
 }
 
-/* retro buttons: transparent outline by default, solid fill on hover, hard
-   press-down on click — no light-sweep shine, no soft glow gradients */
 .retro-btn {
   position: relative;
   border: 2px solid var(--green);
@@ -453,10 +429,6 @@ body::after {
   animation: blink 1s steps(1) infinite;
 }
 
-/* Native <select> dropdown lists ignore most CSS and fall back to the OS/
-   browser's light theme by default. color-scheme tells the browser to
-   render native form UI in dark, and the explicit colors below cover
-   browsers that need it spelled out directly. */
 select {
   color-scheme: dark;
   background-color: var(--panel);
@@ -497,9 +469,6 @@ input[type="date"] {
   }
 }
 
-/* --------------------------------------------------------------------
-   Theme toggle — an old rocker/power switch, not a modern iOS pill.
--------------------------------------------------------------------- */
 .theme-switch {
   width: 46px;
   height: 24px;
@@ -529,15 +498,6 @@ input[type="date"] {
   background: var(--amber);
 }
 
-/* --------------------------------------------------------------------
-   Click-burst pixel particles (see ClickEffects.tsx) and cursor trail.
--------------------------------------------------------------------- */
-/* Both particle types now carry their spawn point in --x/--y custom
-   properties (set by JS via setProperty, never via el.style.transform).
-   The keyframes fold that origin into every step of the transform, so
-   the CSS animation's own transform value never clobbers the JS-supplied
-   position back to the element's default top:0/left:0 — the bug that
-   made the trail and burst appear to snap to the top-left corner. */
 @keyframes pixelBurst {
   0% {
     transform: translate(var(--x, 0), var(--y, 0))
@@ -581,10 +541,6 @@ input[type="date"] {
   animation: trailFade 0.4s linear forwards;
 }
 
-/* --------------------------------------------------------------------
-   Achievement toast — slides in from the corner like an old game's
-   "Trophy Unlocked" popup.
--------------------------------------------------------------------- */
 @keyframes achieveIn {
   0% {
     transform: translateX(120%);
@@ -607,9 +563,6 @@ input[type="date"] {
   animation: achieveIn 4.2s ease-in-out forwards;
 }
 
-/* --------------------------------------------------------------------
-   Terminal (About section) + Games panel shared bits.
--------------------------------------------------------------------- */
 .terminal-scroll::-webkit-scrollbar {
   width: 8px;
 }
@@ -669,3 +622,362 @@ input[type="date"] {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ======================================================================
+   RETRO TERMINAL UI — homepage rewrite layer
+   Scoped additively: these tokens/classes are new names that don't
+   collide with the legacy theme above (still used by pages not yet
+   migrated to the new UI, e.g. /hire, /admin, /projects). Once every
+   page has been migrated in a later phase, the legacy block above can
+   be deleted along with its consumers.
+   ====================================================================== */
+
+:root {
+  --bg: #080808;
+  --bg2: #111111;
+  --bg3: #1a1a1a;
+  --text: #e0e0e0;
+  --text-dim: #666666;
+  --border: #2a2a2a;
+  --white: #ffffff;
+  --black: #080808;
+  --r: #ff0033;
+  --c: #00eeff;
+  --g: #39ff14;
+  --window-bar: #111111;
+  --card-bg: #0a0a0a;
+  --tag-bg: #0a0a0a;
+  --scan-color: rgba(0, 0, 0, 0.18);
+  --noise-op: 0.04;
+  --vignette: rgba(0, 0, 0, 0.75);
+}
+
+[data-theme="light"] {
+  --bg: #f0ece0;
+  --bg2: #e8e3d0;
+  --bg3: #ddd8c4;
+  --text: #1a1a1a;
+  --text-dim: #777777;
+  --border: #c8c0a8;
+  --white: #1a1a1a;
+  --black: #f0ece0;
+  --window-bar: #ddd8c4;
+  --card-bg: #ede8d8;
+  --tag-bg: #e4dfc8;
+  --scan-color: rgba(0, 0, 0, 0.07);
+  --noise-op: 0.025;
+  --vignette: rgba(0, 0, 0, 0.25);
+}
+
+.retro-root {
+  cursor: none;
+}
+.retro-root * {
+  font-family: var(--font-retro-body);
+  scrollbar-width: none;
+}
+.retro-root *::-webkit-scrollbar {
+  display: none;
+}
+.retro-root button,
+.retro-root a {
+  cursor: none;
+}
+.retro-root ::selection {
+  background: var(--white);
+  color: var(--bg);
+}
+
+/* ─── CUSTOM RETRO CURSOR ─── */
+.retro-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-2px, -2px);
+}
+.retro-cursor::before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 7px solid var(--text);
+  border-right: 4px solid transparent;
+  border-bottom: 10px solid transparent;
+}
+.retro-cursor::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 1px;
+  width: 4px;
+  height: 10px;
+  background: var(--text);
+  transform: rotate(-38deg);
+  transform-origin: top center;
+}
+.retro-cursor.clicking::before {
+  border-left-color: var(--r);
+}
+.retro-cursor.clicking::after {
+  background: var(--r);
+}
+.retro-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--text-dim);
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-18px, -18px);
+  transition: width 0.25s, height 0.25s, border-color 0.25s, opacity 0.25s;
+}
+.retro-cursor-ring.expanded {
+  width: 60px;
+  height: 60px;
+  border-color: var(--r);
+  transform: translate(-30px, -30px);
+}
+
+/* ─── CRT OVERLAY ─── */
+.retro-root::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 55%, var(--vignette) 100%);
+  z-index: 9998;
+}
+.retro-root::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, var(--scan-color) 3px, var(--scan-color) 4px);
+  z-index: 9999;
+  animation: retro-crt-flicker 0.12s infinite steps(1);
+}
+@keyframes retro-crt-flicker {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.97; }
+}
+
+/* ─── GLITCH TEXT ─── */
+.retro-glitch {
+  position: relative;
+  display: inline-block;
+}
+.retro-glitch::before,
+.retro-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.retro-glitch::before {
+  color: var(--r);
+  animation: retro-glitch-r 3.5s infinite;
+  clip-path: inset(0 0 100% 0);
+}
+.retro-glitch::after {
+  color: var(--c);
+  animation: retro-glitch-c 3.5s infinite;
+  clip-path: inset(0 0 100% 0);
+}
+.retro-glitch:hover::before,
+.retro-glitch-active::before { animation-duration: 0.4s; }
+.retro-glitch:hover::after,
+.retro-glitch-active::after  { animation-duration: 0.4s; }
+
+@keyframes retro-glitch-r {
+  0%, 90%, 100% { clip-path: inset(0 0 100% 0); transform: translate(0); }
+  91% { clip-path: inset(10% 0 80% 0); transform: translate(-3px, 0); }
+  93% { clip-path: inset(40% 0 50% 0); transform: translate(3px, 0); }
+  95% { clip-path: inset(70% 0 20% 0); transform: translate(-2px, 0); }
+  97% { clip-path: inset(20% 0 70% 0); transform: translate(2px, 0); }
+  99% { clip-path: inset(55% 0 35% 0); transform: translate(-3px, 0); }
+}
+@keyframes retro-glitch-c {
+  0%, 90%, 100% { clip-path: inset(0 0 100% 0); transform: translate(0); }
+  91% { clip-path: inset(80% 0 10% 0); transform: translate(3px, 0); }
+  93% { clip-path: inset(50% 0 40% 0); transform: translate(-3px, 0); }
+  95% { clip-path: inset(30% 0 60% 0); transform: translate(2px, 0); }
+  97% { clip-path: inset(60% 0 30% 0); transform: translate(-2px, 0); }
+  99% { clip-path: inset(15% 0 75% 0); transform: translate(3px, 0); }
+}
+
+@keyframes retro-scan-tear {
+  0%, 95%, 100% { transform: translateX(0); opacity: 1; }
+  96% { transform: translateX(-4px) skewX(-1deg); opacity: 0.9; }
+  97% { transform: translateX(6px) skewX(0.5deg); opacity: 0.95; }
+  98% { transform: translateX(-2px); opacity: 1; }
+}
+.retro-scan-tear { animation: retro-scan-tear 4s infinite; }
+
+/* ─── NOISE OVERLAY ─── */
+@keyframes retro-noise {
+  0%   { transform: translate(0, 0); }
+  10%  { transform: translate(-2%, -3%); }
+  20%  { transform: translate(3%, 2%); }
+  30%  { transform: translate(-1%, 4%); }
+  40%  { transform: translate(4%, -1%); }
+  50%  { transform: translate(-3%, 3%); }
+  60%  { transform: translate(2%, -4%); }
+  70%  { transform: translate(-4%, 1%); }
+  80%  { transform: translate(1%, -2%); }
+  90%  { transform: translate(-2%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+.retro-noise-overlay {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 9997;
+  opacity: var(--noise-op);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  animation: retro-noise 0.2s steps(1) infinite;
+}
+
+/* ─── TERMINAL WINDOW ─── */
+.retro-terminal-window {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  position: relative;
+}
+.retro-window-bar {
+  background: var(--window-bar);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 12px;
+}
+.retro-win-dot { width: 10px; height: 10px; border-radius: 50%; }
+.retro-win-dot-r { background: #ff5f57; }
+.retro-win-dot-y { background: #febc2e; }
+.retro-win-dot-g { background: #28c840; }
+.retro-win-title {
+  flex: 1;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-dim);
+  font-family: var(--font-retro-body);
+  letter-spacing: 0.08em;
+}
+.retro-win-hint {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: var(--font-retro-body);
+}
+
+.retro-metro-tile {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: none;
+}
+.retro-metro-tile:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--white);
+}
+
+@keyframes retro-toast-in {
+  from { transform: translateX(110%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+@keyframes retro-toast-out {
+  from { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(110%); opacity: 0; }
+}
+.retro-toast-in {
+  animation: retro-toast-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  background: var(--bg2);
+  border: 1px solid var(--white);
+  padding: 10px 16px;
+  min-width: 260px;
+  max-width: 340px;
+  box-shadow: 4px 4px 0 var(--white);
+}
+.retro-toast-out {
+  animation: retro-toast-out 0.35s ease-in forwards;
+  background: var(--bg2);
+  border: 1px solid var(--white);
+  padding: 10px 16px;
+  min-width: 260px;
+  max-width: 340px;
+  box-shadow: 4px 4px 0 var(--white);
+}
+
+@keyframes retro-pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.5); }
+  50%      { opacity: 0.7; box-shadow: 0 0 0 4px rgba(57, 255, 20, 0); }
+}
+.retro-status-dot { animation: retro-pulse-dot 2s ease infinite; }
+
+.retro-matrix-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.07;
+}
+[data-theme="light"] .retro-matrix-canvas { opacity: 0.04; }
+
+.retro-menubar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 999;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 28px;
+  gap: 20px;
+  cursor: default;
+}
+
+.retro-navdock {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  gap: 4px;
+  z-index: 1000;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  max-width: calc(100vw - 24px);
+  overflow-x: auto;
+}
+@media (min-width: 860px) {
+  .retro-navdock { display: flex; }
+}
+
+.retro-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 480px;
+}
+.retro-about-grid,
+.retro-games-grid,
+.retro-contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 900px) {
+  .retro-hero-grid { grid-template-columns: 1fr 360px; }
+  .retro-about-grid { grid-template-columns: 1fr 300px; }
+  .retro-games-grid { grid-template-columns: 1fr 340px; align-items: start; }
+  .retro-contact-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+}
+
+.retro-root a { color: inherit; text-decoration: none; }
