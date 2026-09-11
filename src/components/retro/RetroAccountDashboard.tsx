@@ -35,7 +35,7 @@ export default function RetroAccountDashboard({
               <div>
                 <SectionLabel n="AC" label="YOUR_PROJECTS" />
                 <GlitchText tag="h1" style={{ fontFamily: "var(--font-retro-display)", fontSize: 36, color: "var(--text)", margin: 0 }}>
-                  welcome back{userName ? `, ${userName.split(" ")[0]}` : ""}.
+                  {`welcome back${userName ? `, ${userName.split(" ")[0]}` : ""}.`}
                 </GlitchText>
               </div>
               <button onClick={logout} data-cursor-hover style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "none", border: "1px solid var(--border)", cursor: "none", color: "var(--text-dim)", fontFamily: "var(--font-retro-body)", fontSize: 11, padding: "8px 14px" }}>

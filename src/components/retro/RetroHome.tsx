@@ -9,6 +9,7 @@ import SectionLabel from "./SectionLabel";
 import MagneticBtn from "./MagneticBtn";
 import NavDock from "./NavDock";
 import OSMenuBar from "./OSMenuBar";
+import RetroTypewriterText from "./RetroTypewriterText";
 import { ACHIEVEMENTS, AchievementToast, type AchievementId } from "./RetroAchievements";
 import { useInView } from "@/lib/hooks/useInView";
 import { useTheme } from "@/lib/theme";
@@ -29,7 +30,7 @@ type VideoItem = { title: string; duration?: string; thumb: string; src: string 
 
 export type RetroHomeProps = {
   name: string;
-  headline: string;
+  headlines: string[];
   bio: string;
   meetDeveloperBio?: string;
   email?: string;
@@ -112,7 +113,7 @@ function InteractiveTerminal({
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [history]);
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, [history]);
 
   const run = (raw: string) => {
     const cmd = raw.trim().toLowerCase();
@@ -200,7 +201,7 @@ function IdCardAvatar({ glitch, onHover }: { glitch: boolean; onHover: () => voi
 // ─── MAIN RETRO HOME ────────────────────────────────────────────────────────
 export default function RetroHome(props: RetroHomeProps) {
   const {
-    name, headline, bio, meetDeveloperBio, email, location, availability, socials,
+    name, headlines, bio, meetDeveloperBio, email, location, availability, socials,
     projects, experience, services, rateCards, testimonials, faqs,
     techstack, stats, workflowSteps, philosophyLines, photos, videos,
   } = props;
@@ -227,6 +228,19 @@ export default function RetroHome(props: RetroHomeProps) {
       setToastQueue((q) => [...q, id]);
       return next;
     });
+  }, []);
+
+  // Make sure the page always renders starting at the top on a fresh load —
+  // browsers restoring a previous scroll position (refresh, back/forward
+  // cache) otherwise land the viewport away from the hero before the boot
+  // sequence has a chance to type out, making it look like the page
+  // auto-scrolled away on its own.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
@@ -342,13 +356,13 @@ export default function RetroHome(props: RetroHomeProps) {
                 </GlitchText>
                 <div style={{ display: "flex", alignItems: "flex-end", gap: 12, marginBottom: 24 }}>
                   <GlitchText tag="h1" style={{ fontFamily: "var(--font-retro-display)", fontSize: "clamp(48px,9vw,100px)", lineHeight: 0.95, color: "var(--text)", margin: 0, letterSpacing: "-0.02em" }}>
-                    {(name.split(" ").slice(1).join(" ") || "DEV").toUpperCase()}.
+                    {`${(name.split(" ").slice(1).join(" ") || "DEV").toUpperCase()}.`}
                   </GlitchText>
                   <span style={{ width: 14, height: 14, background: "var(--r)", display: "inline-block", marginBottom: 14, flexShrink: 0 }} />
                 </div>
 
                 <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 13, color: "var(--text-dim)", lineHeight: 1.8, maxWidth: 480, marginBottom: 28 }}>
-                  {headline}
+                  <RetroTypewriterText texts={headlines} style={{ color: "var(--g)" }} />
                   <br />
                   {bio}
                 </p>
@@ -403,7 +417,7 @@ export default function RetroHome(props: RetroHomeProps) {
           <div style={{ padding: "32px 36px" }}>
             <SectionLabel n="01" label="ABOUT" />
             <GlitchText tag="h2" style={{ fontFamily: "var(--font-retro-display)", fontSize: 44, color: "var(--text)", margin: "0 0 12px" }}>
-              hi, I&apos;m {name.split(" ")[0]}.
+              {`hi, I'm ${name.split(" ")[0]}.`}
             </GlitchText>
             <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)", lineHeight: 1.8, marginBottom: 28, maxWidth: 600 }}>
               poke around the terminal below — type <span style={{ color: "var(--g)" }}>`help`</span> to start.
@@ -537,21 +551,38 @@ export default function RetroHome(props: RetroHomeProps) {
                 ))}
               </div>
             )}
-            {!!techstack.length && (
-              <div style={{ marginTop: 32 }}>
-                <div style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", letterSpacing: "0.15em", marginBottom: 16 }}>TOOLING</div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {techstack.map((t) => (
-                    <span key={t.name} className="retro-metro-tile" style={{ padding: "6px 12px", border: "1px solid var(--border)", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", letterSpacing: "0.05em", background: "var(--tag-bg)" }}>
-                      {t.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </TerminalWindow>
       </section>
+
+      {/* ─── TECH STACK ─── */}
+      {!!techstack.length && (
+        <section id="techstack" style={{ padding: "80px 24px", maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <TerminalWindow title="techstack.arr" hint={`${techstack.length} modules loaded`}>
+            <div style={{ padding: "32px 36px" }}>
+              <SectionLabel n="04b" label="TECH_STACK" />
+              <GlitchText tag="h2" style={{ fontFamily: "var(--font-retro-display)", fontSize: 44, color: "var(--text)", margin: "0 0 8px" }}>
+                the toolbox.
+              </GlitchText>
+              <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)", marginBottom: 32 }}>
+                Every tool and technology that shows up in these builds, in one grid.
+              </p>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(120px,1fr))", gap: 14 }}>
+                {techstack.map((t) => (
+                  <div
+                    key={t.name}
+                    className="win retro-metro-tile"
+                    style={{ padding: "18px 12px", display: "flex", flexDirection: "column", alignItems: "center", gap: 10, textAlign: "center" }}
+                  >
+                    <SafeImage src={t.iconUrl} alt={t.name} className="retro-tech-icon w-10 h-10 object-contain" iconSize={22} />
+                    <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)" }}>{t.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </TerminalWindow>
+        </section>
+      )}
 
       {/* ─── RATES / TESTIMONIALS / FAQ ─── */}
       <section id="rates" style={{ padding: "80px 24px", maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 1 }}>

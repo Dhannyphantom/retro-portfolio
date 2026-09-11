@@ -9,6 +9,18 @@ import { useEffect } from "react";
 export default function SiteChrome({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     document.body.classList.add("retro-active");
+
+    // Browsers restore the previous scroll position on refresh / bfcache
+    // navigation by default. Combined with content on the homepage that
+    // grows in height right after mount (the boot-sequence typewriter), that
+    // restored offset can land the viewport well past the hero — it looks
+    // like the page "auto-scrolled away" before the boot text is ever seen.
+    // Taking manual control of scroll restoration and forcing the viewport
+    // to the top on first mount fixes that for every route.
+    if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
   }, []);
 
   return <>{children}</>;

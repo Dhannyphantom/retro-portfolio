@@ -11,7 +11,7 @@ export type SiteSettingsData = {
   socials: { github?: string; linkedin?: string; twitter?: string };
   cvUrl?: string;
   cvEnabled?: boolean;
-  heroHeadline: string;
+  heroHeadlines: string[];
   meetDeveloperBio?: string;
 };
 
@@ -24,7 +24,7 @@ const DEFAULTS: SiteSettingsData = {
   availability: true,
   socials: {},
   cvEnabled: true,
-  heroHeadline: "Software Developer",
+  heroHeadlines: ["Software Developer"],
 };
 
 // Shared by the root layout (nav, footer, page metadata) and the homepage —

@@ -1,6 +1,14 @@
 /**
- * Seeds the database with the demo content used throughout the design phase.
- * Run with: npm run seed   (make sure MONGODB_URI is set in .env.local first)
+ * Seeds the database with starter content, one time. Run with:
+ *   npm run seed   (make sure MONGODB_URI is set in .env.local first)
+ *
+ * Everything this script inserts is plain data in the normal collections —
+ * after seeding, every one of these rows can be edited or deleted from the
+ * admin dashboard (/admin/content, /admin/projects, /admin/techstack, etc.)
+ * exactly like anything created by hand. The site itself only ever reads
+ * from the database — there's no hardcoded fallback content baked into the
+ * pages, so running this script is the one-time step that makes the site
+ * non-empty on a fresh install.
  */
 import { connectDB } from "../src/lib/mongodb";
 import Project from "../src/models/Project";
@@ -16,6 +24,7 @@ import WorkflowStep from "../src/models/WorkflowStep";
 import PhilosophyLine from "../src/models/PhilosophyLine";
 import Photo from "../src/models/Photo";
 import ProjectVideo from "../src/models/ProjectVideo";
+import Skill from "../src/models/Skill";
 
 async function seed() {
   await connectDB();
@@ -32,7 +41,7 @@ async function seed() {
       location: "Remote — open worldwide",
       availability: true,
       socials: { github: "https://github.com", linkedin: "https://linkedin.com", twitter: "" },
-      heroHeadline: "Software Developer",
+      heroHeadlines: ["Software Developer", "Mobile App Builder", "Full-Stack Engineer", "React Native Specialist"],
       heroSubtext: "Mobile • Web • Backend",
       meetDeveloperBio: "Outside the editor, I care a lot about how things look and feel — visual design and presentation are as much a part of the process for me as the code underneath. A few short clips below give a closer look at how a build actually comes together.",
     },
@@ -144,6 +153,26 @@ async function seed() {
     { name: "Redux Toolkit", iconUrl: "https://cdn.simpleicons.org/redux/39FF14", showInHero: false, showInMarquee: true, order: 7 },
     { name: "Express", iconUrl: "https://cdn.simpleicons.org/express/39FF14", showInHero: false, showInMarquee: true, order: 8 },
     { name: "GSAP", iconUrl: "https://cdn.simpleicons.org/greensock/39FF14", showInHero: false, showInMarquee: true, order: 9 },
+    { name: "React Native", iconUrl: "https://cdn.simpleicons.org/react/39FF14", showInHero: false, showInMarquee: true, order: 10 },
+    { name: "Docker", iconUrl: "https://cdn.simpleicons.org/docker/39FF14", showInHero: false, showInMarquee: true, order: 11 },
+    { name: "Git", iconUrl: "https://cdn.simpleicons.org/git/39FF14", showInHero: false, showInMarquee: true, order: 12 },
+  ]);
+
+  await Skill.deleteMany({});
+  await Skill.insertMany([
+    { name: "JavaScript", category: "Language", order: 1 },
+    { name: "TypeScript", category: "Language", order: 2 },
+    { name: "React", category: "Frontend", order: 3 },
+    { name: "Next.js", category: "Frontend", order: 4 },
+    { name: "Tailwind CSS", category: "Frontend", order: 5 },
+    { name: "React Native", category: "Mobile", order: 6 },
+    { name: "Expo", category: "Mobile", order: 7 },
+    { name: "Node.js", category: "Backend", order: 8 },
+    { name: "Express", category: "Backend", order: 9 },
+    { name: "MongoDB", category: "Database", order: 10 },
+    { name: "AWS S3 / R2", category: "Cloud", order: 11 },
+    { name: "Docker", category: "DevOps", order: 12 },
+    { name: "Git", category: "Tool", order: 13 },
   ]);
 
   await seedNewCollections();

@@ -17,7 +17,9 @@ const SiteSettingsSchema = new Schema(
     },
     cvUrl: { type: String, default: "" },
     cvEnabled: { type: Boolean, default: true },
-    heroHeadline: { type: String, default: "Software Developer" },
+    // A list of titles the hero's typewriter cycles through, one at a
+    // time, on repeat — replaces the old single `heroHeadline` string.
+    heroHeadlines: { type: [String], default: ["Software Developer"] },
     heroSubtext: { type: String, default: "" },
     meetDeveloperBio: { type: String, default: "" },
   },

@@ -37,7 +37,13 @@ export default function AdminSettings() {
         <Field label="name"><RetroInput value={form.name || ""} onChange={(e) => set("name", e.target.value)} /></Field>
         <Field label="title"><RetroInput value={form.title || ""} onChange={(e) => set("title", e.target.value)} /></Field>
         <Field label="bio"><RetroTextarea rows={4} value={form.bio || ""} onChange={(e) => set("bio", e.target.value)} /></Field>
-        <Field label="hero headline"><RetroInput value={form.heroHeadline || ""} onChange={(e) => set("heroHeadline", e.target.value)} /></Field>
+        <Field label="hero headlines — one per line, the hero types each one out on repeat">
+          <RetroTextarea
+            rows={4}
+            value={(form.heroHeadlines || []).join("\n")}
+            onChange={(e) => set("heroHeadlines", e.target.value.split("\n").map((s: string) => s.trim()).filter(Boolean))}
+          />
+        </Field>
         <Field label="email"><RetroInput value={form.email || ""} onChange={(e) => set("email", e.target.value)} /></Field>
         <Field label="location"><RetroInput value={form.location || ""} onChange={(e) => set("location", e.target.value)} /></Field>
         <Field label="github url"><RetroInput value={form.socials?.github || ""} onChange={(e) => setSocial("github", e.target.value)} /></Field>

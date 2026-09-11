@@ -887,6 +887,39 @@ input[type="date"] {
   box-shadow: 4px 4px 0 var(--white);
 }
 
+/* ─── RETRO GLITCHY TECH-STACK ICONS ───
+   Applied to icons in the Tech Stack grid: a periodic RGB-split "glitch"
+   flicker via layered drop-shadows plus a tiny position jitter — same
+   cadence family as the text glitch above, tuned for small square logos. */
+@keyframes retro-icon-glitch {
+  0%, 88%, 100% {
+    transform: translate(0, 0);
+    filter: none;
+  }
+  90% {
+    transform: translate(-2px, 1px);
+    filter: drop-shadow(2px 0 0 var(--r)) drop-shadow(-2px 0 0 var(--c));
+  }
+  92% {
+    transform: translate(2px, -1px);
+    filter: drop-shadow(-2px 0 0 var(--r)) drop-shadow(2px 0 0 var(--c));
+  }
+  94% {
+    transform: translate(-1px, 0);
+    filter: drop-shadow(1px 0 0 var(--r)) drop-shadow(-1px 0 0 var(--c));
+  }
+  96% {
+    transform: translate(0, 0);
+    filter: none;
+  }
+}
+.retro-tech-icon {
+  animation: retro-icon-glitch 4.5s infinite;
+}
+.retro-tech-icon:hover {
+  animation-duration: 0.6s;
+}
+
 @keyframes retro-toast-in {
   from { transform: translateX(110%); opacity: 0; }
   to   { transform: translateX(0); opacity: 1; }
