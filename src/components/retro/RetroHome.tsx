@@ -13,6 +13,9 @@ import { ACHIEVEMENTS, AchievementToast, type AchievementId } from "./RetroAchie
 import { useInView } from "@/lib/hooks/useInView";
 import { useTheme } from "@/lib/theme";
 import SafeImage from "@/components/ui/SafeImage";
+import RetroProjectCard from "./RetroProjectCard";
+import RetroContactForm from "./RetroContactForm";
+import RetroExperienceEntry from "./RetroExperienceEntry";
 import SnakeGame from "@/components/games/SnakeGame";
 import TicTacToe from "@/components/games/TicTacToe";
 import MemoryMatch from "@/components/games/MemoryMatch";
@@ -69,143 +72,7 @@ function useTyping(text: string, speed = 40, startDelay = 0) {
   return displayed;
 }
 
-// ─── SKEW HOVER ──────────────────────────────────────────────────────────────
-function useSkew(maxDeg = 6) {
-  const ref = useRef<HTMLDivElement>(null);
-  const onMove = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const nx = (e.clientX - r.left) / r.width - 0.5;
-    const ny = (e.clientY - r.top) / r.height - 0.5;
-    el.style.transform = `perspective(600px) rotateY(${nx * maxDeg}deg) rotateX(${-ny * maxDeg}deg) scale(1.02)`;
-  };
-  const onLeave = () => {
-    if (ref.current) ref.current.style.transform = "perspective(600px) rotateY(0) rotateX(0) scale(1)";
-  };
-  return { ref, onMove, onLeave };
-}
-
-// ─── EXPERIENCE ENTRY ─────────────────────────────────────────────────────────
-const EXP_COLORS = ["var(--g)", "var(--c)", "var(--r)"];
-function ExpEntry({ item, idx, isLast }: { item: ExperienceItem; idx: number; isLast: boolean }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref);
-  const color = EXP_COLORS[idx % EXP_COLORS.length];
-  return (
-    <div ref={ref} style={{ display: "flex", gap: 20, opacity: inView ? 1 : 0, transform: inView ? "none" : "translateX(-20px)", transition: `all 0.5s ease ${idx * 0.15}s` }}>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 20, flexShrink: 0 }}>
-        <div style={{ width: 14, height: 14, background: color, flexShrink: 0, border: "2px solid var(--bg)", outline: `1px solid ${color}` }} />
-        {!isLast && <div style={{ flex: 1, width: 1, background: "var(--border)", minHeight: 20, marginTop: 4 }} />}
-      </div>
-      <div style={{ flex: 1, border: "1px solid var(--border)", padding: "16px 20px", marginBottom: 16, background: "var(--card-bg)" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8, flexWrap: "wrap", gap: 8 }}>
-          <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color, letterSpacing: "0.1em" }}>
-            · {idx === 0 ? "CURRENT" : "PAST"}
-          </span>
-          <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", background: "var(--bg3)", padding: "2px 8px", border: "1px solid var(--border)" }}>
-            {item.startDate} — {item.endDate || "Present"}
-          </span>
-        </div>
-        <h3 style={{ fontFamily: "var(--font-retro-display)", fontSize: 24, color: "var(--text)", margin: "0 0 4px" }}>
-          {item.role} · <span style={{ color }}>{item.organization}</span>
-        </h3>
-        {item.description && <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)", lineHeight: 1.8, margin: "0 0 14px" }}>{item.description}</p>}
-        {!!item.achievements?.length && (
-          <ul style={{ margin: "0 0 14px", padding: "0 0 0 16px" }}>
-            {item.achievements.map((b, i) => (
-              <li key={i} style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)", lineHeight: 1.8, marginBottom: 2 }}>{b}</li>
-            ))}
-          </ul>
-        )}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-          {(item.technologies || []).map((t) => (
-            <span key={t} style={{ fontSize: 9, padding: "3px 7px", border: "1px solid var(--border)", color: "var(--text-dim)", fontFamily: "var(--font-retro-body)" }}>{t}</span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── PROJECT CARD ─────────────────────────────────────────────────────────────
-function ProjectCard({ p, idx }: { p: ProjectItem; idx: number }) {
-  const [hovered, setHovered] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(cardRef);
-  const skew = useSkew(5);
-  const fileName = `${p.title.toLowerCase().replace(/\s+/g, "-")}.tsx`;
-
-  return (
-    <div
-      ref={cardRef}
-      style={{
-        border: "1px solid var(--border)",
-        background: "var(--card-bg)",
-        opacity: inView ? 1 : 0,
-        transform: inView ? "none" : "translateY(24px)",
-        transition: `opacity 0.45s ease ${idx * 0.1}s, transform 0.45s ease ${idx * 0.1}s`,
-      }}
-    >
-      <div
-        ref={skew.ref}
-        onMouseMove={skew.onMove}
-        onMouseLeave={() => { skew.onLeave(); setHovered(false); }}
-        onMouseEnter={() => setHovered(true)}
-        style={{ transition: "transform 0.2s cubic-bezier(0.22,1,0.36,1)", willChange: "transform" }}
-      >
-        <div style={{ background: "var(--window-bar)", borderBottom: "1px solid var(--border)", padding: "6px 12px", display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff5f57", display: "inline-block" }} />
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#febc2e", display: "inline-block" }} />
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#28c840", display: "inline-block" }} />
-          <span style={{ flex: 1, textAlign: "center", fontSize: 10, color: "var(--text-dim)", fontFamily: "var(--font-retro-body)" }}>{fileName}</span>
-          <span style={{ fontSize: 10, color: "var(--border)", fontFamily: "var(--font-retro-body)" }}>#{String(idx + 1).padStart(2, "0")}</span>
-        </div>
-
-        <div style={{ height: 140, background: "var(--bg2)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", position: "relative", borderBottom: "1px solid var(--border)" }}>
-          <SafeImage src={p.thumbnail} alt={p.title} className="w-full h-full object-cover" iconSize={28} />
-          <div
-            style={{
-              position: "absolute", inset: 0,
-              background: hovered ? "rgba(255,0,51,0.08)" : "rgba(0,0,0,0.15)",
-              transition: "background 0.3s",
-              pointerEvents: "none",
-            }}
-          />
-          <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.08) 3px,rgba(0,0,0,0.08) 4px)", pointerEvents: "none" }} />
-        </div>
-
-        <div style={{ padding: "16px 16px 20px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-            <h3 style={{ fontFamily: "var(--font-retro-display)", fontSize: 28, color: "var(--text)", margin: 0, lineHeight: 1 }}>{p.title}</h3>
-            <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: p.featured ? "var(--g)" : "var(--text-dim)", letterSpacing: "0.15em" }}>
-              {p.featured && <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--g)", marginRight: 4, verticalAlign: "middle" }} />}
-              {p.category?.toUpperCase()}
-            </span>
-          </div>
-          <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)", lineHeight: 1.7, margin: "0 0 12px" }}>{p.description}</p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 12 }}>
-            {p.technologies.map((t) => (
-              <span key={t} style={{ fontSize: 9, padding: "3px 7px", border: "1px solid var(--border)", color: "var(--text-dim)", fontFamily: "var(--font-retro-body)", background: "var(--tag-bg)" }}>{t}</span>
-            ))}
-          </div>
-          <div style={{ display: "flex", gap: 8 }}>
-            <MagneticBtn href={`/projects/${p.slug}`} style={{ padding: "8px 16px", fontSize: 10 }}>
-              view case study →
-            </MagneticBtn>
-            {p.liveUrl && (
-              <a href={p.liveUrl} target="_blank" rel="noopener noreferrer">
-                <button style={{ padding: "8px 16px", background: "var(--white)", color: "var(--bg)", border: "none", cursor: "none", fontFamily: "var(--font-retro-body)", fontSize: 10, letterSpacing: "0.1em" }} data-cursor-hover>
-                  ▶ live demo
-                </button>
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+// ─── EXPERIENCE ENTRY (see RetroExperienceEntry.tsx) ─────────────────────────
 
 // ─── INTERACTIVE TERMINAL ─────────────────────────────────────────────────────
 function InteractiveTerminal({
@@ -294,84 +161,6 @@ function InteractiveTerminal({
         />
       </div>
     </div>
-  );
-}
-
-// ─── CONTACT FORM ─────────────────────────────────────────────────────────────
-function RetroContactForm({ onSent }: { onSent: () => void }) {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [sent, setSent] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [serverError, setServerError] = useState("");
-
-  const inputStyle: React.CSSProperties = {
-    width: "100%", background: "var(--bg2)", border: "1px solid var(--border)", color: "var(--text)",
-    fontFamily: "var(--font-retro-body)", fontSize: 12, padding: "10px 12px", outline: "none",
-  };
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const next: Record<string, string> = {};
-    if (!form.name.trim()) next.name = "Enter your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = "Enter a valid email.";
-    if (!form.message.trim()) next.message = "Tell me a bit about the project.";
-    setErrors(next);
-    if (Object.keys(next).length > 0) return;
-
-    setSubmitting(true);
-    setServerError("");
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      if (!res.ok) throw new Error("failed");
-      setSent(true);
-      setForm({ name: "", email: "", message: "" });
-      onSent();
-    } catch {
-      setServerError("Something went wrong sending that — please try again in a moment.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  if (sent) {
-    return (
-      <div style={{ border: "1px solid var(--border)", background: "var(--card-bg)", padding: 24, fontFamily: "var(--font-retro-body)" }}>
-        <div style={{ color: "var(--g)", fontSize: 12, marginBottom: 8 }}>✓ message sent</div>
-        <p style={{ color: "var(--text-dim)", fontSize: 12, marginBottom: 16 }}>Thanks — I&apos;ll reply within a day or two.</p>
-        <button onClick={() => setSent(false)} style={{ color: "var(--r)", fontSize: 11, background: "none", border: "none", cursor: "none" }} data-cursor-hover>send another →</button>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={submit} noValidate style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 420 }}>
-      <div>
-        <input placeholder="your name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} style={inputStyle} />
-        {errors.name && <p style={{ color: "var(--r)", fontSize: 10, marginTop: 4 }}>{errors.name}</p>}
-      </div>
-      <div>
-        <input placeholder="you@company.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} style={inputStyle} />
-        {errors.email && <p style={{ color: "var(--r)", fontSize: 10, marginTop: 4 }}>{errors.email}</p>}
-      </div>
-      <div>
-        <textarea placeholder="what are you building?" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} style={{ ...inputStyle, resize: "none" }} />
-        {errors.message && <p style={{ color: "var(--r)", fontSize: 10, marginTop: 4 }}>{errors.message}</p>}
-      </div>
-      {serverError && <p style={{ color: "var(--r)", fontSize: 11 }}>{serverError}</p>}
-      <button
-        type="submit"
-        disabled={submitting}
-        style={{ padding: "12px 20px", background: "var(--white)", color: "var(--bg)", border: "none", cursor: "none", fontFamily: "var(--font-retro-body)", fontSize: 12, letterSpacing: "0.08em", opacity: submitting ? 0.6 : 1 }}
-        data-cursor-hover
-      >
-        {submitting ? "sending..." : "submit →"}
-      </button>
-    </form>
   );
 }
 
@@ -688,7 +477,7 @@ export default function RetroHome(props: RetroHomeProps) {
               A sampler. Hover the cards. Click through for source + live demos.
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))", gap: 16 }}>
-              {projects.map((p, i) => <ProjectCard key={p.slug} p={p} idx={i} />)}
+              {projects.map((p, i) => <RetroProjectCard key={p.slug} p={p} idx={i} />)}
             </div>
           </div>
           <div style={{ borderTop: "1px solid var(--border)", padding: "6px 16px", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", display: "flex", justifyContent: "space-between" }}>
@@ -710,7 +499,7 @@ export default function RetroHome(props: RetroHomeProps) {
               Roles where I&apos;ve shipped things people actually depend on.
             </p>
             {experience.map((e, i) => (
-              <ExpEntry key={e.role + e.organization} item={e} idx={i} isLast={i === experience.length - 1} />
+              <RetroExperienceEntry key={e.role + e.organization} item={e} idx={i} isLast={i === experience.length - 1} />
             ))}
           </div>
         </TerminalWindow>

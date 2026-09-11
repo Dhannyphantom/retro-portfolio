@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import ResourceManager from "@/components/admin/ResourceManager";
+import GlitchText from "@/components/retro/GlitchText";
+import SectionLabel from "@/components/retro/SectionLabel";
 
 const TABS = [
   {
@@ -108,22 +110,27 @@ export default function AdminContent() {
 
   return (
     <div>
-      <h1 className="font-display text-[16px] mb-3 leading-relaxed">Content</h1>
-      <p className="text-mute text-sm mb-6">
+      <SectionLabel n="01" label="CONTENT" />
+      <GlitchText tag="h1" style={{ fontFamily: "var(--font-retro-display)", fontSize: 32, color: "var(--text)", margin: "0 0 8px" }}>
+        content.
+      </GlitchText>
+      <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)", marginBottom: 20, maxWidth: 640, lineHeight: 1.7 }}>
         Every homepage section — experience, services, rate cards, stats, workflow, philosophy,
         FAQs, and the &quot;meet the developer&quot; photos/videos — lives here, editable without
         touching code. (Projects, testimonials, and tech stack have their own pages in the sidebar.)
       </p>
 
-      <div className="flex flex-wrap gap-1.5 mb-6 border-b border-white/[0.08] pb-4">
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 24, borderBottom: "1px solid var(--border)", paddingBottom: 16 }}>
         {TABS.map((t) => (
           <button
             key={t.key}
             onClick={() => setActive(t.key)}
-            className="text-[12.5px] px-3 py-1.5 rounded-full"
+            data-cursor-hover
             style={{
-              color: active === t.key ? "var(--void)" : "var(--text-dim)",
-              background: active === t.key ? "var(--text)" : "rgba(var(--text-rgb),0.05)",
+              fontFamily: "var(--font-retro-body)", fontSize: 11, padding: "8px 14px", cursor: "none",
+              color: active === t.key ? "var(--bg)" : "var(--text-dim)",
+              background: active === t.key ? "var(--white)" : "var(--bg2)",
+              border: "1px solid var(--border)",
             }}
           >
             {t.label}

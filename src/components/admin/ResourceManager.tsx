@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, Pencil, Trash2, X, ExternalLink } from "lucide-react";
+import { RetroInput, RetroTextarea } from "@/components/retro/RetroFormKit";
 
 export type FieldConfig = {
   key: string;
@@ -11,10 +12,8 @@ export type FieldConfig = {
 
 // A single reusable table + form UI that drives every simple admin collection
 // (projects, experience, services, rate cards, testimonials, faqs, skills...)
-// through the generic /api/admin/[collection] endpoints. `titleKey` picks
-// which field to show as each row's headline in the table. `viewHref`, if
-// given, adds a link per row (used by bookings to open the detail/thread page
-// instead of the generic edit modal for that row).
+// through the generic /api/admin/[collection] endpoints. Same logic/props as
+// before — visuals rewritten to the retro terminal theme.
 export default function ResourceManager({
   collection,
   fields,
@@ -99,46 +98,53 @@ export default function ResourceManager({
     load();
   };
 
+  const iconBtn: React.CSSProperties = {
+    width: 30, height: 30, border: "1px solid var(--border)", background: "var(--bg2)",
+    display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-dim)", cursor: "none",
+  };
+
   return (
     <div>
-      <div className="flex justify-between items-center mb-5">
-        <h1 className="font-display font-semibold text-2xl capitalize">{title || collection}</h1>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, gap: 12, flexWrap: "wrap" }}>
+        <h1 style={{ fontFamily: "var(--font-retro-display)", fontSize: 32, color: "var(--text)", margin: 0, textTransform: "lowercase" }}>
+          {title || collection}
+        </h1>
         {!hideCreate && (
-          <button onClick={openNew} className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded bg-gradient-to-r from-phosphor to-phosphor-2">
-            <Plus size={15} /> New
+          <button
+            onClick={openNew}
+            data-cursor-hover
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "var(--font-retro-body)", fontSize: 12, padding: "9px 16px", background: "var(--white)", color: "var(--bg)", border: "none", cursor: "none" }}
+          >
+            <Plus size={14} /> new
           </button>
         )}
       </div>
 
       {loading ? (
-        <p className="text-mute text-sm">Loading…</p>
+        <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)" }}>loading…</p>
       ) : loadError ? (
-        <div className="rounded-lg px-4 py-3.5 text-sm" style={{ border: "1px solid rgba(255,59,59,0.35)", background: "rgba(255,59,59,0.08)", color: "var(--text)" }}>
-          <p className="font-medium mb-1">Couldn&apos;t load {collection}</p>
-          <p className="text-mute text-[13px]">{loadError}</p>
-          <button onClick={load} className="mt-3 text-[13px] text-neon">Try again</button>
+        <div style={{ border: "1px solid var(--r)", background: "rgba(255,0,51,0.06)", padding: "14px 16px", fontFamily: "var(--font-retro-body)" }}>
+          <p style={{ fontSize: 12, color: "var(--text)", margin: "0 0 4px" }}>Couldn&apos;t load {collection}</p>
+          <p style={{ fontSize: 11, color: "var(--text-dim)", margin: 0 }}>{loadError}</p>
+          <button onClick={load} style={{ marginTop: 10, fontSize: 11, color: "var(--g)", background: "none", border: "none", cursor: "none" }} data-cursor-hover>try again</button>
         </div>
       ) : items.length === 0 ? (
-        <p className="text-mute text-sm">Nothing here yet — click New to add the first one.</p>
+        <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)" }}>Nothing here yet — click New to add the first one.</p>
       ) : (
-        <div className="rounded-xl overflow-hidden" style={{ border: "1px solid rgba(var(--text-rgb),0.09)" }}>
+        <div style={{ border: "1px solid var(--border)" }}>
           {items.map((item) => (
-            <div key={item._id} className="flex items-center justify-between px-4 py-3.5 border-b border-white/[0.06] last:border-b-0">
-              <span className="text-sm truncate pr-4">{item[titleKey] || "(untitled)"}</span>
-              <div className="flex gap-2 flex-shrink-0">
+            <div key={item._id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderBottom: "1px solid var(--border)", background: "var(--card-bg)" }}>
+              <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 12 }}>
+                {item[titleKey] || "(untitled)"}
+              </span>
+              <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
                 {viewHref && (
-                  <Link href={viewHref(item)} className="icon-hover w-8 h-8 rounded flex items-center justify-center" style={{ border: "1px solid rgba(var(--text-rgb),0.12)" }}>
-                    <ExternalLink size={14} />
-                  </Link>
+                  <Link href={viewHref(item)} data-cursor-hover style={iconBtn}><ExternalLink size={13} /></Link>
                 )}
                 {!hideEdit && (
-                  <button onClick={() => openEdit(item)} className="icon-hover w-8 h-8 rounded flex items-center justify-center" style={{ border: "1px solid rgba(var(--text-rgb),0.12)" }}>
-                    <Pencil size={14} />
-                  </button>
+                  <button onClick={() => openEdit(item)} data-cursor-hover style={iconBtn}><Pencil size={13} /></button>
                 )}
-                <button onClick={() => remove(item._id)} className="icon-hover w-8 h-8 rounded flex items-center justify-center text-red-400" style={{ border: "1px solid rgba(var(--text-rgb),0.12)" }}>
-                  <Trash2 size={14} />
-                </button>
+                <button onClick={() => remove(item._id)} data-cursor-hover style={{ ...iconBtn, color: "var(--r)" }}><Trash2 size={13} /></button>
               </div>
             </div>
           ))}
@@ -146,45 +152,44 @@ export default function ResourceManager({
       )}
 
       {showForm && editing && (
-        <div className="fixed inset-0 z-[300] flex items-center justify-center p-5" style={{ background: "rgba(0,0,0,0.9)" }}>
-          <div className="w-full max-w-[560px] max-h-[85vh] overflow-y-auto rounded-2xl p-6" style={{ background: "var(--panel)", border: "1px solid rgba(0,229,255,0.136)" }}>
-            <div className="flex justify-between items-center mb-5">
-              <h3 className="font-display text-lg">{editing._id ? "Edit" : "New"} {collection.slice(0, -1) || collection}</h3>
-              <button onClick={() => setShowForm(false)}><X size={18} /></button>
+        <div style={{ position: "fixed", inset: 0, zIndex: 300, display: "flex", alignItems: "center", justifyContent: "center", padding: 20, background: "rgba(0,0,0,0.85)" }}>
+          <div style={{ width: "100%", maxWidth: 560, maxHeight: "85vh", overflowY: "auto", background: "var(--bg)", border: "1px solid var(--border)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 20px", borderBottom: "1px solid var(--border)", background: "var(--window-bar)" }}>
+              <h3 style={{ fontFamily: "var(--font-retro-display)", fontSize: 20, color: "var(--text)", margin: 0 }}>
+                {editing._id ? "edit" : "new"} {collection.slice(0, -1) || collection}
+              </h3>
+              <button onClick={() => setShowForm(false)} data-cursor-hover style={{ background: "none", border: "none", cursor: "none", color: "var(--text-dim)" }}><X size={18} /></button>
             </div>
-            <div className="flex flex-col gap-4">
+            <div style={{ padding: 20, display: "flex", flexDirection: "column", gap: 14 }}>
               {fields.map((f) => (
-                <label key={f.key} className="block">
-                  <span className="block text-[13px] text-mute mb-1.5">{f.label}</span>
+                <label key={f.key} style={{ display: "block" }}>
+                  <span style={{ display: "block", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 6, letterSpacing: "0.05em" }}>{f.label}</span>
                   {f.type === "textarea" ? (
-                    <textarea
-                      rows={3}
-                      value={editing[f.key] || ""}
-                      onChange={(e) => setEditing({ ...editing, [f.key]: e.target.value })}
-                      className="w-full rounded px-3 py-2.5 text-sm bg-white/[0.04] border border-white/[0.12] resize-none"
-                    />
+                    <RetroTextarea rows={3} value={editing[f.key] || ""} onChange={(e) => setEditing({ ...editing, [f.key]: e.target.value })} />
                   ) : f.type === "list" ? (
-                    <input
+                    <RetroInput
                       value={Array.isArray(editing[f.key]) ? editing[f.key].join(", ") : ""}
                       onChange={(e) => setEditing({ ...editing, [f.key]: e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean) })}
                       placeholder="Comma-separated"
-                      className="w-full rounded px-3 py-2.5 text-sm bg-white/[0.04] border border-white/[0.12]"
                     />
                   ) : f.type === "boolean" ? (
-                    <input type="checkbox" checked={!!editing[f.key]} onChange={(e) => setEditing({ ...editing, [f.key]: e.target.checked })} className="w-4 h-4" />
+                    <input type="checkbox" checked={!!editing[f.key]} onChange={(e) => setEditing({ ...editing, [f.key]: e.target.checked })} style={{ width: 16, height: 16 }} />
                   ) : (
-                    <input
+                    <RetroInput
                       type={f.type === "number" ? "number" : "text"}
                       value={editing[f.key] ?? ""}
                       onChange={(e) => setEditing({ ...editing, [f.key]: f.type === "number" ? Number(e.target.value) : e.target.value })}
-                      className="w-full rounded px-3 py-2.5 text-sm bg-white/[0.04] border border-white/[0.12]"
                     />
                   )}
                 </label>
               ))}
-              {error && <p className="text-[12.5px]" style={{ color: "#FF3B3B" }}>{error}</p>}
-              <button onClick={save} className="mt-2 text-sm px-4 py-3 rounded bg-gradient-to-r from-phosphor to-phosphor-2">
-                Save
+              {error && <p style={{ color: "var(--r)", fontSize: 11, fontFamily: "var(--font-retro-body)" }}>{error}</p>}
+              <button
+                onClick={save}
+                data-cursor-hover
+                style={{ marginTop: 6, fontFamily: "var(--font-retro-body)", fontSize: 12, padding: "11px 16px", background: "var(--white)", color: "var(--bg)", border: "none", cursor: "none" }}
+              >
+                save
               </button>
             </div>
           </div>

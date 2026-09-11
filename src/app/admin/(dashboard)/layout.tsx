@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import Sidebar from "@/components/admin/Sidebar";
+import RetroAdminShell from "@/components/retro/RetroAdminShell";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
@@ -10,9 +11,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!session) redirect("/admin/login");
 
   return (
-    <div className="flex min-h-screen">
+    <RetroAdminShell>
       <Sidebar />
-      <div className="flex-1 p-6 sm:p-10 max-w-[1000px]">{children}</div>
-    </div>
+      <div style={{ flex: 1, padding: "32px 24px 80px", maxWidth: 1100, position: "relative", zIndex: 1 }}>{children}</div>
+    </RetroAdminShell>
   );
 }

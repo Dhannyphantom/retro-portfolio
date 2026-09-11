@@ -5,14 +5,14 @@ import { LayoutDashboard, FolderKanban, MessageSquare, Star, CalendarCheck, User
 import { useNotifications } from "@/lib/hooks/useNotifications";
 
 const LINKS = [
-  { href: "/admin", label: "Overview", icon: LayoutDashboard },
-  { href: "/admin/projects", label: "Projects", icon: FolderKanban },
-  { href: "/admin/content", label: "Content", icon: FileEdit },
-  { href: "/admin/techstack", label: "Tech stack", icon: Cpu },
-  { href: "/admin/messages", label: "Messages", icon: MessageSquare, notifKey: "messages" as const },
-  { href: "/admin/testimonials", label: "Testimonials", icon: Star },
-  { href: "/admin/bookings", label: "Bookings", icon: CalendarCheck, notifKey: "bookings" as const },
-  { href: "/admin/profile", label: "Profile", icon: User },
+  { href: "/admin", label: "overview", icon: LayoutDashboard },
+  { href: "/admin/projects", label: "projects", icon: FolderKanban },
+  { href: "/admin/content", label: "content", icon: FileEdit },
+  { href: "/admin/techstack", label: "tech stack", icon: Cpu },
+  { href: "/admin/messages", label: "messages", icon: MessageSquare, notifKey: "messages" as const },
+  { href: "/admin/testimonials", label: "testimonials", icon: Star },
+  { href: "/admin/bookings", label: "bookings", icon: CalendarCheck, notifKey: "bookings" as const },
+  { href: "/admin/profile", label: "profile", icon: User },
 ];
 
 export default function Sidebar() {
@@ -33,9 +33,18 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-[220px] flex-shrink-0 border-r border-white/[0.08] min-h-screen p-5 hidden md:block">
-      <div className="font-display font-bold text-lg mb-8 px-2">Admin</div>
-      <nav className="flex flex-col gap-1">
+    <aside
+      className="hidden md:flex"
+      style={{
+        width: 220, flexShrink: 0, minHeight: "100vh", flexDirection: "column",
+        borderRight: "1px solid var(--border)", background: "var(--bg2)", padding: "20px 14px",
+        position: "relative", zIndex: 1,
+      }}
+    >
+      <div style={{ fontFamily: "var(--font-retro-display)", fontSize: 22, color: "var(--text)", marginBottom: 20, padding: "0 8px" }}>
+        admin/
+      </div>
+      <nav style={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {LINKS.map((l) => {
           const active = pathname === l.href;
           const count = countFor((l as any).notifKey);
@@ -43,21 +52,35 @@ export default function Sidebar() {
             <Link
               key={l.href}
               href={l.href}
-              className="relative flex items-center gap-2.5 text-sm rounded px-3 py-2.5 transition-colors"
-              style={{ color: active ? "var(--text)" : "var(--text-dim)", background: active ? "rgba(57,255,20,0.082)" : "transparent" }}
+              data-cursor-hover
+              style={{
+                position: "relative", display: "flex", alignItems: "center", gap: 10,
+                fontFamily: "var(--font-retro-body)", fontSize: 12, padding: "9px 10px",
+                color: active ? "var(--text)" : "var(--text-dim)",
+                background: active ? "var(--bg3)" : "transparent",
+                borderLeft: active ? "2px solid var(--g)" : "2px solid transparent",
+              }}
             >
-              <span className="relative">
-                <l.icon size={16} />
-                {count > 0 && <span className="notif-dot" />}
+              <span style={{ position: "relative", display: "inline-flex" }}>
+                <l.icon size={14} />
+                {count > 0 && <span style={{ position: "absolute", top: -3, right: -3, width: 6, height: 6, borderRadius: "50%", background: "var(--r)" }} />}
               </span>
               {l.label}
-              {count > 0 && <span className="ml-auto text-[11px] font-mono text-neon">{count}</span>}
+              {count > 0 && <span style={{ marginLeft: "auto", fontSize: 10, color: "var(--g)" }}>{count}</span>}
             </Link>
           );
         })}
       </nav>
-      <button onClick={logout} className="flex items-center gap-2.5 text-sm text-mute px-3 py-2.5 mt-8">
-        <LogOut size={16} /> Log out
+      <button
+        onClick={logout}
+        data-cursor-hover
+        style={{
+          display: "flex", alignItems: "center", gap: 10, marginTop: "auto", padding: "9px 10px",
+          fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)",
+          background: "none", border: "none", cursor: "none", textAlign: "left",
+        }}
+      >
+        <LogOut size={14} /> log out
       </button>
     </aside>
   );

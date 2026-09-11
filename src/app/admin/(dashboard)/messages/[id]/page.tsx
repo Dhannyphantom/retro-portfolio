@@ -2,6 +2,7 @@
 import { useEffect, useState, use as usePromise, FormEvent } from "react";
 import Link from "next/link";
 import { ArrowLeft, Send } from "lucide-react";
+import { RetroTextarea } from "@/components/retro/RetroFormKit";
 
 type MessageDetail = {
   _id: string; name: string; email: string; message: string; status: string;
@@ -54,50 +55,52 @@ export default function AdminMessageDetail({ params }: { params: Promise<{ id: s
     setSending(false);
   };
 
-  if (loading) return <p className="text-mute text-sm">Loading…</p>;
-  if (!msg) return <p className="text-mute text-sm">Message not found.</p>;
+  if (loading) return <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)" }}>loading…</p>;
+  if (!msg) return <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)" }}>Message not found.</p>;
 
   return (
-    <div className="max-w-[680px]">
-      <Link href="/admin/messages" className="inline-flex items-center gap-1.5 text-mute text-sm mb-6 hover:text-paper transition-colors">
-        <ArrowLeft size={15} /> All messages
+    <div style={{ maxWidth: 680 }}>
+      <Link href="/admin/messages" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)", marginBottom: 20 }} data-cursor-hover>
+        <ArrowLeft size={14} /> all messages
       </Link>
 
-      <div className="flex justify-between items-start gap-4 mb-2">
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, marginBottom: 8 }}>
         <div>
-          <h1 className="font-display text-[14px] leading-relaxed">{msg.name}</h1>
-          <p className="text-mute text-sm">{msg.email} · {new Date(msg.createdAt).toLocaleString()}</p>
+          <h1 style={{ fontFamily: "var(--font-retro-display)", fontSize: 24, color: "var(--text)", margin: 0 }}>{msg.name}</h1>
+          <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)" }}>{msg.email} · {new Date(msg.createdAt).toLocaleString()}</p>
         </div>
-        <select value={msg.status} onChange={(e) => setStatus(e.target.value)} className="text-sm rounded px-3 py-2 bg-white/[0.04] border border-white/[0.12]">
-          <option value="unread">Unread</option>
-          <option value="read">Read</option>
-          <option value="archived">Archived</option>
+        <select
+          value={msg.status}
+          onChange={(e) => setStatus(e.target.value)}
+          style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, padding: "8px 12px", background: "var(--bg2)", border: "1px solid var(--border)", color: "var(--text)", cursor: "none" }}
+        >
+          <option value="unread">unread</option>
+          <option value="read">read</option>
+          <option value="archived">archived</option>
         </select>
       </div>
 
-      {/* read-only — the original message is never editable here */}
-      <div className="rounded-xl p-4 my-5 text-sm leading-relaxed whitespace-pre-wrap" style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}>
+      <div style={{ border: "1px solid var(--border)", background: "var(--card-bg)", padding: 16, margin: "20px 0", fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>
         {msg.message}
       </div>
 
       {msg.replies.map((r, i) => (
-        <div key={i} className="rounded-xl p-4 mb-3 ml-8 text-sm leading-relaxed whitespace-pre-wrap" style={{ background: "linear-gradient(120deg, #39FF14, #1FAE0C)" }}>
+        <div key={i} style={{ border: "1px solid var(--g)", background: "rgba(57,255,20,0.06)", padding: 16, marginBottom: 12, marginLeft: 32, fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text)", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>
           {r.body}
-          <div className="text-[11px] opacity-70 mt-2">{new Date(r.sentAt).toLocaleString()} {r.emailedOk ? "· emailed" : "· not emailed"}</div>
+          <div style={{ fontSize: 10, color: "var(--text-dim)", marginTop: 10 }}>{new Date(r.sentAt).toLocaleString()} {r.emailedOk ? "· emailed" : "· not emailed"}</div>
         </div>
       ))}
 
-      <form onSubmit={sendReply} className="mt-6">
-        <textarea
-          value={reply}
-          onChange={(e) => setReply(e.target.value)}
-          rows={4}
-          placeholder="Write a reply — this will be emailed to them."
-          className="w-full rounded px-3.5 py-3 text-sm bg-white/[0.04] border border-white/[0.12] resize-none mb-3"
-        />
-        {error && <p className="text-[12.5px] mb-3" style={{ color: "#FF3B3B" }}>{error}</p>}
-        <button type="submit" disabled={sending} className="inline-flex items-center gap-1.5 text-sm px-4 py-2.5 rounded bg-gradient-to-r from-phosphor to-phosphor-2 disabled:opacity-50">
-          <Send size={14} /> {sending ? "Sending..." : "Send reply"}
+      <form onSubmit={sendReply} style={{ marginTop: 24 }}>
+        <RetroTextarea value={reply} onChange={(e) => setReply(e.target.value)} rows={4} placeholder="Write a reply — this will be emailed to them." style={{ marginBottom: 12 }} />
+        {error && <p style={{ color: "var(--r)", fontSize: 11, fontFamily: "var(--font-retro-body)", marginBottom: 12 }}>{error}</p>}
+        <button
+          type="submit"
+          disabled={sending}
+          data-cursor-hover
+          style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "var(--font-retro-body)", fontSize: 12, padding: "10px 18px", background: "var(--white)", color: "var(--bg)", border: "none", cursor: "none", opacity: sending ? 0.6 : 1 }}
+        >
+          <Send size={14} /> {sending ? "sending..." : "send reply"}
         </button>
       </form>
     </div>

@@ -23,8 +23,10 @@ export default function StatusEditor({ bookingId, status }: { bookingId: string;
       value={current}
       onChange={(e) => change(e.target.value)}
       disabled={saving}
-      className="text-[12.5px] font-mono px-3 py-2 rounded"
-      style={{ color: "#00E5FF", background: "rgba(57,255,20,0.08)", border: "1px solid rgba(0,229,255,0.24)" }}
+      style={{
+        fontFamily: "var(--font-retro-body)", fontSize: 11, padding: "8px 12px",
+        color: "var(--g)", background: "var(--bg2)", border: "1px solid var(--border)", cursor: "none",
+      }}
     >
       {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
     </select>

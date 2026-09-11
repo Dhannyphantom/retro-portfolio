@@ -21,36 +21,37 @@ export default async function AdminBookingDetail({ params }: { params: Promise<{
   const b = JSON.parse(JSON.stringify(booking));
 
   return (
-    <div className="max-w-[720px]">
-      <Link href="/admin/bookings" className="inline-flex items-center gap-1.5 text-mute text-sm mb-6 hover:text-paper transition-colors">
-        <ArrowLeft size={15} /> All bookings
+    <div style={{ maxWidth: 720 }}>
+      <Link href="/admin/bookings" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)", marginBottom: 20 }} data-cursor-hover>
+        <ArrowLeft size={14} /> all bookings
       </Link>
 
-      <div className="flex justify-between items-start flex-wrap gap-4 mb-6">
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 14, marginBottom: 20 }}>
         <div>
-          <span className="font-mono text-xs tracking-widest text-neon">{b.referenceId}</span>
-          <h1 className="font-display text-[15px] tracking-tight mt-3 leading-relaxed">{b.name} — {b.projectType || "Project"}</h1>
-          <p className="text-mute text-sm mt-1">{b.email}{b.company ? ` · ${b.company}` : ""}{b.phone ? ` · ${b.phone}` : ""}</p>
+          <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--g)", letterSpacing: "0.1em" }}>{b.referenceId}</span>
+          <h1 style={{ fontFamily: "var(--font-retro-display)", fontSize: 28, color: "var(--text)", margin: "6px 0 4px" }}>{b.name} — {b.projectType || "Project"}</h1>
+          <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)", margin: 0 }}>
+            {b.email}{b.company ? ` · ${b.company}` : ""}{b.phone ? ` · ${b.phone}` : ""}
+          </p>
         </div>
         <StatusEditor bookingId={b._id} status={b.status} />
       </div>
 
-      {/* read-only — this is exactly what the client submitted */}
-      <div className="rounded-xl p-5 mb-4 text-sm text-mute leading-relaxed" style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}>
+      <div style={{ border: "1px solid var(--border)", background: "var(--card-bg)", padding: 18, marginBottom: 16, fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)", lineHeight: 1.7 }}>
         {b.description}
-        <div className="flex flex-wrap gap-4 mt-4 pt-4 border-t border-white/[0.07] text-[12.5px]">
-          {b.budget && <span>Requested budget: <span className="text-paper">{b.budget}</span></span>}
-          {b.timeline && <span>Requested timeline: <span className="text-paper">{b.timeline}</span></span>}
-          {b.preferredStartDate && <span>Preferred start: <span className="text-paper">{b.preferredStartDate}</span></span>}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 16, marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--border)", fontSize: 11 }}>
+          {b.budget && <span>requested budget: <span style={{ color: "var(--text)" }}>{b.budget}</span></span>}
+          {b.timeline && <span>requested timeline: <span style={{ color: "var(--text)" }}>{b.timeline}</span></span>}
+          {b.preferredStartDate && <span>preferred start: <span style={{ color: "var(--text)" }}>{b.preferredStartDate}</span></span>}
         </div>
         {b.documentUrl && (
-          <a href={b.documentUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 mt-3 text-neon text-[12.5px]">
-            <FileText size={13} /> {b.documentName || "Attached document"}
+          <a href={b.documentUrl} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 12, color: "var(--g)", fontSize: 11 }} data-cursor-hover>
+            <FileText size={13} /> {b.documentName || "attached document"}
           </a>
         )}
       </div>
 
-      <div className="flex flex-col gap-6">
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <BudgetEditor bookingId={b._id} totalBudget={b.totalBudget} amountPaid={b.amountPaid} currency={b.currency} />
         <MilestoneEditor bookingId={b._id} milestones={b.milestones || []} />
       </div>

@@ -1,7 +1,9 @@
 "use client";
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import CTAButton from "@/components/ui/CTAButton";
+import TerminalWindow from "@/components/retro/TerminalWindow";
+import GlitchText from "@/components/retro/GlitchText";
+import { RetroInput, RetroSubmit } from "@/components/retro/RetroFormKit";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -30,19 +32,27 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <form onSubmit={submit} className="w-full max-w-[360px] rounded-2xl p-8" style={{ border: "1px solid rgba(0,229,255,0.136)", background: "var(--panel)" }}>
-      <h1 className="font-display text-[16px] mb-2 leading-relaxed">Admin login</h1>
-      <p className="text-mute text-sm mb-6">Sign in to manage the portfolio.</p>
-      <label className="block mb-4">
-        <span className="block text-[13px] text-mute mb-1.5">Email</span>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full rounded px-3.5 py-2.5 text-sm bg-white/[0.04] border border-white/[0.12]" />
-      </label>
-      <label className="block mb-5">
-        <span className="block text-[13px] text-mute mb-1.5">Password</span>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full rounded px-3.5 py-2.5 text-sm bg-white/[0.04] border border-white/[0.12]" />
-      </label>
-      {error && <p className="text-[12.5px] mb-4" style={{ color: "#FF3B3B" }}>{error}</p>}
-      <CTAButton variant="primary" type="submit" className="w-full">{loading ? "Signing in..." : "Sign in"}</CTAButton>
-    </form>
+    <div style={{ width: "100%", maxWidth: 380 }}>
+      <TerminalWindow title="~/admin — login.sh">
+        <form onSubmit={submit} style={{ padding: "28px 28px 32px", display: "flex", flexDirection: "column", gap: 16 }}>
+          <GlitchText tag="h1" style={{ fontFamily: "var(--font-retro-display)", fontSize: 28, color: "var(--text)", margin: "0 0 2px" }}>
+            admin login
+          </GlitchText>
+          <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)", margin: "0 0 8px" }}>
+            Sign in to manage the portfolio.
+          </p>
+          <div>
+            <span style={{ display: "block", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 6 }}>email</span>
+            <RetroInput type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          <div>
+            <span style={{ display: "block", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 6 }}>password</span>
+            <RetroInput type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
+          {error && <p style={{ color: "var(--r)", fontSize: 11, fontFamily: "var(--font-retro-body)" }}>{error}</p>}
+          <RetroSubmit type="submit" disabled={loading} style={{ width: "100%" }}>{loading ? "signing in..." : "sign in →"}</RetroSubmit>
+        </form>
+      </TerminalWindow>
+    </div>
   );
 }

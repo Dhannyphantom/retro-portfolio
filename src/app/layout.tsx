@@ -1,24 +1,16 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Press_Start_2P, JetBrains_Mono, VT323, Space_Mono } from "next/font/google";
+import { Press_Start_2P, VT323, Space_Mono } from "next/font/google";
 import "./globals.css";
 import SiteChrome from "@/components/layout/SiteChrome";
 import { getSiteSettings } from "@/lib/settings";
 import Providers from "@/lib/providers";
 import { THEME_INIT_SCRIPT } from "@/lib/theme";
 
-// Legacy type system (still used by pages not yet migrated to the retro UI).
-const display = Press_Start_2P({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-display",
-});
-const body = JetBrains_Mono({ subsets: ["latin"], variable: "--font-body" });
-const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
-
-// Retro-terminal type system (new homepage). Press Start 2P is shared with
-// the legacy pixel font above via --font-retro-pixel so it isn't loaded
-// twice.
+// Retro-terminal type system used across the whole site: VT323 for display
+// headings, Space Mono for body copy, Press Start 2P (small sizes only) for
+// pixel labels/achievement toasts.
+const pixel = Press_Start_2P({ subsets: ["latin"], weight: "400", variable: "--font-retro-pixel" });
 const retroDisplay = VT323({ subsets: ["latin"], weight: "400", variable: "--font-retro-display" });
 const retroBody = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-retro-body" });
 
@@ -38,13 +30,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await getSiteSettings();
-
   return (
     <html
       lang="en"
-      className={`${display.variable} ${body.variable} ${mono.variable} ${retroDisplay.variable} ${retroBody.variable}`}
-      style={{ "--font-retro-pixel": "var(--font-display)" } as React.CSSProperties}
+      className={`${pixel.variable} ${retroDisplay.variable} ${retroBody.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -55,13 +44,12 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className="font-body bg-ink text-paper min-h-screen relative overflow-x-hidden"
+        style={{ background: "var(--bg)", color: "var(--text)" }}
+        className="min-h-screen relative overflow-x-hidden"
         suppressHydrationWarning
       >
         <Providers>
-          <SiteChrome name={settings.name} bio={settings.bio} email={settings.email} socials={settings.socials}>
-            {children}
-          </SiteChrome>
+          <SiteChrome>{children}</SiteChrome>
         </Providers>
       </body>
     </html>

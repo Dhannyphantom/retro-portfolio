@@ -1,9 +1,8 @@
-import Contact from "@/components/sections/Contact";
+import { getSiteSettings } from "@/lib/settings";
+import RetroContactPage from "@/components/retro/RetroContactPage";
 
-export default function ContactPage() {
-  return (
-    <div className="pt-14">
-      <Contact />
-    </div>
-  );
+export default async function ContactPage() {
+  const settings = await getSiteSettings();
+  const osName = `${settings.name.split(" ")[0].toLowerCase()}OS`;
+  return <RetroContactPage osName={osName} email={settings.email} location={settings.location} socials={settings.socials} />;
 }

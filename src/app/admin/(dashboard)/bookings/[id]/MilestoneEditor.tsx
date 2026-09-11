@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Plus, Trash2, Upload, Loader2 } from "lucide-react";
+import { RetroInput, RetroTextarea, RetroSelect } from "@/components/retro/RetroFormKit";
 
 type Milestone = { title: string; description?: string; dueDate?: string; status: string; media: string[] };
 
@@ -49,55 +50,49 @@ export default function MilestoneEditor({ bookingId, milestones }: { bookingId: 
     setSaved(true);
   };
 
-  const input = "w-full rounded px-2.5 py-2 text-[13px] bg-white/[0.04] border border-white/[0.12]";
-
   return (
-    <div className="rounded-xl p-5" style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}>
-      <h2 className="font-display text-[13px] mb-4 leading-relaxed">Milestones</h2>
-      <div className="flex flex-col gap-4 mb-4">
+    <div style={{ border: "1px solid var(--border)", background: "var(--card-bg)", padding: 20 }}>
+      <h2 style={{ fontFamily: "var(--font-retro-display)", fontSize: 20, color: "var(--text)", margin: "0 0 16px" }}>milestones</h2>
+      <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 16 }}>
         {items.map((m, i) => (
-          <div key={i} className="rounded-lg p-3.5" style={{ border: "1px solid rgba(var(--text-rgb),0.08)" }}>
-            <div className="grid grid-cols-[1fr_auto] gap-2 mb-2">
-              <input placeholder="Title" value={m.title} onChange={(e) => update(i, { title: e.target.value })} className={input} />
-              <button onClick={() => setItems(items.filter((_, idx) => idx !== i))} className="text-mute px-2"><Trash2 size={14} /></button>
+          <div key={i} style={{ border: "1px solid var(--border)", background: "var(--bg2)", padding: 14 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 8, marginBottom: 8 }}>
+              <RetroInput placeholder="Title" value={m.title} onChange={(e) => update(i, { title: e.target.value })} />
+              <button onClick={() => setItems(items.filter((_, idx) => idx !== i))} data-cursor-hover style={{ background: "none", border: "none", cursor: "none", color: "var(--text-dim)" }}><Trash2 size={14} /></button>
             </div>
-            <div className="grid grid-cols-2 gap-2 mb-2">
-              <input placeholder="Due date" value={m.dueDate || ""} onChange={(e) => update(i, { dueDate: e.target.value })} className={input} />
-              <select value={m.status} onChange={(e) => update(i, { status: e.target.value })} className={input}>
-                <option value="pending">Pending</option>
-                <option value="in-progress">In progress</option>
-                <option value="completed">Completed</option>
-              </select>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 }}>
+              <RetroInput placeholder="Due date" value={m.dueDate || ""} onChange={(e) => update(i, { dueDate: e.target.value })} />
+              <RetroSelect value={m.status} onChange={(e) => update(i, { status: e.target.value })}>
+                <option value="pending">pending</option>
+                <option value="in-progress">in progress</option>
+                <option value="completed">completed</option>
+              </RetroSelect>
             </div>
-            <textarea placeholder="Description" rows={2} value={m.description || ""} onChange={(e) => update(i, { description: e.target.value })} className={`${input} resize-none mb-2`} />
-            <div className="flex flex-wrap gap-1.5 mb-2">
+            <RetroTextarea placeholder="Description" rows={2} value={m.description || ""} onChange={(e) => update(i, { description: e.target.value })} style={{ marginBottom: 8 }} />
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
               {(m.media || []).map((url, mi) => (
-                <span key={mi} className="text-[11px] px-2 py-1 rounded truncate max-w-[140px]" style={{ background: "rgba(var(--text-rgb),0.06)" }}>{url}</span>
+                <span key={mi} style={{ fontSize: 10, fontFamily: "var(--font-retro-body)", padding: "4px 8px", background: "var(--bg3)", color: "var(--text-dim)", maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{url}</span>
               ))}
             </div>
-            <label className="inline-flex items-center gap-1.5 text-[12.5px] text-neon cursor-pointer">
-              {uploadingIdx === i ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
-              {uploadingIdx === i ? "Uploading…" : "Upload image or video"}
-              <input
-                type="file"
-                accept="image/*,video/*"
-                className="hidden"
-                onChange={(e) => e.target.files?.[0] && uploadMedia(i, e.target.files[0])}
-              />
+            <label style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--g)", cursor: "none" }} data-cursor-hover>
+              {uploadingIdx === i ? <Loader2 size={13} className="animate-spin" /> : <Upload size={13} />}
+              {uploadingIdx === i ? "uploading…" : "upload image or video"}
+              <input type="file" accept="image/*,video/*" className="hidden" onChange={(e) => e.target.files?.[0] && uploadMedia(i, e.target.files[0])} />
             </label>
-            {uploadError && <p className="text-[11.5px] mt-1" style={{ color: "#FF3B3B" }}>{uploadError}</p>}
+            {uploadError && <p style={{ color: "var(--r)", fontSize: 10, marginTop: 6 }}>{uploadError}</p>}
           </div>
         ))}
       </div>
-      <div className="flex items-center gap-3">
+      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
         <button
           onClick={() => setItems([...items, { title: "", description: "", dueDate: "", status: "pending", media: [] }])}
-          className="inline-flex items-center gap-1.5 text-[13px] text-neon"
+          data-cursor-hover
+          style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--g)", background: "none", border: "none", cursor: "none" }}
         >
-          <Plus size={14} /> Add milestone
+          <Plus size={14} /> add milestone
         </button>
-        <button onClick={save} className="text-[13px] px-4 py-2 rounded bg-gradient-to-r from-phosphor to-phosphor-2">Save</button>
-        {saved && <span className="text-[12.5px] text-neon">Saved.</span>}
+        <button onClick={save} data-cursor-hover style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, padding: "9px 18px", background: "var(--white)", color: "var(--bg)", border: "none", cursor: "none" }}>save</button>
+        {saved && <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--g)" }}>saved.</span>}
       </div>
     </div>
   );

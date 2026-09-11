@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Mail, Archive } from "lucide-react";
+import GlitchText from "@/components/retro/GlitchText";
+import SectionLabel from "@/components/retro/SectionLabel";
 
 type MessageRow = { _id: string; name: string; email: string; message: string; status: string; createdAt: string; replies?: unknown[] };
 
@@ -23,36 +25,42 @@ export default function AdminMessages() {
 
   return (
     <div>
-      <h1 className="font-display text-[16px] mb-3 leading-relaxed">Messages</h1>
-      <p className="text-mute text-sm mb-6">Contact form submissions — view, reply, and archive. No need to send yourself a message.</p>
+      <SectionLabel n="02" label="MESSAGES" />
+      <GlitchText tag="h1" style={{ fontFamily: "var(--font-retro-display)", fontSize: 32, color: "var(--text)", margin: "0 0 8px" }}>
+        messages.
+      </GlitchText>
+      <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)", marginBottom: 24 }}>
+        Contact form submissions — view, reply, and archive.
+      </p>
 
       {loading ? (
-        <p className="text-mute text-sm">Loading…</p>
+        <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)" }}>loading…</p>
       ) : error ? (
-        <p className="text-[13px]" style={{ color: "#FF3B3B" }}>{error}</p>
+        <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--r)" }}>{error}</p>
       ) : items.length === 0 ? (
-        <p className="text-mute text-sm">No messages yet.</p>
+        <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)" }}>No messages yet.</p>
       ) : (
-        <div className="rounded-xl overflow-hidden" style={{ border: "1px solid rgba(var(--text-rgb),0.09)" }}>
+        <div style={{ border: "1px solid var(--border)" }}>
           {items.map((m) => (
             <Link
               key={m._id}
               href={`/admin/messages/${m._id}`}
-              className="flex items-center justify-between gap-4 px-4 py-3.5 border-b border-white/[0.06] last:border-b-0 hover:bg-white/[0.02] transition-colors"
+              data-cursor-hover
+              style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "14px 16px", borderBottom: "1px solid var(--border)", background: "var(--card-bg)" }}
             >
-              <div className="min-w-0 flex items-center gap-3">
-                <span className="relative flex-shrink-0">
-                  {m.status === "unread" ? <Mail size={16} className="text-neon" /> : <Archive size={16} className="text-mute" />}
-                  {m.status === "unread" && <span className="notif-dot" />}
+              <div style={{ minWidth: 0, display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ position: "relative", flexShrink: 0, color: m.status === "unread" ? "var(--g)" : "var(--text-dim)" }}>
+                  {m.status === "unread" ? <Mail size={15} /> : <Archive size={15} />}
+                  {m.status === "unread" && <span style={{ position: "absolute", top: -3, right: -3, width: 6, height: 6, borderRadius: "50%", background: "var(--r)" }} />}
                 </span>
-                <div className="min-w-0">
-                  <div className="text-sm truncate">{m.name} <span className="text-mute">— {m.email}</span></div>
-                  <div className="text-mute text-[12.5px] truncate max-w-[420px]">{m.message}</div>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text)" }}>{m.name} <span style={{ color: "var(--text-dim)" }}>— {m.email}</span></div>
+                  <div style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 420 }}>{m.message}</div>
                 </div>
               </div>
-              <div className="flex items-center gap-3 flex-shrink-0">
-                {!!m.replies?.length && <span className="text-[11px] font-mono text-neon">replied</span>}
-                <span className="text-mute text-[12px]">{new Date(m.createdAt).toLocaleDateString()}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+                {!!m.replies?.length && <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--g)" }}>replied</span>}
+                <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)" }}>{new Date(m.createdAt).toLocaleDateString()}</span>
               </div>
             </Link>
           ))}

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { CURRENCIES } from "@/lib/currency";
+import { RetroInput, RetroSelect } from "@/components/retro/RetroFormKit";
 
 export default function BudgetEditor({ bookingId, totalBudget, amountPaid, currency }: { bookingId: string; totalBudget?: number; amountPaid?: number; currency?: string }) {
   const [total, setTotal] = useState(totalBudget || 0);
@@ -18,30 +19,28 @@ export default function BudgetEditor({ bookingId, totalBudget, amountPaid, curre
     setSaved(true);
   };
 
-  const input = "w-full rounded px-3 py-2.5 text-sm bg-white/[0.04] border border-white/[0.12]";
-
   return (
-    <div className="rounded-xl p-5" style={{ border: "1px solid rgba(var(--text-rgb),0.09)", background: "var(--panel)" }}>
-      <h2 className="font-display text-[13px] mb-4 leading-relaxed">Budget & payments</h2>
-      <label className="block mb-3">
-        <span className="block text-[12.5px] text-mute mb-1.5">Currency</span>
-        <select value={curr} onChange={(e) => setCurr(e.target.value)} className={input}>
+    <div style={{ border: "1px solid var(--border)", background: "var(--card-bg)", padding: 20 }}>
+      <h2 style={{ fontFamily: "var(--font-retro-display)", fontSize: 20, color: "var(--text)", margin: "0 0 16px" }}>budget & payments</h2>
+      <label style={{ display: "block", marginBottom: 12 }}>
+        <span style={{ display: "block", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 6 }}>currency</span>
+        <RetroSelect value={curr} onChange={(e) => setCurr(e.target.value)}>
           {CURRENCIES.map((c) => <option key={c.code} value={c.code}>{c.label}</option>)}
-        </select>
+        </RetroSelect>
       </label>
-      <div className="grid grid-cols-2 gap-3 mb-3">
-        <label className="block">
-          <span className="block text-[12.5px] text-mute mb-1.5">Total budget</span>
-          <input type="number" value={total} onChange={(e) => setTotal(Number(e.target.value))} className={input} />
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+        <label style={{ display: "block" }}>
+          <span style={{ display: "block", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 6 }}>total budget</span>
+          <RetroInput type="number" value={total} onChange={(e) => setTotal(Number(e.target.value))} />
         </label>
-        <label className="block">
-          <span className="block text-[12.5px] text-mute mb-1.5">Amount paid</span>
-          <input type="number" value={paid} onChange={(e) => setPaid(Number(e.target.value))} className={input} />
+        <label style={{ display: "block" }}>
+          <span style={{ display: "block", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 6 }}>amount paid</span>
+          <RetroInput type="number" value={paid} onChange={(e) => setPaid(Number(e.target.value))} />
         </label>
       </div>
-      {saved && <p className="text-[12.5px] text-neon mb-2">Saved.</p>}
-      <button onClick={save} className="text-[13px] px-4 py-2 rounded bg-gradient-to-r from-phosphor to-phosphor-2">Save</button>
-      <p className="text-mute text-[12px] mt-3">
+      {saved && <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--g)", marginBottom: 8 }}>saved.</p>}
+      <button onClick={save} data-cursor-hover style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, padding: "9px 18px", background: "var(--white)", color: "var(--bg)", border: "none", cursor: "none" }}>save</button>
+      <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginTop: 14, lineHeight: 1.7 }}>
         Note: setting a total budget here is a manual override — the normal flow is sending a
         proposal in the conversation, which the client approves and which fills this in
         automatically (in USD; adjust currency here afterward if needed).
