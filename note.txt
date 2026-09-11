@@ -1,8 +1,7 @@
-1. The Hero headline title typewriting animation,
+1. The Hero headline title typewriting animation (old retro style),
 2. Make the hero headline text in the db structure an array, that is rendered (typewritten animation) one by one
 3. Make the Stack icons retro style and increase their size in Hero (revolving icons)
 4. Initialise one time only all dummy data to the db, such that I can edit them or delete (manage them) in the admin page, and only db data should be rendered onto the page
-5. Border animations is crap, look for a better retro like animation
 6. The project image views should have skew and magnetic animations, project stack tags only magnetic animations when hovered, 
 7. Fix [browser] motion() is deprecated. Use motion.create() instead. (src/components/ui/Magnetic.tsx:39:18)
-
+8. Fix auto scroll animation on first page load/render, Page scrolls away from the Hero and the initialization animation text is not seen
