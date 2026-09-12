@@ -24,8 +24,19 @@ async function getData() {
   try {
     await connectDB();
     const [
-      projects, experience, services, rateCards, testimonials, faqs, settings,
-      techstack, stats, workflowSteps, philosophyLines, photos, videos,
+      projects,
+      experience,
+      services,
+      rateCards,
+      testimonials,
+      faqs,
+      settings,
+      techstack,
+      stats,
+      workflowSteps,
+      philosophyLines,
+      photos,
+      videos,
     ] = await Promise.all([
       Project.find().sort({ order: 1 }).lean(),
       Experience.find().sort({ order: 1 }).lean(),
@@ -41,28 +52,79 @@ async function getData() {
       Photo.find().sort({ order: 1 }).lean(),
       ProjectVideo.find().sort({ order: 1 }).lean(),
     ]);
-    return { projects, experience, services, rateCards, testimonials, faqs, settings, techstack, stats, workflowSteps, philosophyLines, photos, videos };
+    const data = {
+      projects,
+      experience,
+      services,
+      rateCards,
+      testimonials,
+      faqs,
+      settings,
+      techstack,
+      stats,
+      workflowSteps,
+      philosophyLines,
+      photos,
+      videos,
+    };
+    // `.lean()` documents still carry non-plain values (ObjectId, Buffer,
+    // Date) that Next.js refuses to hand to a Client Component (RetroHome
+    // is "use client"). Round-tripping through JSON strips all of that down
+    // to plain strings/numbers, same as the JSON.parse(JSON.stringify(...))
+    // pattern already used elsewhere in the app (e.g. booking pages).
+    return JSON.parse(JSON.stringify(data));
   } catch (err) {
-    console.warn("DB not reachable yet — rendering with no content until it is.", err);
+    console.warn(
+      "DB not reachable yet — rendering with no content until it is.",
+      err,
+    );
     return {
-      projects: [] as any[], experience: [] as any[], services: [] as any[], rateCards: [] as any[],
-      testimonials: [] as any[], faqs: [] as any[], settings: null as any, techstack: [] as any[],
-      stats: [] as any[], workflowSteps: [] as any[], philosophyLines: [] as any[], photos: [] as any[], videos: [] as any[],
+      projects: [] as any[],
+      experience: [] as any[],
+      services: [] as any[],
+      rateCards: [] as any[],
+      testimonials: [] as any[],
+      faqs: [] as any[],
+      settings: null as any,
+      techstack: [] as any[],
+      stats: [] as any[],
+      workflowSteps: [] as any[],
+      philosophyLines: [] as any[],
+      photos: [] as any[],
+      videos: [] as any[],
     };
   }
 }
 
 export default async function HomePage() {
   const {
-    projects, experience, services, rateCards, testimonials, faqs, settings,
-    techstack, stats, workflowSteps, philosophyLines, photos, videos,
+    projects,
+    experience,
+    services,
+    rateCards,
+    testimonials,
+    faqs,
+    settings,
+    techstack,
+    stats,
+    workflowSteps,
+    philosophyLines,
+    photos,
+    videos,
   } = await getData();
 
   return (
     <RetroHome
       name={settings?.name || "Daniel Olojo"}
-      headlines={settings?.heroHeadlines?.length ? settings.heroHeadlines : ["Software Developer"]}
-      bio={settings?.bio || "Software developer building mobile, web and backend products that hold up under real use."}
+      headlines={
+        settings?.heroHeadlines?.length
+          ? settings.heroHeadlines
+          : ["Software Developer"]
+      }
+      bio={
+        settings?.bio ||
+        "Software developer building mobile, web and backend products that hold up under real use."
+      }
       meetDeveloperBio={settings?.meetDeveloperBio}
       email={settings?.email}
       location={settings?.location}

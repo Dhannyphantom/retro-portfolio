@@ -32,6 +32,9 @@ export default function SnakeGame({ onWin }: { onWin: () => void }) {
   const [dead, setDead] = useState(false);
   const [started, setStarted] = useState(false);
   const [best, setBest] = useState(0);
+  // Set (never called directly) whenever the win condition is met inside
+  // the game-tick updater below, and consumed by the effect further down.
+  const [justWon, setJustWon] = useState(false);
   const dirRef = useRef(dir);
   const wonRef = useRef(false);
   dirRef.current = dir;
@@ -41,6 +44,21 @@ export default function SnakeGame({ onWin }: { onWin: () => void }) {
   useEffect(() => {
     setFood(randomFood(START));
   }, []);
+
+  // IMPORTANT: `onWin` ultimately calls a state setter that lives several
+  // components up the tree (RetroHome's achievement/toast state). Calling
+  // it directly from inside setSnake's updater (even via a nested
+  // setTimeout) risks React flagging "Cannot update a component while
+  // rendering a different component", because the call can still land
+  // inside another component's render/commit cycle depending on timing.
+  // Firing it from this dedicated effect — reacting to a plain local
+  // boolean flag — is the pattern React actually guarantees is safe for
+  // notifying a parent from a child.
+  useEffect(() => {
+    if (!justWon) return;
+    onWin();
+    setJustWon(false);
+  }, [justWon, onWin]);
 
   const reset = useCallback(() => {
     setSnake(START);
@@ -92,19 +110,16 @@ export default function SnakeGame({ onWin }: { onWin: () => void }) {
 
         if (hitWall || hitSelf) {
           const finalLength = prev.length;
-          // IMPORTANT: don't call setDead/setBest/onWin synchronously here.
-          // This function runs as a React state *updater* (the callback
-          // passed to setSnake) — calling other components' setState from
-          // inside it (onWin ultimately calls setToastQueue in a parent
-          // component) triggers "Cannot update a component while rendering
-          // a different component". Deferring with setTimeout(..., 0) runs
-          // it after React finishes the current update, which is safe.
+          // Still deferred with setTimeout(..., 0) so this state updater
+          // stays a pure function of `prev` — but the win notification
+          // itself now only ever sets local state (`justWon`), never calls
+          // `onWin` directly. See the dedicated effect above.
           setTimeout(() => {
             setDead(true);
             setBest((b) => Math.max(b, finalLength - 1));
             if (finalLength - 1 >= 3 && !wonRef.current) {
               wonRef.current = true;
-              onWin();
+              setJustWon(true);
             }
           }, 0);
           return prev;
@@ -118,7 +133,7 @@ export default function SnakeGame({ onWin }: { onWin: () => void }) {
             setFood(newFood);
             if (nextSnake.length - 1 >= 3 && !wonRef.current) {
               wonRef.current = true;
-              onWin();
+              setJustWon(true);
             }
           }, 0);
         } else {
@@ -128,7 +143,7 @@ export default function SnakeGame({ onWin }: { onWin: () => void }) {
       });
     }, speed);
     return () => clearInterval(id);
-  }, [started, dead, food, score, onWin]);
+  }, [started, dead, food, score]);
 
   return (
     <div className="flex flex-col items-center gap-3" data-no-burst>
