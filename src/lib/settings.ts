@@ -11,6 +11,7 @@ export type SiteSettingsData = {
   socials: { github?: string; linkedin?: string; twitter?: string };
   cvUrl?: string;
   cvEnabled?: boolean;
+  avatarUrl?: string;
   heroHeadlines: string[];
   meetDeveloperBio?: string;
 };
@@ -24,6 +25,7 @@ const DEFAULTS: SiteSettingsData = {
   availability: true,
   socials: {},
   cvEnabled: true,
+  avatarUrl: "",
   heroHeadlines: ["Software Developer"],
 };
 

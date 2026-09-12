@@ -1,9 +1,10 @@
 "use client";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Play, X } from "lucide-react";
+import { Play } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import SafeImage from "@/components/ui/SafeImage";
+import RetroVideoPlayer from "@/components/retro/RetroVideoPlayer";
 import { setCursorDragging } from "@/lib/cursorBus";
 
 export type PhotoItem = { src: string; caption?: string };
@@ -80,6 +81,8 @@ export default function MeetDeveloper({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {videos.map((v, i) => (
           <Reveal key={v.title} delay={i * 90}>
+            {/* thumbnail only — no inline <video>/controls; clicking opens the
+                custom retro media player modal below */}
             <div className="win group cursor-pointer" onClick={() => setActive(v)}>
               <div className="win-bar">
                 <span className="win-title">CLIP_0{i + 1}.MP4</span>
@@ -100,19 +103,7 @@ export default function MeetDeveloper({
       </div>
 
       {active && (
-        <div
-          className="fixed inset-0 z-[300] flex items-center justify-center p-5"
-          style={{ background: "rgba(0,0,0,0.85)" }}
-          onClick={() => setActive(null)}
-        >
-          <div onClick={(e) => e.stopPropagation()} className="win w-full max-w-[720px]">
-            <div className="win-bar">
-              <span className="win-title">{active.title}</span>
-              <span className="win-controls"><span className="win-dot" onClick={() => setActive(null)}>×</span></span>
-            </div>
-            <video src={active.src} controls autoPlay className="w-full block bg-black max-h-[65vh]" />
-          </div>
-        </div>
+        <RetroVideoPlayer title={active.title} src={active.src} poster={active.thumb} onClose={() => setActive(null)} />
       )}
     </section>
   );

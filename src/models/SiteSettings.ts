@@ -17,6 +17,10 @@ const SiteSettingsSchema = new Schema(
     },
     cvUrl: { type: String, default: "" },
     cvEnabled: { type: Boolean, default: true },
+    // Profile photo shown on the hero "ID card" — uploaded via
+    // /admin/profile, stored as a plain URL (R2 or otherwise), same pattern
+    // as cvUrl. Falls back to the pixel-art placeholder avatar when unset.
+    avatarUrl: { type: String, default: "" },
     // A list of titles the hero's typewriter cycles through, one at a
     // time, on repeat — replaces the old single `heroHeadline` string.
     heroHeadlines: { type: [String], default: ["Software Developer"] },

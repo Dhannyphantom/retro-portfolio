@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as Icons from "lucide-react";
+import { Play } from "lucide-react";
 import RetroCursor from "./RetroCursor";
 import RetroMatrixRain from "./RetroMatrixRain";
 import TerminalWindow from "./TerminalWindow";
@@ -10,6 +11,7 @@ import MagneticBtn from "./MagneticBtn";
 import NavDock from "./NavDock";
 import OSMenuBar from "./OSMenuBar";
 import RetroTypewriterText from "./RetroTypewriterText";
+import RetroVideoPlayer from "./RetroVideoPlayer";
 import { ACHIEVEMENTS, AchievementToast, type AchievementId } from "./RetroAchievements";
 import { useInView } from "@/lib/hooks/useInView";
 import { useTheme } from "@/lib/theme";
@@ -39,6 +41,7 @@ export type RetroHomeProps = {
   socials?: { github?: string; linkedin?: string; twitter?: string };
   cvUrl?: string;
   cvEnabled?: boolean;
+  avatarUrl?: string;
   projects: ProjectItem[];
   experience: ExperienceItem[];
   services: ServiceItem[];
@@ -166,32 +169,39 @@ function InteractiveTerminal({
 }
 
 // ─── ID CARD AVATAR ────────────────────────────────────────────────────────────
-function IdCardAvatar({ glitch, onHover }: { glitch: boolean; onHover: () => void }) {
+// Renders the uploaded profile photo (from /admin/profile) when one is set;
+// falls back to the original pixel-art placeholder otherwise so the hero
+// never looks broken on a fresh install.
+function IdCardAvatar({ glitch, onHover, avatarUrl }: { glitch: boolean; onHover: () => void; avatarUrl?: string }) {
   return (
     <div
       style={{ flex: 1, border: "2px solid var(--border)", background: "var(--bg3)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, minHeight: 200, position: "relative", overflow: "hidden", cursor: "none" }}
       onMouseEnter={onHover}
       data-cursor-hover
     >
-      <svg viewBox="0 0 80 100" width={160} style={{ imageRendering: "pixelated" }}>
-        <rect x={25} y={8} width={30} height={30} fill="#c8a882" />
-        <rect x={22} y={4} width={36} height={14} fill="#1a0d00" rx={2} />
-        <rect x={20} y={14} width={6} height={8} fill="#1a0d00" />
-        <rect x={54} y={14} width={6} height={8} fill="#1a0d00" />
-        <rect x={26} y={22} width={10} height={7} fill="none" stroke="#1a1a1a" strokeWidth={1.5} />
-        <rect x={44} y={22} width={10} height={7} fill="none" stroke="#1a1a1a" strokeWidth={1.5} />
-        <line x1={36} y1={25} x2={44} y2={25} stroke="#1a1a1a" strokeWidth={1} />
-        <rect x={29} y={24} width={4} height={3} fill="#1a0a00" />
-        <rect x={47} y={24} width={4} height={3} fill="#1a0a00" />
-        <path d="M32,34 Q40,40 48,34" fill="none" stroke="#8a5a3a" strokeWidth={1.5} />
-        <rect x={30} y={34} width={20} height={4} fill="#2a1a0a" />
-        <rect x={18} y={38} width={44} height={50} fill="#1a1a1a" />
-        <rect x={22} y={42} width={36} height={44} fill="#222" />
-        <line x1={40} y1={42} x2={40} y2={86} stroke="#1a1a1a" strokeWidth={2} />
-        <path d="M32,50 Q40,52 48,50" fill="none" stroke="#aaa" strokeWidth={1} />
-        <rect x={4} y={38} width={14} height={40} fill="#1a1a1a" />
-        <rect x={62} y={38} width={14} height={40} fill="#1a1a1a" />
-      </svg>
+      {avatarUrl ? (
+        <SafeImage src={avatarUrl} alt="profile photo" className="w-full h-full object-cover grayscale contrast-125" iconSize={40} />
+      ) : (
+        <svg viewBox="0 0 80 100" width={160} style={{ imageRendering: "pixelated" }}>
+          <rect x={25} y={8} width={30} height={30} fill="#c8a882" />
+          <rect x={22} y={4} width={36} height={14} fill="#1a0d00" rx={2} />
+          <rect x={20} y={14} width={6} height={8} fill="#1a0d00" />
+          <rect x={54} y={14} width={6} height={8} fill="#1a0d00" />
+          <rect x={26} y={22} width={10} height={7} fill="none" stroke="#1a1a1a" strokeWidth={1.5} />
+          <rect x={44} y={22} width={10} height={7} fill="none" stroke="#1a1a1a" strokeWidth={1.5} />
+          <line x1={36} y1={25} x2={44} y2={25} stroke="#1a1a1a" strokeWidth={1} />
+          <rect x={29} y={24} width={4} height={3} fill="#1a0a00" />
+          <rect x={47} y={24} width={4} height={3} fill="#1a0a00" />
+          <path d="M32,34 Q40,40 48,34" fill="none" stroke="#8a5a3a" strokeWidth={1.5} />
+          <rect x={30} y={34} width={20} height={4} fill="#2a1a0a" />
+          <rect x={18} y={38} width={44} height={50} fill="#1a1a1a" />
+          <rect x={22} y={42} width={36} height={44} fill="#222" />
+          <line x1={40} y1={42} x2={40} y2={86} stroke="#1a1a1a" strokeWidth={2} />
+          <path d="M32,50 Q40,52 48,50" fill="none" stroke="#aaa" strokeWidth={1} />
+          <rect x={4} y={38} width={14} height={40} fill="#1a1a1a" />
+          <rect x={62} y={38} width={14} height={40} fill="#1a1a1a" />
+        </svg>
+      )}
       <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(0,0,0,0.08) 4px,rgba(0,0,0,0.08) 5px)", pointerEvents: "none" }} />
       {glitch && <div style={{ position: "absolute", inset: 0, border: "2px solid var(--r)", boxShadow: "inset 0 0 20px rgba(255,0,51,0.3)" }} />}
     </div>
@@ -201,7 +211,7 @@ function IdCardAvatar({ glitch, onHover }: { glitch: boolean; onHover: () => voi
 // ─── MAIN RETRO HOME ────────────────────────────────────────────────────────
 export default function RetroHome(props: RetroHomeProps) {
   const {
-    name, headlines, bio, meetDeveloperBio, email, location, availability, socials,
+    name, headlines, bio, meetDeveloperBio, email, location, availability, socials, avatarUrl,
     projects, experience, services, rateCards, testimonials, faqs,
     techstack, stats, workflowSteps, philosophyLines, photos, videos,
   } = props;
@@ -217,6 +227,7 @@ export default function RetroHome(props: RetroHomeProps) {
   const [avatarHovers, setAvatarHovers] = useState(0);
   const [glitchManual, setGlitchManual] = useState(false);
   const [gameTab, setGameTab] = useState<"snake" | "ttt" | "memory">("snake");
+  const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
   const konamiRef = useRef<string[]>([]);
   const KONAMI = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
 
@@ -390,6 +401,7 @@ export default function RetroHome(props: RetroHomeProps) {
                 </div>
                 <IdCardAvatar
                   glitch={glitchManual}
+                  avatarUrl={avatarUrl}
                   onHover={() => { const n = avatarHovers + 1; setAvatarHovers(n); if (n >= 5) unlock("STALKER"); }}
                 />
                 <div style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)" }}>
@@ -663,9 +675,29 @@ export default function RetroHome(props: RetroHomeProps) {
               {!!videos.length && (
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 12 }}>
                   {videos.map((v) => (
-                    <div key={v.title} style={{ border: "1px solid var(--border)" }}>
+                    // Thumbnail only — no native <video>/controls here. Clicking
+                    // opens the custom retro media player modal (see
+                    // RetroVideoPlayer.tsx) instead of playing inline.
+                    <div
+                      key={v.title}
+                      className="win"
+                      style={{ cursor: "none" }}
+                      onClick={() => setActiveVideo(v)}
+                      data-cursor-hover
+                    >
                       <div style={{ background: "var(--window-bar)", borderBottom: "1px solid var(--border)", padding: "4px 10px", fontFamily: "var(--font-retro-body)", fontSize: 9, color: "var(--text-dim)" }}>{v.title}</div>
-                      <video src={v.src} poster={v.thumb} controls className="w-full block" style={{ maxHeight: 140, background: "#000" }} />
+                      <div style={{ position: "relative" }}>
+                        <SafeImage src={v.thumb} alt={v.title} className="w-full h-[140px] object-cover block grayscale contrast-125" iconSize={26} />
+                        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.85) 100%)" }} />
+                        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 40, height: 40, border: "2px solid var(--g)", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.5)" }}>
+                          <Play size={16} color="var(--g)" fill="var(--g)" style={{ marginLeft: 2 }} />
+                        </div>
+                        {v.duration && (
+                          <span style={{ position: "absolute", bottom: 6, right: 8, fontFamily: "var(--font-retro-body)", fontSize: 9, color: "var(--text)", background: "rgba(0,0,0,0.7)", padding: "2px 6px", border: "1px solid var(--border)" }}>
+                            {v.duration}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -773,6 +805,15 @@ export default function RetroHome(props: RetroHomeProps) {
       </section>
 
       <NavDock active={activeSection} light={light} onToggleTheme={toggleTheme} />
+
+      {activeVideo && (
+        <RetroVideoPlayer
+          title={activeVideo.title}
+          src={activeVideo.src}
+          poster={activeVideo.thumb}
+          onClose={() => setActiveVideo(null)}
+        />
+      )}
     </div>
   );
 }

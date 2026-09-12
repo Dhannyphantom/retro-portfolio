@@ -37,6 +37,38 @@ export default function AdminProfile() {
       </p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <div>
+          <span style={{ display: "block", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 8, letterSpacing: "0.05em" }}>
+            profile photo — shown on the hero &quot;ID card&quot;
+          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 10 }}>
+            <div style={{ width: 72, height: 72, border: "1px solid var(--border)", background: "var(--bg2)", flexShrink: 0, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              {form.avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={form.avatarUrl} alt="profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              ) : (
+                <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 9, color: "var(--text-dim)" }}>none</span>
+              )}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <RetroFileUpload
+                folder="avatars"
+                accept="image/*"
+                label="upload a new photo"
+                onUploaded={(url) => set("avatarUrl", url)}
+              />
+            </div>
+          </div>
+          {form.avatarUrl && (
+            <button
+              onClick={() => set("avatarUrl", "")}
+              data-cursor-hover
+              style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--r)", background: "none", border: "none", cursor: "none" }}
+            >
+              remove photo
+            </button>
+          )}
+        </div>
         <Field label="name"><RetroInput value={form.name || ""} onChange={(e) => set("name", e.target.value)} /></Field>
         <Field label="title"><RetroInput value={form.title || ""} onChange={(e) => set("title", e.target.value)} /></Field>
         <Field label="bio"><RetroTextarea rows={4} value={form.bio || ""} onChange={(e) => set("bio", e.target.value)} /></Field>

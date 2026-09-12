@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Plus, Pencil, Trash2, X, ExternalLink } from "lucide-react";
 import { RetroInput, RetroTextarea } from "@/components/retro/RetroFormKit";
@@ -10,10 +11,64 @@ export type FieldConfig = {
   type?: "text" | "textarea" | "list" | "boolean" | "number";
 };
 
+// Fields we'll look for (in this order) to build a short, useful subtitle
+// line under the title for collections that don't explicitly configure one
+// — this is what turns "Untitled Project" / "BK-XXXX" rows into something an
+// admin can actually recognize at a glance.
+const PREVIEW_KEYS = [
+  "email", "projectType", "company", "organization", "role", "category",
+  "quote", "answer", "description", "position", "billingType", "price",
+  "startingPrice", "clientName", "timeline", "budget", "name",
+];
+const IMAGE_KEYS = ["thumbnail", "avatar", "iconUrl", "src", "thumb", "coverImage"];
+const BADGE_BOOL_KEYS = ["featured", "approved", "recommended", "showInHero", "showInMarquee"];
+
+function getTitle(item: any, titleKey: string | ((item: any) => string)) {
+  if (typeof titleKey === "function") return titleKey(item) || "(untitled)";
+  return item[titleKey] || "(untitled)";
+}
+
+function pickImage(item: any): string | undefined {
+  for (const k of IMAGE_KEYS) {
+    if (item[k] && typeof item[k] === "string") return item[k];
+  }
+  return undefined;
+}
+
+function pickSubtitle(item: any, titleKey: string | ((item: any) => string), fields: FieldConfig[]): string[] {
+  const fieldTextKeys = fields
+    .filter((f) => (f.type === "text" || f.type === "textarea" || !f.type) && f.key !== titleKey)
+    .map((f) => f.key);
+  const candidates = [...new Set([...fieldTextKeys, ...PREVIEW_KEYS])];
+  const parts: string[] = [];
+  for (const k of candidates) {
+    if (typeof titleKey === "string" && k === titleKey) continue;
+    const v = item[k];
+    if (typeof v === "string" && v.trim()) {
+      parts.push(v.length > 70 ? v.slice(0, 70) + "…" : v);
+    }
+    if (parts.length >= 2) break;
+  }
+  return parts;
+}
+
+function pickBadges(item: any): string[] {
+  const badges: string[] = [];
+  if (item.status) badges.push(String(item.status));
+  if (typeof item.rating === "number") badges.push(`★ ${item.rating}`);
+  for (const k of BADGE_BOOL_KEYS) {
+    if (item[k]) badges.push(k.replace(/([A-Z])/g, " $1").toLowerCase());
+  }
+  return badges;
+}
+
 // A single reusable table + form UI that drives every simple admin collection
 // (projects, experience, services, rate cards, testimonials, faqs, skills...)
-// through the generic /api/admin/[collection] endpoints. Same logic/props as
-// before — visuals rewritten to the retro terminal theme.
+// through the generic /api/admin/[collection] endpoints. Rows now show a
+// short subtitle + status/flag badges (not just the bare title field), and
+// the whole row is clickable — it opens the edit form (or navigates to
+// viewHref, for collections like bookings that manage detail on their own
+// page) instead of requiring a click on the tiny pencil icon.
 export default function ResourceManager({
   collection,
   fields,
@@ -25,12 +80,13 @@ export default function ResourceManager({
 }: {
   collection: string;
   fields: FieldConfig[];
-  titleKey: string;
+  titleKey: string | ((item: any) => string);
   viewHref?: (item: any) => string;
   hideCreate?: boolean;
   hideEdit?: boolean;
   title?: string;
 }) {
+  const router = useRouter();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -67,6 +123,14 @@ export default function ResourceManager({
   const openEdit = (item: any) => {
     setEditing({ ...item });
     setShowForm(true);
+  };
+
+  const handleRowClick = (item: any) => {
+    if (viewHref) {
+      router.push(viewHref(item));
+      return;
+    }
+    if (!hideEdit) openEdit(item);
   };
 
   const save = async () => {
@@ -132,22 +196,65 @@ export default function ResourceManager({
         <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)" }}>Nothing here yet — click New to add the first one.</p>
       ) : (
         <div style={{ border: "1px solid var(--border)" }}>
-          {items.map((item) => (
-            <div key={item._id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderBottom: "1px solid var(--border)", background: "var(--card-bg)" }}>
-              <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 12 }}>
-                {item[titleKey] || "(untitled)"}
-              </span>
-              <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
-                {viewHref && (
-                  <Link href={viewHref(item)} data-cursor-hover style={iconBtn}><ExternalLink size={13} /></Link>
-                )}
-                {!hideEdit && (
-                  <button onClick={() => openEdit(item)} data-cursor-hover style={iconBtn}><Pencil size={13} /></button>
-                )}
-                <button onClick={() => remove(item._id)} data-cursor-hover style={{ ...iconBtn, color: "var(--r)" }}><Trash2 size={13} /></button>
+          {items.map((item) => {
+            const img = pickImage(item);
+            const subtitleParts = pickSubtitle(item, titleKey, fields);
+            const badges = pickBadges(item);
+            const clickable = !!viewHref || !hideEdit;
+            return (
+              <div
+                key={item._id}
+                onClick={() => clickable && handleRowClick(item)}
+                {...(clickable ? { "data-cursor-hover": true } : {})}
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
+                  padding: "12px 16px", borderBottom: "1px solid var(--border)", background: "var(--card-bg)",
+                  cursor: clickable ? "none" : "default",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0, flex: 1 }}>
+                  {img && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={img} alt="" style={{ width: 34, height: 34, objectFit: "cover", border: "1px solid var(--border)", flexShrink: 0 }} />
+                  )}
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {getTitle(item, titleKey)}
+                    </div>
+                    {(subtitleParts.length > 0 || badges.length > 0) && (
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 3, flexWrap: "wrap" }}>
+                        {subtitleParts.map((p, i) => (
+                          <span
+                            key={i}
+                            style={{ fontFamily: "var(--font-retro-body)", fontSize: 10.5, color: "var(--text-dim)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 260 }}
+                          >
+                            {p}
+                          </span>
+                        ))}
+                        {badges.map((b, i) => (
+                          <span
+                            key={i}
+                            style={{ fontFamily: "var(--font-retro-body)", fontSize: 9.5, color: "var(--g)", border: "1px solid var(--border)", padding: "1px 6px", background: "var(--bg3)", textTransform: "uppercase", letterSpacing: "0.05em", flexShrink: 0 }}
+                          >
+                            {b}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div style={{ display: "flex", gap: 6, flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>
+                  {viewHref && (
+                    <Link href={viewHref(item)} data-cursor-hover style={iconBtn}><ExternalLink size={13} /></Link>
+                  )}
+                  {!hideEdit && (
+                    <button onClick={() => openEdit(item)} data-cursor-hover style={iconBtn}><Pencil size={13} /></button>
+                  )}
+                  <button onClick={() => remove(item._id)} data-cursor-hover style={{ ...iconBtn, color: "var(--r)" }}><Trash2 size={13} /></button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
