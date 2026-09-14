@@ -71,6 +71,15 @@ export default function SnakeGame({ onWin }: { onWin: () => void }) {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      // This listener lives on `window` because the game area itself isn't
+      // always focused — but that means it fires for EVERY keydown on the
+      // page, including while someone is typing into the terminal or a
+      // form field elsewhere. Bail out early whenever the actual focused
+      // element is a text input, so WASD/arrow keys type normally there
+      // instead of being hijacked (and preventDefault'd away) by the game.
+      const target = e.target as HTMLElement | null;
+      if (target && ["INPUT", "TEXTAREA"].includes(target.tagName)) return;
+
       const map: Record<string, Pt> = {
         ArrowUp: { x: 0, y: -1 },
         w: { x: 0, y: -1 },
