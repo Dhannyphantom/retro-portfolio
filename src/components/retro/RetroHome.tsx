@@ -78,6 +78,25 @@ function useTyping(text: string, speed = 40, startDelay = 0) {
 
 // ─── EXPERIENCE ENTRY (see RetroExperienceEntry.tsx) ─────────────────────────
 
+// Visually-hidden but fully focusable/typeable — the standard a11y
+// "screen-reader-only" pattern, repurposed here to give us a real <input>
+// (so keystrokes, IME composition, and mobile virtual keyboards all work
+// exactly like a normal text field) without ever showing a boxy input UI.
+// The terminal draws its own prompt + typed text + blinking block cursor
+// as the last line of the scrollback instead.
+const hiddenInputStyle: React.CSSProperties = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: "hidden",
+  clip: "rect(0,0,0,0)",
+  whiteSpace: "nowrap",
+  border: 0,
+  background: "transparent",
+};
+
 // ─── INTERACTIVE TERMINAL ─────────────────────────────────────────────────────
 function InteractiveTerminal({
   slug,
@@ -116,7 +135,7 @@ function InteractiveTerminal({
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, [history]);
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, [history, input]);
 
   const run = (raw: string) => {
     const cmd = raw.trim().toLowerCase();
@@ -145,25 +164,29 @@ function InteractiveTerminal({
             {h.text}
           </div>
         ))}
+        <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+          <span style={{ color: "var(--g)", fontFamily: "var(--font-retro-body)", fontSize: 12, flexShrink: 0 }}>{slug}@os:~ $</span>
+          <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--g)", whiteSpace: "pre-wrap", wordBreak: "break-all" }}>{input}</span>
+          <span className="terminal-caret" />
+        </div>
         <div ref={bottomRef} />
       </div>
-      <div style={{ borderTop: "1px solid var(--border)", padding: "8px 16px", display: "flex", alignItems: "center", gap: 8 }}>
-        <span style={{ color: "var(--g)", fontFamily: "var(--font-retro-body)", fontSize: 12 }}>{slug}@os:~ $</span>
-        <input
-          ref={inputRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") run(input);
-            if (e.key === "ArrowUp") { const n = Math.min(cmdIdx + 1, cmdHistory.length - 1); setCmdIdx(n); setInput(cmdHistory[n] ?? ""); }
-            if (e.key === "ArrowDown") { const n = Math.max(cmdIdx - 1, -1); setCmdIdx(n); setInput(n === -1 ? "" : cmdHistory[n]); }
-          }}
-          style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--g)", caretColor: "var(--g)" }}
-          autoComplete="off"
-          spellCheck={false}
-          placeholder="type a command..."
-        />
-      </div>
+      <input
+        ref={inputRef}
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") { e.preventDefault(); run(input); }
+          if (e.key === "ArrowUp") { e.preventDefault(); const n = Math.min(cmdIdx + 1, cmdHistory.length - 1); setCmdIdx(n); setInput(cmdHistory[n] ?? ""); }
+          if (e.key === "ArrowDown") { e.preventDefault(); const n = Math.max(cmdIdx - 1, -1); setCmdIdx(n); setInput(n === -1 ? "" : cmdHistory[n]); }
+        }}
+        autoComplete="off"
+        autoCapitalize="off"
+        autoCorrect="off"
+        spellCheck={false}
+        aria-label="Terminal input"
+        style={hiddenInputStyle}
+      />
     </div>
   );
 }

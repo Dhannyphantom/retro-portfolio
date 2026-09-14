@@ -11,6 +11,25 @@ const JOKES = [
   "I told my code a joke. No reaction — it doesn't have a sense of humor(), only functions.",
 ];
 
+// Visually-hidden but fully focusable/typeable — the standard a11y
+// "screen-reader-only" pattern, repurposed here to give us a real <input>
+// (so keystrokes, IME composition, and mobile virtual keyboards all work
+// exactly like a normal text field) without ever showing a boxy input UI.
+// The terminal draws its own prompt + typed text + blinking block cursor
+// as the last line of the scrollback instead.
+const hiddenInputStyle: React.CSSProperties = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: "hidden",
+  clip: "rect(0,0,0,0)",
+  whiteSpace: "nowrap",
+  border: 0,
+  background: "transparent",
+};
+
 export default function Terminal({
   name = "Daniel",
   bio,
@@ -28,11 +47,12 @@ export default function Terminal({
   const [cmdLog, setCmdLog] = useState<string[]>([]);
   const [logIdx, setLogIdx] = useState(-1);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const firstRun = useRef(false);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
-  }, [history]);
+  }, [history, input]);
 
   const print = (text: string, kind: Line["kind"] = "out") => setHistory((h) => [...h, { text, kind }]);
 
@@ -130,6 +150,31 @@ export default function Terminal({
     }
   };
 
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      run(input);
+      setInput("");
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (!cmdLog.length) return;
+      const idx = logIdx < 0 ? cmdLog.length - 1 : Math.max(0, logIdx - 1);
+      setLogIdx(idx);
+      setInput(cmdLog[idx]);
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (logIdx < 0) return;
+      const idx = logIdx + 1;
+      if (idx >= cmdLog.length) {
+        setLogIdx(-1);
+        setInput("");
+      } else {
+        setLogIdx(idx);
+        setInput(cmdLog[idx]);
+      }
+    }
+  };
+
   return (
     <div className="win">
       <div className="win-bar">
@@ -142,7 +187,7 @@ export default function Terminal({
       <div
         ref={scrollRef}
         className="terminal-scroll font-mono text-[12px] leading-relaxed p-3.5 h-[220px] overflow-y-auto"
-        onClick={() => document.getElementById("about-terminal-input")?.focus()}
+        onClick={() => inputRef.current?.focus()}
       >
         {history.map((l, i) => (
           <div
@@ -155,48 +200,23 @@ export default function Terminal({
             {l.text}
           </div>
         ))}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            run(input);
-            setInput("");
-          }}
-          className="flex items-center gap-1.5 mt-1"
-        >
+        <div className="flex items-center flex-wrap gap-1.5 mt-1">
           <span style={{ color: "var(--green)" }}>~/{slug} $</span>
-          <input
-            id="about-terminal-input"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "ArrowUp") {
-                e.preventDefault();
-                if (!cmdLog.length) return;
-                const idx = logIdx < 0 ? cmdLog.length - 1 : Math.max(0, logIdx - 1);
-                setLogIdx(idx);
-                setInput(cmdLog[idx]);
-              } else if (e.key === "ArrowDown") {
-                e.preventDefault();
-                if (logIdx < 0) return;
-                const idx = logIdx + 1;
-                if (idx >= cmdLog.length) {
-                  setLogIdx(-1);
-                  setInput("");
-                } else {
-                  setLogIdx(idx);
-                  setInput(cmdLog[idx]);
-                }
-              }
-            }}
-            autoComplete="off"
-            spellCheck={false}
-            data-cursor-hover
-            className="terminal-input flex-1 outline-none font-mono text-[12px]"
-            style={{ color: "var(--text)" }}
-            placeholder="type 'help'..."
-          />
+          <span style={{ color: "var(--text)", whiteSpace: "pre-wrap", wordBreak: "break-all" }}>{input}</span>
           <span className="terminal-caret" />
-        </form>
+        </div>
+        <input
+          ref={inputRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={onKeyDown}
+          autoComplete="off"
+          autoCapitalize="off"
+          autoCorrect="off"
+          spellCheck={false}
+          aria-label="Terminal input"
+          style={hiddenInputStyle}
+        />
       </div>
     </div>
   );
