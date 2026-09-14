@@ -69,6 +69,73 @@ export default function AdminProfile() {
             </button>
           )}
         </div>
+
+        <div>
+          <span style={{ display: "block", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 8, letterSpacing: "0.05em" }}>
+            social share image — shown when the site is shared on X, Slack, iMessage, etc. (recommend 1200×630)
+          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 10 }}>
+            <div style={{ width: 96, height: 54, border: "1px solid var(--border)", background: "var(--bg2)", flexShrink: 0, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              {form.ogImageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={form.ogImageUrl} alt="social share preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              ) : (
+                <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 9, color: "var(--text-dim)" }}>none</span>
+              )}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <RetroFileUpload
+                folder="og-image"
+                accept="image/*"
+                label="upload a share image"
+                onUploaded={(url) => set("ogImageUrl", url)}
+              />
+            </div>
+          </div>
+          {form.ogImageUrl && (
+            <button
+              onClick={() => set("ogImageUrl", "")}
+              data-cursor-hover
+              style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--r)", background: "none", border: "none", cursor: "none" }}
+            >
+              remove share image
+            </button>
+          )}
+        </div>
+
+        <div>
+          <span style={{ display: "block", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 8, letterSpacing: "0.05em" }}>
+            favicon — the browser tab icon (svg or png). Leave empty to use the default pixel-art avatar icon.
+          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 10 }}>
+            <div style={{ width: 40, height: 40, border: "1px solid var(--border)", background: "var(--bg2)", flexShrink: 0, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              {form.faviconUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={form.faviconUrl} alt="favicon" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+              ) : (
+                <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 8, color: "var(--text-dim)" }}>default</span>
+              )}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <RetroFileUpload
+                folder="favicon"
+                accept=".svg,.png,image/svg+xml,image/png"
+                label="upload a favicon (svg or png)"
+                onUploaded={(url) => set("faviconUrl", url)}
+              />
+            </div>
+          </div>
+          {form.faviconUrl && (
+            <button
+              onClick={() => set("faviconUrl", "")}
+              data-cursor-hover
+              style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--r)", background: "none", border: "none", cursor: "none" }}
+            >
+              reset to default favicon
+            </button>
+          )}
+        </div>
+
         <Field label="name"><RetroInput value={form.name || ""} onChange={(e) => set("name", e.target.value)} /></Field>
         <Field label="title"><RetroInput value={form.title || ""} onChange={(e) => set("title", e.target.value)} /></Field>
         <Field label="bio"><RetroTextarea rows={4} value={form.bio || ""} onChange={(e) => set("bio", e.target.value)} /></Field>

@@ -21,6 +21,13 @@ const SiteSettingsSchema = new Schema(
     // /admin/profile, stored as a plain URL (R2 or otherwise), same pattern
     // as cvUrl. Falls back to the pixel-art placeholder avatar when unset.
     avatarUrl: { type: String, default: "" },
+    // Image used for social link-preview cards (Open Graph / Twitter) when
+    // the site is shared — uploaded via /admin/profile. Falls back to no
+    // image (just title/description) when unset.
+    ogImageUrl: { type: String, default: "" },
+    // Browser tab icon — uploaded via /admin/profile (svg or png). Falls
+    // back to the built-in pixel-art avatar icon (src/app/icon.svg) when unset.
+    faviconUrl: { type: String, default: "" },
     // A list of titles the hero's typewriter cycles through, one at a
     // time, on repeat — replaces the old single `heroHeadline` string.
     heroHeadlines: { type: [String], default: ["Software Developer"] },

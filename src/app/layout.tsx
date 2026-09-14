@@ -17,11 +17,24 @@ const retroBody = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], varia
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
   const title = `${settings.name} — ${settings.title}`;
+
+  // Social link-preview image (Open Graph / Twitter card) — uploaded via
+  // /admin/profile. Omitted entirely when unset, so shares just fall back
+  // to a plain title/description card instead of a broken image.
+  const ogImages = settings.ogImageUrl ? [{ url: settings.ogImageUrl }] : undefined;
+
+  // Favicon — uploaded via /admin/profile, svg or png. When unset, Next's
+  // file-convention icon (src/app/icon.svg, the pixel-art avatar) is used
+  // automatically, so `icons` is simply omitted here rather than pointing
+  // at a hardcoded fallback path.
+  const icons = settings.faviconUrl ? { icon: settings.faviconUrl, shortcut: settings.faviconUrl } : undefined;
+
   return {
     title,
     description: settings.bio,
-    openGraph: { title, description: settings.bio, type: "website" },
-    twitter: { card: "summary_large_image" },
+    openGraph: { title, description: settings.bio, type: "website", images: ogImages },
+    twitter: { card: "summary_large_image", title, description: settings.bio, images: ogImages },
+    ...(icons ? { icons } : {}),
   };
 }
 
