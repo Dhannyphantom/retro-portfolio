@@ -70,6 +70,29 @@ export default function AdminProfile() {
           )}
         </div>
 
+        <Field label="name"><RetroInput value={form.name || ""} onChange={(e) => set("name", e.target.value)} /></Field>
+        <Field label="title"><RetroInput value={form.title || ""} onChange={(e) => set("title", e.target.value)} /></Field>
+        <Field label="bio"><RetroTextarea rows={4} value={form.bio || ""} onChange={(e) => set("bio", e.target.value)} /></Field>
+        <Field label="&quot;meet the developer&quot; intro"><RetroTextarea rows={4} value={form.meetDeveloperBio || ""} onChange={(e) => set("meetDeveloperBio", e.target.value)} /></Field>
+        <Field label="hero headlines — one per line, the hero types each one out on repeat">
+          <RetroTextarea
+            rows={4}
+            value={(form.heroHeadlines || []).join("\n")}
+            onChange={(e) => set("heroHeadlines", e.target.value.split("\n").map((s: string) => s.trim()).filter(Boolean))}
+          />
+        </Field>
+        <Field label="email"><RetroInput value={form.email || ""} onChange={(e) => set("email", e.target.value)} /></Field>
+        <Field label="location"><RetroInput value={form.location || ""} onChange={(e) => set("location", e.target.value)} /></Field>
+        <Field label="github url"><RetroInput value={form.socials?.github || ""} onChange={(e) => setSocial("github", e.target.value)} /></Field>
+        <Field label="linkedin url"><RetroInput value={form.socials?.linkedin || ""} onChange={(e) => setSocial("linkedin", e.target.value)} /></Field>
+
+        <RetroFileUpload folder="cv" accept=".pdf,.doc,.docx" label="cv file" onUploaded={(url) => set("cvUrl", url)} />
+        {form.cvUrl && (
+          <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)", marginTop: -8 }}>
+            current: <a href={form.cvUrl} target="_blank" rel="noreferrer" style={{ color: "var(--g)" }} data-cursor-hover>view uploaded cv</a>
+          </p>
+        )}
+
         <div>
           <span style={{ display: "block", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 8, letterSpacing: "0.05em" }}>
             social share image — shown when the site is shared on X, Slack, iMessage, etc. (recommend 1200×630)
@@ -136,27 +159,6 @@ export default function AdminProfile() {
           )}
         </div>
 
-        <Field label="name"><RetroInput value={form.name || ""} onChange={(e) => set("name", e.target.value)} /></Field>
-        <Field label="title"><RetroInput value={form.title || ""} onChange={(e) => set("title", e.target.value)} /></Field>
-        <Field label="bio"><RetroTextarea rows={4} value={form.bio || ""} onChange={(e) => set("bio", e.target.value)} /></Field>
-        <Field label="&quot;meet the developer&quot; intro"><RetroTextarea rows={4} value={form.meetDeveloperBio || ""} onChange={(e) => set("meetDeveloperBio", e.target.value)} /></Field>
-        <Field label="hero headlines — one per line, the hero types each one out on repeat">
-          <RetroTextarea
-            rows={4}
-            value={(form.heroHeadlines || []).join("\n")}
-            onChange={(e) => set("heroHeadlines", e.target.value.split("\n").map((s: string) => s.trim()).filter(Boolean))}
-          />
-        </Field>
-        <Field label="email"><RetroInput value={form.email || ""} onChange={(e) => set("email", e.target.value)} /></Field>
-        <Field label="location"><RetroInput value={form.location || ""} onChange={(e) => set("location", e.target.value)} /></Field>
-        <Field label="github url"><RetroInput value={form.socials?.github || ""} onChange={(e) => setSocial("github", e.target.value)} /></Field>
-        <Field label="linkedin url"><RetroInput value={form.socials?.linkedin || ""} onChange={(e) => setSocial("linkedin", e.target.value)} /></Field>
-        <RetroFileUpload folder="cv" accept=".pdf,.doc,.docx" label="cv file" onUploaded={(url) => set("cvUrl", url)} />
-        {form.cvUrl && (
-          <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)", marginTop: -8 }}>
-            current: <a href={form.cvUrl} target="_blank" rel="noreferrer" style={{ color: "var(--g)" }} data-cursor-hover>view uploaded cv</a>
-          </p>
-        )}
         <label style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)" }}>
           <input type="checkbox" checked={!!form.cvEnabled} onChange={(e) => set("cvEnabled", e.target.checked)} /> CV download enabled
         </label>

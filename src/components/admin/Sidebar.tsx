@@ -7,11 +7,11 @@ import { useNotifications } from "@/lib/hooks/useNotifications";
 const LINKS = [
   { href: "/admin", label: "overview", icon: LayoutDashboard },
   { href: "/admin/projects", label: "projects", icon: FolderKanban },
+  { href: "/admin/bookings", label: "bookings", icon: CalendarCheck, notifKey: "bookings" as const },
   { href: "/admin/content", label: "content", icon: FileEdit },
   { href: "/admin/techstack", label: "tech stack", icon: Cpu },
   { href: "/admin/messages", label: "messages", icon: MessageSquare, notifKey: "messages" as const },
   { href: "/admin/testimonials", label: "testimonials", icon: Star },
-  { href: "/admin/bookings", label: "bookings", icon: CalendarCheck, notifKey: "bookings" as const },
   { href: "/admin/profile", label: "profile", icon: User },
 ];
 
