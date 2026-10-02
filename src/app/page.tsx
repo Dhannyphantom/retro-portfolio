@@ -15,6 +15,11 @@ import ProjectVideo from "@/models/ProjectVideo";
 
 import RetroHome from "@/components/retro/RetroHome";
 
+// Render on every request so the homepage always reflects the live database
+// (otherwise Next prerenders this at build time and freezes the seeded data).
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 // Every fetch degrades gracefully: if MONGODB_URI isn't set yet (fresh clone,
 // no DB configured), each section quietly renders empty instead of crashing
 // the page. Run `npm run seed` once to populate real starter content —
@@ -38,7 +43,7 @@ async function getData() {
       photos,
       videos,
     ] = await Promise.all([
-      Project.find().sort({ order: 1 }).lean(),
+      Project.find().sort({ order: 1, createdAt: -1 }).lean(),
       Experience.find().sort({ order: 1 }).lean(),
       Service.find().sort({ order: 1 }).lean(),
       RateCard.find().sort({ order: 1 }).lean(),

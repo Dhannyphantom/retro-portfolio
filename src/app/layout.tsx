@@ -7,6 +7,12 @@ import { getSiteSettings } from "@/lib/settings";
 import Providers from "@/lib/providers";
 import { THEME_INIT_SCRIPT } from "@/lib/theme";
 
+// Every page under this layout reads from MongoDB. Without this, Next.js
+// prerenders them once at `next build` time and serves that frozen snapshot
+// forever — which is why newly added/edited projects never showed up and the
+// site kept displaying the seeded (mock) rows. Force per-request rendering.
+export const dynamic = "force-dynamic";
+
 // Retro-terminal type system used across the whole site: VT323 for display
 // headings, Space Mono for body copy, Press Start 2P (small sizes only) for
 // pixel labels/achievement toasts.

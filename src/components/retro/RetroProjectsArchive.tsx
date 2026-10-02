@@ -20,7 +20,7 @@ export default function RetroProjectsArchive({ osName }: { osName: string }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/projects")
+    fetch("/api/projects", { cache: "no-store" })
       .then((r) => r.json())
       .then((d) => setProjects(d.projects || []))
       .finally(() => setLoading(false));

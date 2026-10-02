@@ -12,8 +12,8 @@ import NavDock from "./NavDock";
 import OSMenuBar from "./OSMenuBar";
 import RetroTypewriterText from "./RetroTypewriterText";
 import RetroVideoPlayer from "./RetroVideoPlayer";
+import RetroGamesModal from "./RetroGamesModal";
 import { ACHIEVEMENTS, AchievementToast, type AchievementId } from "./RetroAchievements";
-import { useInView } from "@/lib/hooks/useInView";
 import { useTheme } from "@/lib/theme";
 import SafeImage from "@/components/ui/SafeImage";
 import RetroProjectCard from "./RetroProjectCard";
@@ -104,15 +104,17 @@ function InteractiveTerminal({
   projectCount,
   skillNames,
   onCommand,
+  onOpenGames,
 }: {
   slug: string;
   bio: string;
   projectCount: number;
   skillNames: string[];
   onCommand: (cmd: string) => void;
+  onOpenGames: () => void;
 }) {
   const commands: Record<string, string | (() => string)> = {
-    help: "Available commands:\n  whoami · about · projects · experience · skills\n  contact · date · clear",
+    help: "Available commands:\n  whoami · about · projects · experience · skills\n  contact · games · date · clear",
     whoami: `guest@${slug} — just visiting, but welcome anyway.`,
     about: bio,
     projects: `${projectCount} shipped projects — scroll to PROJECTS or run 'ls projects'.`,
@@ -147,6 +149,16 @@ function InteractiveTerminal({
       setHistory([{ type: "out", text: `${slug}OS — type 'help' to start` }]);
       setInput("");
       onCommand(cmd);
+      return;
+    }
+    if (cmd === "games" || cmd === "game" || cmd === "arcade") {
+      setHistory([...base, { type: "out", text: "Launching ARCADE.EXE..." }]);
+      setInput("");
+      // Release focus from the hidden input so arrow keys / WASD go to the
+      // game instead of being swallowed by the terminal.
+      inputRef.current?.blur();
+      onCommand(cmd);
+      onOpenGames();
       return;
     }
     const resolver = commands[cmd];
@@ -195,17 +207,26 @@ function InteractiveTerminal({
 // Renders the uploaded profile photo (from /admin/profile) when one is set;
 // falls back to the original pixel-art placeholder otherwise so the hero
 // never looks broken on a fresh install.
+//
+// The frame is a fixed 3:4 portrait (aspect-ratio, not flex-grow). It used to
+// be `flex: 1`, so as the boot-sequence text typed out and made the left hero
+// column taller, the grid stretched the right column and the avatar grew with
+// it. A fixed aspect ratio keeps its height independent of the content beside it.
 function IdCardAvatar({ glitch, onHover, avatarUrl }: { glitch: boolean; onHover: () => void; avatarUrl?: string }) {
   return (
     <div
-      style={{ flex: 1, border: "2px solid var(--border)", background: "var(--bg3)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, minHeight: 200, position: "relative", overflow: "hidden", cursor: "none" }}
+      style={{
+        flex: "none", width: "100%", maxWidth: 260, aspectRatio: "3 / 4", margin: "0 auto 16px",
+        border: "2px solid var(--border)", background: "var(--bg3)", display: "flex", alignItems: "center", justifyContent: "center",
+        position: "relative", overflow: "hidden", cursor: "none",
+      }}
       onMouseEnter={onHover}
       data-cursor-hover
     >
       {avatarUrl ? (
-        <SafeImage src={avatarUrl} alt="profile photo" className="w-full h-full object-cover grayscale contrast-125" iconSize={40} />
+        <SafeImage src={avatarUrl} alt="profile photo" className="absolute inset-0 w-full h-full object-cover grayscale contrast-125" iconSize={40} />
       ) : (
-        <svg viewBox="0 0 80 100" width={160} style={{ imageRendering: "pixelated" }}>
+        <svg viewBox="0 0 80 100" style={{ imageRendering: "pixelated", width: "70%", height: "auto" }}>
           <rect x={25} y={8} width={30} height={30} fill="#c8a882" />
           <rect x={22} y={4} width={36} height={14} fill="#1a0d00" rx={2} />
           <rect x={20} y={14} width={6} height={8} fill="#1a0d00" />
@@ -250,6 +271,7 @@ export default function RetroHome(props: RetroHomeProps) {
   const [avatarHovers, setAvatarHovers] = useState(0);
   const [glitchManual, setGlitchManual] = useState(false);
   const [gameTab, setGameTab] = useState<"snake" | "ttt" | "memory">("snake");
+  const [gamesOpen, setGamesOpen] = useState(false);
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
   const konamiRef = useRef<string[]>([]);
   const KONAMI = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
@@ -263,6 +285,13 @@ export default function RetroHome(props: RetroHomeProps) {
       return next;
     });
   }, []);
+
+  const openGames = useCallback(() => {
+    setGamesOpen(true);
+    unlock("GAMER");
+  }, [unlock]);
+  const closeGames = useCallback(() => setGamesOpen(false), []);
+  const handleGameWin = useCallback(() => unlock("GAMER"), [unlock]);
 
   // Make sure the page always renders starting at the top on a fresh load —
   // browsers restoring a previous scroll position (refresh, back/forward
@@ -371,7 +400,10 @@ export default function RetroHome(props: RetroHomeProps) {
           <TerminalWindow title={`~/${slug} — login.sh`} hint="zsh — 80×24">
             <div className="retro-hero-grid">
               <div style={{ padding: "32px 36px", borderRight: "1px solid var(--border)" }}>
-                <div style={{ marginBottom: 28, fontFamily: "var(--font-retro-body)", fontSize: 13, lineHeight: 2.2, color: "var(--text-dim)" }}>
+                {/* min-height reserves the space the 5 boot lines will occupy,
+                    so typing them out doesn't push the layout (and the ID
+                    card beside it) taller line by line. */}
+                <div style={{ marginBottom: 28, minHeight: 150, fontFamily: "var(--font-retro-body)", fontSize: 13, lineHeight: 2.2, color: "var(--text-dim)" }}>
                   {l1 && renderBootLine(l1)}
                   {l2 && renderBootLine(l2)}
                   {l3 && renderBootLine(l3)}
@@ -418,7 +450,7 @@ export default function RetroHome(props: RetroHomeProps) {
                 </div>
               </div>
 
-              <div style={{ padding: 24, background: "var(--bg2)", display: "flex", flexDirection: "column" }}>
+              <div style={{ padding: 24, background: "var(--bg2)", display: "flex", flexDirection: "column", justifyContent: "flex-start" }}>
                 <div style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 16, display: "flex", justifyContent: "space-between" }}>
                   <span>ID_CARD.PNG</span><span>v1.0</span>
                 </div>
@@ -465,6 +497,7 @@ export default function RetroHome(props: RetroHomeProps) {
                   projectCount={projects.length}
                   skillNames={skillNames}
                   onCommand={(cmd) => { if (cmd !== "clear") unlock("TERMINAL"); }}
+                  onOpenGames={openGames}
                 />
               </TerminalWindow>
               <div style={{ border: "1px solid var(--border)", background: "var(--card-bg)", padding: "16px 20px" }}>
@@ -760,10 +793,12 @@ export default function RetroHome(props: RetroHomeProps) {
                     </button>
                   ))}
                 </div>
+                {/* Game instances are unmounted while the popup is open so the
+                    two don't both react to the same arrow-key presses. */}
                 <div style={{ padding: 24, display: "flex", justifyContent: "center" }}>
-                  {gameTab === "snake" && <SnakeGame onWin={() => unlock("GAMER")} />}
-                  {gameTab === "ttt" && <TicTacToe onWin={() => unlock("GAMER")} />}
-                  {gameTab === "memory" && <MemoryMatch onWin={() => unlock("GAMER")} />}
+                  {!gamesOpen && gameTab === "snake" && <SnakeGame onWin={handleGameWin} />}
+                  {!gamesOpen && gameTab === "ttt" && <TicTacToe onWin={handleGameWin} />}
+                  {!gamesOpen && gameTab === "memory" && <MemoryMatch onWin={handleGameWin} />}
                 </div>
               </TerminalWindow>
 
@@ -828,6 +863,8 @@ export default function RetroHome(props: RetroHomeProps) {
       </section>
 
       <NavDock active={activeSection} light={light} onToggleTheme={toggleTheme} />
+
+      {gamesOpen && <RetroGamesModal onClose={closeGames} onWin={handleGameWin} />}
 
       {activeVideo && (
         <RetroVideoPlayer
