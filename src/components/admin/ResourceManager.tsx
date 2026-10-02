@@ -4,11 +4,14 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Plus, Pencil, Trash2, X, ExternalLink } from "lucide-react";
 import { RetroInput, RetroTextarea } from "@/components/retro/RetroFormKit";
+import ImageUploadField from "./ImageUploadField";
 
 export type FieldConfig = {
   key: string;
   label: string;
-  type?: "text" | "textarea" | "list" | "boolean" | "number";
+  type?: "text" | "textarea" | "list" | "boolean" | "number" | "image";
+  /** For `image` fields: the R2 folder uploads are stored under. */
+  folder?: string;
 };
 
 // Fields we'll look for (in this order) to build a short, useful subtitle
@@ -97,7 +100,7 @@ export default function ResourceManager({
   const load = () => {
     setLoading(true);
     setLoadError("");
-    fetch(`/api/admin/${collection}`)
+    fetch(`/api/admin/${collection}`, { cache: "no-store" })
       .then(async (r) => {
         const d = await r.json().catch(() => ({}));
         if (!r.ok) {
@@ -268,28 +271,40 @@ export default function ResourceManager({
               <button onClick={() => setShowForm(false)} data-cursor-hover style={{ background: "none", border: "none", cursor: "none", color: "var(--text-dim)" }}><X size={18} /></button>
             </div>
             <div style={{ padding: 20, display: "flex", flexDirection: "column", gap: 14 }}>
-              {fields.map((f) => (
-                <label key={f.key} style={{ display: "block" }}>
-                  <span style={{ display: "block", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 6, letterSpacing: "0.05em" }}>{f.label}</span>
-                  {f.type === "textarea" ? (
-                    <RetroTextarea rows={3} value={editing[f.key] || ""} onChange={(e) => setEditing({ ...editing, [f.key]: e.target.value })} />
-                  ) : f.type === "list" ? (
-                    <RetroInput
-                      value={Array.isArray(editing[f.key]) ? editing[f.key].join(", ") : ""}
-                      onChange={(e) => setEditing({ ...editing, [f.key]: e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean) })}
-                      placeholder="Comma-separated"
-                    />
-                  ) : f.type === "boolean" ? (
-                    <input type="checkbox" checked={!!editing[f.key]} onChange={(e) => setEditing({ ...editing, [f.key]: e.target.checked })} style={{ width: 16, height: 16 }} />
-                  ) : (
-                    <RetroInput
-                      type={f.type === "number" ? "number" : "text"}
-                      value={editing[f.key] ?? ""}
-                      onChange={(e) => setEditing({ ...editing, [f.key]: f.type === "number" ? Number(e.target.value) : e.target.value })}
-                    />
-                  )}
-                </label>
-              ))}
+              {fields.map((f) => {
+                // Image fields contain their own buttons/inputs, so they sit in
+                // a <div> rather than a <label> (a label would forward clicks
+                // on the preview/remove controls to the first input inside).
+                const Wrapper: any = f.type === "image" ? "div" : "label";
+                return (
+                  <Wrapper key={f.key} style={{ display: "block" }}>
+                    <span style={{ display: "block", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 6, letterSpacing: "0.05em" }}>{f.label}</span>
+                    {f.type === "image" ? (
+                      <ImageUploadField
+                        value={editing[f.key] || ""}
+                        folder={f.folder}
+                        onChange={(url) => setEditing((prev: any) => ({ ...prev, [f.key]: url }))}
+                      />
+                    ) : f.type === "textarea" ? (
+                      <RetroTextarea rows={3} value={editing[f.key] || ""} onChange={(e) => setEditing({ ...editing, [f.key]: e.target.value })} />
+                    ) : f.type === "list" ? (
+                      <RetroInput
+                        value={Array.isArray(editing[f.key]) ? editing[f.key].join(", ") : ""}
+                        onChange={(e) => setEditing({ ...editing, [f.key]: e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean) })}
+                        placeholder="Comma-separated"
+                      />
+                    ) : f.type === "boolean" ? (
+                      <input type="checkbox" checked={!!editing[f.key]} onChange={(e) => setEditing({ ...editing, [f.key]: e.target.checked })} style={{ width: 16, height: 16 }} />
+                    ) : (
+                      <RetroInput
+                        type={f.type === "number" ? "number" : "text"}
+                        value={editing[f.key] ?? ""}
+                        onChange={(e) => setEditing({ ...editing, [f.key]: f.type === "number" ? Number(e.target.value) : e.target.value })}
+                      />
+                    )}
+                  </Wrapper>
+                );
+              })}
               {error && <p style={{ color: "var(--r)", fontSize: 11, fontFamily: "var(--font-retro-body)" }}>{error}</p>}
               <button
                 onClick={save}

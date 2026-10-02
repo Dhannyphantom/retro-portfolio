@@ -7,7 +7,7 @@ const FIELDS = [
   { key: "category", label: "Category (Mobile / Web / Backend / SaaS / API / Other)", type: "text" as const },
   { key: "description", label: "Short description", type: "textarea" as const },
   { key: "longDescription", label: "Long description", type: "textarea" as const },
-  { key: "thumbnail", label: "Thumbnail image URL", type: "text" as const },
+  { key: "thumbnail", label: "Thumbnail image", type: "image" as const, folder: "project-thumbnails" },
   { key: "technologies", label: "Technologies", type: "list" as const },
   { key: "features", label: "Key features", type: "list" as const },
   { key: "role", label: "My role", type: "text" as const },
