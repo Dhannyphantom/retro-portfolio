@@ -12,6 +12,9 @@ export const NAV_ITEMS = [
   { label: "@", id: "contact", title: "CONTACT" },
 ];
 
+// Visible on every screen size now. On narrow screens the buttons wrap into
+// two centred rows (see .retro-navdock in retro-a11y.css) for a stacked,
+// Tetris-like tab bar instead of disappearing.
 export default function NavDock({
   active,
   light,
@@ -23,7 +26,7 @@ export default function NavDock({
 }) {
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   return (
-    <div className="retro-navdock hide-sm-flex">
+    <div className="retro-navdock">
       {NAV_ITEMS.map(({ label, id, title }) => {
         const { ref, onMove, onLeave } = useMagnetic(0.25);
         return (
@@ -35,6 +38,7 @@ export default function NavDock({
             onMouseLeave={onLeave}
             onClick={() => scrollTo(id)}
             title={title}
+            aria-label={title}
             data-cursor-hover
             style={{
               fontFamily: "var(--font-retro-body)",
@@ -57,6 +61,7 @@ export default function NavDock({
       <button
         onClick={onToggleTheme}
         title={light ? "dark mode" : "light mode"}
+        aria-label={light ? "Switch to dark mode" : "Switch to light mode"}
         data-cursor-hover
         style={{
           fontFamily: "var(--font-retro-body)",

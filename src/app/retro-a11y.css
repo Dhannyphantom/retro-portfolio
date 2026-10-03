@@ -1,0 +1,177 @@
+/* ======================================================================
+   RETRO READABILITY LAYER
+   Imported AFTER globals.css (see layout.tsx). Keeps the 80s terminal look
+   but raises contrast, text size and comfort for low-vision users.
+   ====================================================================== */
+
+/* ─── COLOUR TOKENS ─── */
+:root,
+[data-theme="dark"] {
+  --bg: #050505;
+  --bg2: #101010;
+  --bg3: #1c1c1c;
+  --text: #f4f4f4;
+  --text-dim: #b8b8b8;      /* was #666 – ~10:1 on black */
+  --border: #4d4d4d;        /* was #2a2a2a – borders/rules now actually visible */
+  --white: #ffffff;
+  --r: #ff5470;             /* lighter red, ~6.5:1 */
+  --c: #4df3ff;
+  --g: #39ff14;
+  --window-bar: #161616;
+  --card-bg: #0c0c0c;
+  --tag-bg: #0c0c0c;
+  --scan-color: rgba(0, 0, 0, 0.12);
+  --noise-op: 0.03;
+  --vignette: rgba(0, 0, 0, 0.5);
+  /* legacy tokens */
+  --text-rgb: 244, 244, 244;
+  --green: #39ff14;
+  --cyan: #4df3ff;
+  --magenta: #ff5fa8;
+  --amber: #ffc52e;
+}
+
+[data-theme="light"] {
+  --bg: #f7f2e2;
+  --bg2: #ede6cf;
+  --bg3: #e1d9bc;
+  --text: #0a0a0a;
+  --text-dim: #3d3a2f;      /* was #777 – ~9:1 on cream */
+  --border: #857b5a;        /* was #c8c0a8 – visible rules */
+  --white: #0a0a0a;
+  --black: #f7f2e2;
+  --r: #b0001a;             /* neon red → deep red (~7:1) */
+  --c: #005a66;             /* neon cyan → deep teal */
+  --g: #0a6a0a;             /* neon green was ~1.3:1 on cream → deep phosphor green (~6:1) */
+  --window-bar: #e1d9bc;
+  --card-bg: #fbf7e9;
+  --tag-bg: #efe8d0;
+  --scan-color: rgba(0, 0, 0, 0.035);
+  --noise-op: 0.015;
+  --vignette: rgba(0, 0, 0, 0.12);
+  /* legacy tokens */
+  --void: #f7f2e2;
+  --void-rgb: 247, 242, 226;
+  --panel: #fffdf4;
+  --panel-alt: #e6dfc4;
+  --text-rgb: 10, 10, 10;
+  --green: #0a6a0a;
+  --cyan: #005a66;
+  --magenta: #a30f5c;
+  --amber: #7a4a00;
+}
+
+/* ─── COMFORT ─── */
+.retro-root {
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+.retro-root::after { animation: none; }            /* no full-screen flicker */
+.retro-matrix-canvas { opacity: 0.05; }            /* rain stays, but sits behind text more quietly */
+[data-theme="light"] .retro-matrix-canvas { opacity: 0.03; }
+.retro-root ::placeholder { color: var(--text-dim); opacity: 1; }
+.retro-root :focus-visible { outline: 2px solid var(--g); outline-offset: 2px; }
+.retro-root .text-mute { color: var(--text-dim) !important; }
+.retro-root ::selection { background: var(--g); color: var(--bg); }
+.retro-menubar { height: 30px; }
+.retro-root .retro-win-title,
+.retro-root .retro-win-hint { color: var(--text-dim); }
+
+/* light mode: neon-green logos & dark terminal pane need fixing */
+[data-theme="light"] .retro-root img[src*="cdn.simpleicons.org"] { filter: brightness(0.42) saturate(1.5); }
+[data-theme="light"] .retro-root [style*="background:#050505"],
+[data-theme="light"] .retro-root [style*="background: rgb(5, 5, 5)"] { background: var(--card-bg) !important; }
+[data-theme="light"] .retro-root [style*="background:#050505"] div,
+[data-theme="light"] .retro-root [style*="background: rgb(5, 5, 5)"] div { color: var(--text) !important; }
+[data-theme="light"] .retro-root [style*="background:var(--g)"][style*="color:#000"],
+[data-theme="light"] .retro-root [style*="background: var(--g)"][style*="color: rgb(0, 0, 0)"] { color: #fff !important; }
+
+/* text that used borders/near-bg colours (invisible) now uses dim text */
+.retro-root [style^="color:var(--border)"],
+.retro-root [style*=";color:var(--border)"],
+.retro-root [style^="color: var(--border)"],
+.retro-root [style*="; color: var(--border)"],
+.retro-root [style^="color:var(--bg3)"],
+.retro-root [style*=";color:var(--bg3)"],
+.retro-root [style^="color: var(--bg3)"],
+.retro-root [style*="; color: var(--bg3)"] { color: var(--text-dim) !important; }
+/* locked achievements were 40% opacity */
+.retro-root [style*="opacity:0.4"],
+.retro-root [style*="opacity: 0.4"] { opacity: 0.75 !important; }
+
+/* ─── NAV DOCK: visible on mobile, stacked "Tetris" rows ─── */
+.retro-navdock {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;   /* uneven last row centres itself → staggered tetris look */
+  align-content: flex-end;
+  overflow: visible;
+  box-shadow: 4px 4px 0 var(--border);
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+}
+.retro-navdock > a { display: block; }
+@media (max-width: 859px) {
+  .retro-navdock {
+    bottom: 8px;
+    width: calc(100vw - 16px);
+    max-width: 380px;
+    padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
+    gap: 5px;
+  }
+  .retro-navdock button {
+    padding: 9px 10px !important;
+    min-width: 40px !important;
+    min-height: 40px;
+    box-shadow: 2px 2px 0 var(--border);
+  }
+  .retro-navdock > button:last-child { margin-left: 0 !important; }
+}
+
+/* ─── VIEW DROPDOWN ─── */
+@keyframes retro-menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.retro-dropdown { animation: retro-menu-in 0.12s steps(3); }
+
+/* ─── TEXT SIZE FLOOR (inline styles + tailwind arbitrary sizes) ─── */
+.retro-root [style*="font-size:6px"] { font-size: 9px !important; }
+.retro-root [style*="font-size: 6px"] { font-size: 9px !important; }
+.retro-root .text-\[6px\] { font-size: 9px !important; }
+.retro-root [style*="font-size:7px"] { font-size: 10px !important; }
+.retro-root [style*="font-size: 7px"] { font-size: 10px !important; }
+.retro-root .text-\[7px\] { font-size: 10px !important; }
+.retro-root [style*="font-size:8px"] { font-size: 10px !important; }
+.retro-root [style*="font-size: 8px"] { font-size: 10px !important; }
+.retro-root .text-\[8px\] { font-size: 10px !important; }
+.retro-root [style*="font-size:9px"] { font-size: 12px !important; }
+.retro-root [style*="font-size: 9px"] { font-size: 12px !important; }
+.retro-root .text-\[9px\] { font-size: 12px !important; }
+.retro-root [style*="font-size:9.5px"] { font-size: 12px !important; }
+.retro-root [style*="font-size: 9.5px"] { font-size: 12px !important; }
+.retro-root .text-\[9\.5px\] { font-size: 12px !important; }
+.retro-root [style*="font-size:10px"] { font-size: 12px !important; }
+.retro-root [style*="font-size: 10px"] { font-size: 12px !important; }
+.retro-root .text-\[10px\] { font-size: 12px !important; }
+.retro-root [style*="font-size:10.5px"] { font-size: 13px !important; }
+.retro-root [style*="font-size: 10.5px"] { font-size: 13px !important; }
+.retro-root .text-\[10\.5px\] { font-size: 13px !important; }
+.retro-root [style*="font-size:11px"] { font-size: 13px !important; }
+.retro-root [style*="font-size: 11px"] { font-size: 13px !important; }
+.retro-root .text-\[11px\] { font-size: 13px !important; }
+.retro-root [style*="font-size:11.5px"] { font-size: 13.5px !important; }
+.retro-root [style*="font-size: 11.5px"] { font-size: 13.5px !important; }
+.retro-root .text-\[11\.5px\] { font-size: 13.5px !important; }
+.retro-root [style*="font-size:12px"] { font-size: 14px !important; }
+.retro-root [style*="font-size: 12px"] { font-size: 14px !important; }
+.retro-root .text-\[12px\] { font-size: 14px !important; }
+.retro-root [style*="font-size:12.5px"] { font-size: 14px !important; }
+.retro-root [style*="font-size: 12.5px"] { font-size: 14px !important; }
+.retro-root .text-\[12\.5px\] { font-size: 14px !important; }
+.retro-root [style*="font-size:13px"] { font-size: 15px !important; }
+.retro-root [style*="font-size: 13px"] { font-size: 15px !important; }
+.retro-root .text-\[13px\] { font-size: 15px !important; }
+.retro-root [style*="font-size:13.5px"] { font-size: 15px !important; }
+.retro-root [style*="font-size: 13.5px"] { font-size: 15px !important; }
+.retro-root .text-\[13\.5px\] { font-size: 15px !important; }

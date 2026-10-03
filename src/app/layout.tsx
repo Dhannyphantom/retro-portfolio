@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Press_Start_2P, VT323, Space_Mono } from "next/font/google";
 import "./globals.css";
+import "./retro-a11y.css"; // readability + mobile dock layer — must stay AFTER globals.css
 import SiteChrome from "@/components/layout/SiteChrome";
 import { getSiteSettings } from "@/lib/settings";
 import Providers from "@/lib/providers";
