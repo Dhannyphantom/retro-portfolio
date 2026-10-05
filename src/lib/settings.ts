@@ -12,6 +12,7 @@ export type SiteSettingsData = {
   cvUrl?: string;
   cvEnabled?: boolean;
   avatarUrl?: string;
+  avatarGrayscale?: boolean;
   ogImageUrl?: string;
   faviconUrl?: string;
   heroHeadlines: string[];
@@ -28,6 +29,7 @@ const DEFAULTS: SiteSettingsData = {
   socials: {},
   cvEnabled: true,
   avatarUrl: "",
+  avatarGrayscale: false,
   ogImageUrl: "",
   faviconUrl: "",
   heroHeadlines: ["Software Developer"],

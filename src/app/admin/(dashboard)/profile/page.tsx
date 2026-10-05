@@ -26,6 +26,15 @@ export default function AdminProfile() {
 
   if (!form) return <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 12, color: "var(--text-dim)" }}>loading…</p>;
 
+  const grayscale = !!form.avatarGrayscale;
+
+  const modeBtn = (active: boolean): React.CSSProperties => ({
+    fontFamily: "var(--font-retro-body)", fontSize: 11, padding: "8px 14px", cursor: "none",
+    color: active ? "var(--bg)" : "var(--text-dim)",
+    background: active ? "var(--white)" : "var(--bg2)",
+    border: "1px solid var(--border)",
+  });
+
   return (
     <div style={{ maxWidth: 560 }}>
       <SectionLabel n="03" label="PROFILE" />
@@ -45,7 +54,11 @@ export default function AdminProfile() {
             <div style={{ width: 72, height: 72, border: "1px solid var(--border)", background: "var(--bg2)", flexShrink: 0, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
               {form.avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={form.avatarUrl} alt="profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img
+                  src={form.avatarUrl}
+                  alt="profile"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", filter: grayscale ? "grayscale(1) contrast(1.25)" : "none" }}
+                />
               ) : (
                 <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 9, color: "var(--text-dim)" }}>none</span>
               )}
@@ -68,6 +81,20 @@ export default function AdminProfile() {
               remove photo
             </button>
           )}
+        </div>
+
+        <div>
+          <span style={{ display: "block", fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", marginBottom: 8, letterSpacing: "0.05em" }}>
+            avatar display — how the hero photo is rendered (applies after you save)
+          </span>
+          <div style={{ display: "flex", gap: 6 }}>
+            <button type="button" onClick={() => set("avatarGrayscale", false)} data-cursor-hover style={modeBtn(!grayscale)}>
+              colour
+            </button>
+            <button type="button" onClick={() => set("avatarGrayscale", true)} data-cursor-hover style={modeBtn(grayscale)}>
+              black &amp; white
+            </button>
+          </div>
         </div>
 
         <Field label="name"><RetroInput value={form.name || ""} onChange={(e) => set("name", e.target.value)} /></Field>

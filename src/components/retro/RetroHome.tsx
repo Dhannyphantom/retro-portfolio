@@ -42,6 +42,8 @@ export type RetroHomeProps = {
   cvUrl?: string;
   cvEnabled?: boolean;
   avatarUrl?: string;
+  /** When true the hero avatar renders black & white; default is full colour. */
+  avatarGrayscale?: boolean;
   projects: ProjectItem[];
   experience: ExperienceItem[];
   services: ServiceItem[];
@@ -208,11 +210,15 @@ function InteractiveTerminal({
 // falls back to the original pixel-art placeholder otherwise so the hero
 // never looks broken on a fresh install.
 //
+// The photo is shown in full colour by default. When `grayscale` is true
+// (toggled from /admin/profile → "avatar display"), it gets the original
+// retro black & white treatment (grayscale + contrast boost).
+//
 // The frame is a fixed 3:4 portrait (aspect-ratio, not flex-grow). It used to
 // be `flex: 1`, so as the boot-sequence text typed out and made the left hero
 // column taller, the grid stretched the right column and the avatar grew with
 // it. A fixed aspect ratio keeps its height independent of the content beside it.
-function IdCardAvatar({ glitch, onHover, avatarUrl }: { glitch: boolean; onHover: () => void; avatarUrl?: string }) {
+function IdCardAvatar({ glitch, onHover, avatarUrl, grayscale = false }: { glitch: boolean; onHover: () => void; avatarUrl?: string; grayscale?: boolean }) {
   return (
     <div
       style={{
@@ -224,7 +230,12 @@ function IdCardAvatar({ glitch, onHover, avatarUrl }: { glitch: boolean; onHover
       data-cursor-hover
     >
       {avatarUrl ? (
-        <SafeImage src={avatarUrl} alt="profile photo" className="absolute inset-0 w-full h-full object-cover grayscale contrast-125" iconSize={40} />
+        <SafeImage
+          src={avatarUrl}
+          alt="profile photo"
+          className={`absolute inset-0 w-full h-full object-cover${grayscale ? " grayscale contrast-125" : ""}`}
+          iconSize={40}
+        />
       ) : (
         <svg viewBox="0 0 80 100" style={{ imageRendering: "pixelated", width: "70%", height: "auto" }}>
           <rect x={25} y={8} width={30} height={30} fill="#c8a882" />
@@ -255,7 +266,7 @@ function IdCardAvatar({ glitch, onHover, avatarUrl }: { glitch: boolean; onHover
 // ─── MAIN RETRO HOME ────────────────────────────────────────────────────────
 export default function RetroHome(props: RetroHomeProps) {
   const {
-    name, headlines, bio, meetDeveloperBio, email, location, availability, socials, avatarUrl,
+    name, headlines, bio, meetDeveloperBio, email, location, availability, socials, avatarUrl, avatarGrayscale,
     projects, experience, services, rateCards, testimonials, faqs,
     techstack, stats, workflowSteps, philosophyLines, photos, videos,
   } = props;
@@ -457,6 +468,7 @@ export default function RetroHome(props: RetroHomeProps) {
                 <IdCardAvatar
                   glitch={glitchManual}
                   avatarUrl={avatarUrl}
+                  grayscale={!!avatarGrayscale}
                   onHover={() => { const n = avatarHovers + 1; setAvatarHovers(n); if (n >= 5) unlock("STALKER"); }}
                 />
                 <div style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)" }}>

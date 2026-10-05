@@ -141,6 +141,7 @@ export default async function HomePage() {
         cvUrl={settings?.cvUrl}
         cvEnabled={settings?.cvEnabled}
         avatarUrl={settings?.avatarUrl}
+        avatarGrayscale={settings?.avatarGrayscale ?? false}
         projects={projects as any}
         experience={experience as any}
         services={services as any}

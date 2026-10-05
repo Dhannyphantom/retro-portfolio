@@ -21,6 +21,10 @@ const SiteSettingsSchema = new Schema(
     // /admin/profile, stored as a plain URL (R2 or otherwise), same pattern
     // as cvUrl. Falls back to the pixel-art placeholder avatar when unset.
     avatarUrl: { type: String, default: "" },
+    // When true, the hero avatar is rendered black & white (grayscale +
+    // contrast boost, the original retro look). Default false = full colour.
+    // Toggled from /admin/profile.
+    avatarGrayscale: { type: Boolean, default: false },
     // Image used for social link-preview cards (Open Graph / Twitter) when
     // the site is shared — uploaded via /admin/profile. Falls back to no
     // image (just title/description) when unset.
