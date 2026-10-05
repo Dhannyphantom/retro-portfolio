@@ -14,6 +14,7 @@ import Photo from "@/models/Photo";
 import ProjectVideo from "@/models/ProjectVideo";
 
 import RetroHome from "@/components/retro/RetroHome";
+import HomeJsonLd from "@/components/seo/HomeJsonLd";
 
 // Render on every request so the homepage always reflects the live database
 // (otherwise Next prerenders this at build time and freezes the seeded data).
@@ -119,37 +120,40 @@ export default async function HomePage() {
   } = await getData();
 
   return (
-    <RetroHome
-      name={settings?.name || "Daniel Olojo"}
-      headlines={
-        settings?.heroHeadlines?.length
-          ? settings.heroHeadlines
-          : ["Software Developer"]
-      }
-      bio={
-        settings?.bio ||
-        "Software developer building mobile, web and backend products that hold up under real use."
-      }
-      meetDeveloperBio={settings?.meetDeveloperBio}
-      email={settings?.email}
-      location={settings?.location}
-      availability={settings?.availability ?? true}
-      socials={settings?.socials}
-      cvUrl={settings?.cvUrl}
-      cvEnabled={settings?.cvEnabled}
-      avatarUrl={settings?.avatarUrl}
-      projects={projects as any}
-      experience={experience as any}
-      services={services as any}
-      rateCards={rateCards as any}
-      testimonials={testimonials as any}
-      faqs={faqs as any}
-      techstack={techstack as any}
-      stats={stats as any}
-      workflowSteps={workflowSteps as any}
-      philosophyLines={philosophyLines.map((p: any) => p.text)}
-      photos={photos as any}
-      videos={videos as any}
-    />
+    <>
+      <HomeJsonLd settings={settings} skills={(techstack as any[]).map((t) => t.name)} />
+      <RetroHome
+        name={settings?.name || "Daniel Olojo"}
+        headlines={
+          settings?.heroHeadlines?.length
+            ? settings.heroHeadlines
+            : ["Software Developer"]
+        }
+        bio={
+          settings?.bio ||
+          "Software developer building mobile, web and backend products that hold up under real use."
+        }
+        meetDeveloperBio={settings?.meetDeveloperBio}
+        email={settings?.email}
+        location={settings?.location}
+        availability={settings?.availability ?? true}
+        socials={settings?.socials}
+        cvUrl={settings?.cvUrl}
+        cvEnabled={settings?.cvEnabled}
+        avatarUrl={settings?.avatarUrl}
+        projects={projects as any}
+        experience={experience as any}
+        services={services as any}
+        rateCards={rateCards as any}
+        testimonials={testimonials as any}
+        faqs={faqs as any}
+        techstack={techstack as any}
+        stats={stats as any}
+        workflowSteps={workflowSteps as any}
+        philosophyLines={philosophyLines.map((p: any) => p.text)}
+        photos={photos as any}
+        videos={videos as any}
+      />
+    </>
   );
 }

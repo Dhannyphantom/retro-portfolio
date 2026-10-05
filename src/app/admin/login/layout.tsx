@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import RetroAdminShell from "@/components/retro/RetroAdminShell";
 
-// Overrides the parent admin layout's auth guard — the login page must be reachable when logged out.
+export const metadata: Metadata = {
+  title: "Admin Login",
+  robots: { index: false, follow: false, nocache: true },
+};
+
 export default function LoginLayout({ children }: { children: React.ReactNode }) {
   return (
     <RetroAdminShell>

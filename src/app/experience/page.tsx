@@ -2,6 +2,15 @@ import { connectDB } from "@/lib/mongodb";
 import ExperienceModel from "@/models/Experience";
 import { getSiteSettings } from "@/lib/settings";
 import RetroExperiencePage from "@/components/retro/RetroExperiencePage";
+import { buildPageMetadata } from "@/lib/seo";
+
+export async function generateMetadata() {
+  return buildPageMetadata({
+    title: "Experience",
+    description: "Professional experience building mobile apps, web platforms and backend systems.",
+    path: "/experience",
+  });
+}
 
 async function getExperience() {
   try {

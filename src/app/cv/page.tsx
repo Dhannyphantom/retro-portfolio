@@ -1,6 +1,15 @@
 import { connectDB } from "@/lib/mongodb";
 import SiteSettings from "@/models/SiteSettings";
 import RetroCvPage from "@/components/retro/RetroCvPage";
+import { buildPageMetadata } from "@/lib/seo";
+
+export async function generateMetadata() {
+  return buildPageMetadata({
+    title: "Resume / CV",
+    description: "Download the current CV: software developer working across mobile, web and backend.",
+    path: "/cv",
+  });
+}
 
 async function getSettings(): Promise<any> {
   try {

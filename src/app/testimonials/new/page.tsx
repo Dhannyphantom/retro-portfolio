@@ -1,5 +1,11 @@
 import { getSiteSettings } from "@/lib/settings";
 import RetroTestimonialForm from "@/components/retro/RetroTestimonialForm";
+import { buildPageMetadata } from "@/lib/seo";
+
+// A form, not content worth ranking: keep it out of the index.
+export async function generateMetadata() {
+  return buildPageMetadata({ title: "Leave a Review", path: "/testimonials/new", noindex: true });
+}
 
 export default async function NewTestimonialPage() {
   const settings = await getSiteSettings();

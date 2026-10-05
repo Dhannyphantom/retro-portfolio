@@ -1,13 +1,16 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import Sidebar from "@/components/admin/Sidebar";
 import RetroAdminShell from "@/components/retro/RetroAdminShell";
 
+export const metadata: Metadata = {
+  title: "Admin",
+  robots: { index: false, follow: false, nocache: true },
+};
+
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
-
-  // The login page itself renders without the sidebar/guard — everything
-  // else under /admin requires a valid session cookie.
   if (!session) redirect("/admin/login");
 
   return (
