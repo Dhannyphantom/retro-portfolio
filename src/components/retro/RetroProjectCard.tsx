@@ -50,8 +50,8 @@ export default function RetroProjectCard({ p, idx }: { p: ProjectItem; idx: numb
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff5f57", display: "inline-block" }} />
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#febc2e", display: "inline-block" }} />
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#28c840", display: "inline-block" }} />
-          <span style={{ flex: 1, textAlign: "center", fontSize: 10, color: "var(--text-dim)", fontFamily: "var(--font-retro-body)" }}>{fileName}</span>
-          <span style={{ fontSize: 10, color: "var(--border)", fontFamily: "var(--font-retro-body)" }}>#{String(idx + 1).padStart(2, "0")}</span>
+          <span style={{ flex: 1, textAlign: "center", fontSize: 11, color: "var(--text-dim)", fontFamily: "var(--font-retro-body)" }}>{fileName}</span>
+          <span style={{ fontSize: 11, color: "var(--text-dim)", fontFamily: "var(--font-retro-body)" }}>#{String(idx + 1).padStart(2, "0")}</span>
         </div>
 
         <div style={{ height: 140, background: "var(--bg2)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", position: "relative", borderBottom: "1px solid var(--border)" }}>
@@ -60,27 +60,35 @@ export default function RetroProjectCard({ p, idx }: { p: ProjectItem; idx: numb
           <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.08) 3px,rgba(0,0,0,0.08) 4px)", pointerEvents: "none" }} />
         </div>
 
-        <div style={{ padding: "16px 16px 20px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-            <h3 style={{ fontFamily: "var(--font-retro-display)", fontSize: 28, color: "var(--text)", margin: 0, lineHeight: 1 }}>{p.title}</h3>
-            <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: p.featured ? "var(--g)" : "var(--text-dim)", letterSpacing: "0.15em" }}>
+        <div style={{ padding: "18px 18px 22px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginBottom: 12 }}>
+            <h3 style={{ fontFamily: "var(--font-retro-display)", fontSize: 30, color: "var(--text)", margin: 0, lineHeight: 1 }}>{p.title}</h3>
+            <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: p.featured ? "var(--g)" : "var(--text-dim)", letterSpacing: "0.12em", flexShrink: 0 }}>
               {p.featured && <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--g)", marginRight: 4, verticalAlign: "middle" }} />}
               {p.category?.toUpperCase()}
             </span>
           </div>
-          <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)", lineHeight: 1.7, margin: "0 0 12px" }}>{p.description}</p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 12 }}>
+
+          {/* Full-contrast, larger description with a green "terminal margin" rule. */}
+          <div style={{ borderLeft: "2px solid var(--g)", paddingLeft: 12, margin: "0 0 16px" }}>
+            <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 15, color: "var(--text)", lineHeight: 1.75, letterSpacing: "0.005em", margin: 0 }}>
+              {p.description}
+            </p>
+          </div>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16 }}>
             {p.technologies.map((t) => (
-              <span key={t} style={{ fontSize: 9, padding: "3px 7px", border: "1px solid var(--border)", color: "var(--text-dim)", fontFamily: "var(--font-retro-body)", background: "var(--tag-bg)" }}>{t}</span>
+              <span key={t} style={{ fontSize: 11.5, padding: "4px 9px", border: "1px solid var(--border)", color: "var(--text)", fontFamily: "var(--font-retro-body)", background: "var(--tag-bg)" }}>{t}</span>
             ))}
           </div>
-          <div style={{ display: "flex", gap: 8 }}>
-            <MagneticBtn href={`/projects/${p.slug}`} style={{ padding: "8px 16px", fontSize: 10 }}>
+
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <MagneticBtn href={`/projects/${p.slug}`} style={{ padding: "10px 16px", fontSize: 12 }}>
               view case study →
             </MagneticBtn>
             {p.liveUrl && (
               <a href={p.liveUrl} target="_blank" rel="noopener noreferrer">
-                <button style={{ padding: "8px 16px", background: "var(--white)", color: "var(--bg)", border: "none", cursor: "none", fontFamily: "var(--font-retro-body)", fontSize: 10, letterSpacing: "0.1em" }} data-cursor-hover>
+                <button style={{ padding: "10px 16px", background: "var(--white)", color: "var(--bg)", border: "none", cursor: "none", fontFamily: "var(--font-retro-body)", fontSize: 12, letterSpacing: "0.08em" }} data-cursor-hover>
                   ▶ live demo
                 </button>
               </a>

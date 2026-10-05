@@ -11,8 +11,8 @@
   --bg2: #101010;
   --bg3: #1c1c1c;
   --text: #f4f4f4;
-  --text-dim: #b8b8b8;      /* was #666 – ~10:1 on black */
-  --border: #4d4d4d;        /* was #2a2a2a – borders/rules now actually visible */
+  --text-dim: #d0d0d0;      /* was #b8b8b8 – ~13:1 on black */
+  --border: #4d4d4d;        /* borders/rules visible */
   --white: #ffffff;
   --r: #ff5470;             /* lighter red, ~6.5:1 */
   --c: #4df3ff;
@@ -36,13 +36,13 @@
   --bg2: #ede6cf;
   --bg3: #e1d9bc;
   --text: #0a0a0a;
-  --text-dim: #3d3a2f;      /* was #777 – ~9:1 on cream */
-  --border: #857b5a;        /* was #c8c0a8 – visible rules */
+  --text-dim: #2f2c22;      /* was #3d3a2f – ~12:1 on cream */
+  --border: #857b5a;        /* visible rules */
   --white: #0a0a0a;
   --black: #f7f2e2;
   --r: #b0001a;             /* neon red → deep red (~7:1) */
   --c: #005a66;             /* neon cyan → deep teal */
-  --g: #0a6a0a;             /* neon green was ~1.3:1 on cream → deep phosphor green (~6:1) */
+  --g: #0a6a0a;             /* deep phosphor green (~6:1) */
   --window-bar: #e1d9bc;
   --card-bg: #fbf7e9;
   --tag-bg: #efe8d0;
@@ -86,6 +86,10 @@
 [data-theme="light"] .retro-root [style*="background: rgb(5, 5, 5)"] div { color: var(--text) !important; }
 [data-theme="light"] .retro-root [style*="background:var(--g)"][style*="color:#000"],
 [data-theme="light"] .retro-root [style*="background: var(--g)"][style*="color: rgb(0, 0, 0)"] { color: #fff !important; }
+
+/* dark mode: terminal output lines were #999 on #050505 – lift to near-white */
+[data-theme="dark"] .retro-root [style*="color:#999"],
+[data-theme="dark"] .retro-root [style*="color: rgb(153, 153, 153)"] { color: #dcdcdc !important; }
 
 /* text that used borders/near-bg colours (invisible) now uses dim text */
 .retro-root [style^="color:var(--border)"],
@@ -175,3 +179,41 @@
 .retro-root [style*="font-size:13.5px"] { font-size: 15px !important; }
 .retro-root [style*="font-size: 13.5px"] { font-size: 15px !important; }
 .retro-root .text-\[13\.5px\] { font-size: 15px !important; }
+
+/* ─── READABLE BODY COPY ───
+   Paragraphs are the "reading" text on every page (section intros, card
+   descriptions, rate-card blurbs, form help text, FAQ answers). They were
+   small AND dim. Give them full-contrast text, a 14px floor and relaxed
+   line-height. Labels, meta and window chrome (spans/divs) stay dim so the
+   hierarchy and the retro look are preserved. The `p` in the selector makes
+   these win over the generic size-floor rules above. */
+.retro-root p[style*="color: var(--text-dim)"],
+.retro-root p[style*="color:var(--text-dim)"] {
+  color: var(--text) !important;
+}
+.retro-root p[style*="color: var(--text-dim)"],
+.retro-root p[style*="color:var(--text-dim)"],
+.retro-root details > p {
+  line-height: 1.75 !important;
+}
+.retro-root p[style*="font-size: 9px"],
+.retro-root p[style*="font-size: 10px"],
+.retro-root p[style*="font-size: 11px"],
+.retro-root p[style*="font-size: 12px"],
+.retro-root p[style*="font-size:9px"],
+.retro-root p[style*="font-size:10px"],
+.retro-root p[style*="font-size:11px"],
+.retro-root p[style*="font-size:12px"] { font-size: 14px !important; }
+.retro-root p[style*="font-size: 13px"],
+.retro-root p[style*="font-size:13px"] { font-size: 15px !important; }
+
+/* Short list-style lines inside cards (rate-card features, FAQ, etc.) */
+.retro-root div[style*="font-size: 10px"][style*="color: var(--text-dim)"],
+.retro-root div[style*="font-size: 11px"][style*="color: var(--text-dim)"] {
+  color: var(--text) !important;
+  font-size: 13.5px !important;
+  line-height: 1.6 !important;
+}
+
+/* Prefer comfortable line length for long paragraphs inside windows */
+.retro-root p { overflow-wrap: anywhere; }

@@ -15,29 +15,33 @@ export default function RetroExperienceEntry({ item, idx, isLast }: { item: Expe
         <div style={{ width: 14, height: 14, background: color, flexShrink: 0, border: "2px solid var(--bg)", outline: `1px solid ${color}` }} />
         {!isLast && <div style={{ flex: 1, width: 1, background: "var(--border)", minHeight: 20, marginTop: 4 }} />}
       </div>
-      <div style={{ flex: 1, border: "1px solid var(--border)", padding: "16px 20px", marginBottom: 16, background: "var(--card-bg)" }}>
+      <div style={{ flex: 1, border: "1px solid var(--border)", padding: "18px 22px", marginBottom: 16, background: "var(--card-bg)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8, flexWrap: "wrap", gap: 8 }}>
-          <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color, letterSpacing: "0.1em" }}>
+          <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color, letterSpacing: "0.1em" }}>
             · {idx === 0 ? "CURRENT" : "PAST"}
           </span>
-          <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 10, color: "var(--text-dim)", background: "var(--bg3)", padding: "2px 8px", border: "1px solid var(--border)" }}>
+          <span style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text)", background: "var(--bg3)", padding: "2px 8px", border: "1px solid var(--border)" }}>
             {item.startDate} — {item.endDate || "Present"}
           </span>
         </div>
-        <h3 style={{ fontFamily: "var(--font-retro-display)", fontSize: 24, color: "var(--text)", margin: "0 0 4px" }}>
+        <h3 style={{ fontFamily: "var(--font-retro-display)", fontSize: 26, color: "var(--text)", margin: "0 0 6px" }}>
           {item.role} · <span style={{ color }}>{item.organization}</span>
         </h3>
-        {item.description && <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)", lineHeight: 1.8, margin: "0 0 14px" }}>{item.description}</p>}
+        {item.description && (
+          <div style={{ borderLeft: "2px solid var(--g)", paddingLeft: 12, margin: "0 0 14px" }}>
+            <p style={{ fontFamily: "var(--font-retro-body)", fontSize: 15, color: "var(--text)", lineHeight: 1.75, margin: 0 }}>{item.description}</p>
+          </div>
+        )}
         {!!item.achievements?.length && (
-          <ul style={{ margin: "0 0 14px", padding: "0 0 0 16px" }}>
+          <ul style={{ margin: "0 0 14px", padding: "0 0 0 18px" }}>
             {item.achievements.map((b, i) => (
-              <li key={i} style={{ fontFamily: "var(--font-retro-body)", fontSize: 11, color: "var(--text-dim)", lineHeight: 1.8, marginBottom: 2 }}>{b}</li>
+              <li key={i} style={{ fontFamily: "var(--font-retro-body)", fontSize: 14.5, color: "var(--text)", lineHeight: 1.75, marginBottom: 4 }}>{b}</li>
             ))}
           </ul>
         )}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
           {(item.technologies || []).map((t) => (
-            <span key={t} style={{ fontSize: 9, padding: "3px 7px", border: "1px solid var(--border)", color: "var(--text-dim)", fontFamily: "var(--font-retro-body)" }}>{t}</span>
+            <span key={t} style={{ fontSize: 11.5, padding: "4px 9px", border: "1px solid var(--border)", color: "var(--text)", fontFamily: "var(--font-retro-body)", background: "var(--tag-bg)" }}>{t}</span>
           ))}
         </div>
       </div>
